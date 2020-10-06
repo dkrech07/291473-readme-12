@@ -287,22 +287,22 @@ $posts = [
                 <p><!--здесь текст--></p>
             </div>
 
-            <article class="popular__post post">
+            <?php foreach ($posts as $post): ?>
+            <article class="popular__post post <?= $post['type'] ?>">
                 <header class="post__header">
-                    <h2><!--здесь заголовок--></h2>
+                    <h2><?= $post['title'] ?></h2>
                 </header>
                 <div class="post__main">
-                    <!--здесь содержимое карточки-->
+                    <?= $post['description'] ?>
                 </div>
                 <footer class="post__footer">
                     <div class="post__author">
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
-                                <!--укажите путь к файлу аватара-->
-                                <img class="post__author-avatar" src="img/" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="img/<?= $post['avatar'] ?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><!--здесь имя пользоателя--></b>
+                                <b class="post__author-name"><?= $post['user_name'] ?></b>
                                 <time class="post__time" datetime="">дата</time>
                             </div>
                         </a>
@@ -330,6 +330,7 @@ $posts = [
                     </div>
                 </footer>
             </article>
+          <?php endforeach; ?>
         </div>
     </div>
 </section>
