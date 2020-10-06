@@ -2,6 +2,44 @@
 $is_auth = rand(0, 1);
 
 $user_name = 'Дмитрий';
+
+$posts = [
+  [
+    'title' =>'Цитата',
+    'type' =>'post-quote',
+    'description' => 'Мы в жизни любим только раз, а после ищем лишь похожих',
+    'user_name' => 'Лариса',
+    'avatar' => 'userpic-larisa-small.jpg',
+  ],
+  [
+    'title' =>'Игра престолов',
+    'type' =>'post-text',
+    'description' => 'Не могу дождаться начала финального сезона своего любимого сериала!',
+    'user_name' => 'Владик',
+    'avatar' => 'userpic.jpg',
+  ],
+  [
+    'title' =>'Наконец, обработал фотки!',
+    'type' =>'post-photo',
+    'description' => 'rock-medium.jpg',
+    'user_name' => 'Виктор',
+    'avatar' => 'userpic-mark.jpg',
+  ],
+  [
+    'title' =>'Моя мечта',
+    'type' =>'post-photo',
+    'description' => 'coast-medium.jpg',
+    'user_name' => 'Лариса',
+    'avatar' => 'userpic-larisa-small.jpg',
+  ],
+  [
+    'title' =>'Лучшие курсы',
+    'type' =>'post-link',
+    'description' => 'www.htmlacademy.ru',
+    'user_name' => 'Владик',
+    'avatar' => 'userpic.jpg',
+  ],
+];
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -68,7 +106,7 @@ $user_name = 'Дмитрий';
                             </div>
                             <div class="header__profile-name">
                                 <span>
-                                    <?= $user_name; ?>
+                                    <?= $user_name ?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>
