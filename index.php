@@ -51,6 +51,24 @@ $posts = [
     'avatar' => 'userpic.jpg',
   ],
 ];
+
+function crop_text($text, $characters_count = 300) {
+  if (mb_strlen($text) > $characters_count) {
+    $words_list = explode(' ', $text);
+    $croped_text_length = 0;
+
+    foreach ($words_list as $word_number => $word) {
+      if (($croped_text_length + mb_strlen($word)) < $characters_count) {
+        $croped_text_length += mb_strlen($word);
+      } else {
+        $croped_text = implode(' ', array_slice($words_list, 0, $word_number));
+        return '<p>' . $croped_text . '...</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+      }
+    }
+  }
+
+  return '<p>' . $text . '</p>';
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -259,9 +277,7 @@ $posts = [
                 <div class="post__main">
                     <?php if ($post['type'] == "post-quote"): ?>
                     <blockquote>
-                        <p>
-                            <?= $post['description'] ?>
-                        </p>
+                        <?= crop_text($post['description']) ?>
                         <cite>Неизвестный Автор</cite>
                     </blockquote>
 
@@ -300,7 +316,7 @@ $posts = [
                     </div>
 
                     <?php elseif ($post['type'] == "post-text"): ?>
-                    <p><?= $post['description'] ?></p>
+                    <?= crop_text($post['description']) ?>
 
                     <?php endif; ?>
                 </div>
