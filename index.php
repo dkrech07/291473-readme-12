@@ -5,6 +5,13 @@ $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
 $posts = [
+    [
+    'title' =>'Полезный пост про Байкал',
+    'type' =>'post-text',
+    'description' => 'Озеро Байкал - огромное древнее озеро в горах Сибири к северу от монгольской границы. Оно считается самым глубоким в мире. Его средняя глубина - 744 метра. Двадцать первого ноября уровень воды в Байкале составил почти 456 метров.Проблема снижающегося уровня воды в Байкале неоднократно поднималась. Сейчас он меньше порогового значения на шесть сантиметров. Для остановки оттока воды из озера власти предпринимают экономические решения. За последние 60 лет колебания уровня воды в Байкале, близкие к критической отметке, наблюдались 15 раз. Так, в 1981 году уровень Байкала опустился на 70 сантиметров ниже критической отметки.',
+    'user_name' => 'Лариса',
+    'avatar' => 'userpic-larisa-small.jpg',
+  ],
   [
     'title' =>'Цитата',
     'type' =>'post-quote',
@@ -41,6 +48,24 @@ $posts = [
     'avatar' => 'userpic.jpg',
   ],
 ];
+
+function crop_text($text, $characters_count = 300) {
+  if (mb_strlen($text) <= $characters_count) {
+    return '<p>' . $text . '</p>';
+  }
+
+  $words = explode(' ', $text);
+  $cropped_text_length = 0;
+
+  foreach ($words as $word_number => $word) {
+    $cropped_text_length += mb_strlen($word) + 1;
+
+    if ($cropped_text_length > $characters_count) {
+      $cropped_text = implode(' ', array_slice($words, 0, $word_number));
+      return '<p>' . $cropped_text . '...</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+    }
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -249,9 +274,7 @@ $posts = [
                 <div class="post__main">
                     <?php if ($post['type'] == "post-quote"): ?>
                     <blockquote>
-                        <p>
-                            <?= $post['description'] ?>
-                        </p>
+                        <?= crop_text($post['description']) ?>
                         <cite>Неизвестный Автор</cite>
                     </blockquote>
 
@@ -290,7 +313,7 @@ $posts = [
                     </div>
 
                     <?php elseif ($post['type'] == "post-text"): ?>
-                    <p><?= $post['description'] ?></p>
+                    <?= crop_text($post['description']) ?>
 
                     <?php endif; ?>
                 </div>
