@@ -1,6 +1,7 @@
 <?php
-$is_auth = rand(0, 1);
+require_once('helpers.php');
 
+$is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
 $posts = [
@@ -256,7 +257,7 @@ $posts = [
 
                     <?php elseif ($post['type'] == "post-link"): ?>
                     <div class="post-link__wrapper">
-                        <a class="post-link__external" href="http://" title="Перейти по ссылке">
+                        <a class="post-link__external" href="http://<?= $post['description'] ?>" title="Перейти по ссылке">
                             <div class="post-link__info-wrapper">
                                 <div class="post-link__icon-wrapper">
                                     <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -277,7 +278,7 @@ $posts = [
                     <?php elseif ($post['type'] == "post-video"): ?>
                     <div class="post-video__block">
                         <div class="post-video__preview">
-                            <?=embed_youtube_cover(/* вставьте ссылку на видео */); ?>
+                            <?=embed_youtube_cover($post['description']); ?>
                             <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
                         </div>
                         <a href="post-details.html" class="post-video__play-big button">
@@ -328,7 +329,7 @@ $posts = [
                     </div>
                 </footer>
             </article>
-          <?php endforeach; ?>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
