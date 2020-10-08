@@ -55,7 +55,7 @@ function crop_text($text, $characters_count = 300) {
   }
 
   $words = explode(' ', $text);
-  $cropped_text_length = 0;
+  $cropped_text_length = -1;
 
   foreach ($words as $word_number => $word) {
     $cropped_text_length += mb_strlen($word) + 1;
