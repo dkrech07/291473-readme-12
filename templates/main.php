@@ -104,6 +104,31 @@
           $months = $interval->format('%m');
           $years = $interval->format('%Y');
 
+          if ($minutes) {
+            $time = $minutes . ' ' . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
+            print($time . '<br>');
+          }
+
+          if ($hours) {
+            $time = $hours . ' ' . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
+            print($time . '<br>');
+          }
+
+          if ($days) {
+            $time = $days . ' ' . get_noun_plural_form($days, "день", "дня", "дней") . " назад";
+            print($time . '<br>');
+          }
+
+          if ($months) {
+            $time = $months . ' ' . get_noun_plural_form($months, "месяц", "месяца", "месяцев") . " назад";
+            print($time . '<br>');
+          }
+
+          if ($years) {
+            $time = $years . ' ' . get_noun_plural_form($years, "год", "года", "лет") . " назад";
+            print($time . '<br>');
+          }
+
           echo('Время ' . date('Y-m-d H:i:s') . '<br>');
           echo('Время ' . $rnd . '<br>');
 
