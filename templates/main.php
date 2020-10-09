@@ -94,14 +94,18 @@
 // https://www.php.net/manual/ru/language.references.whatdo.php
 // [138] SunilKmCharde Powerful Function to get two date difference.
           $current_time = date_create();
-          $random_time = date_create(generate_random_date($post_number));
+          $rnd = generate_random_date($post_number);
+          $random_time = date_create($rnd);
           $interval = date_diff($random_time, $current_time);
 
           $minutes = $interval->format('%i');
-          $hours = $interval->format('%h');
+          $hours = $interval->format('%H');
           $days = $interval->format('%d');
           $months = $interval->format('%m');
-          $years = $interval->format('%y');
+          $years = $interval->format('%Y');
+
+          echo('Время ' . date('Y-m-d H:i:s') . '<br>');
+          echo('Время ' . $rnd . '<br>');
 
           echo('Минут ' . $minutes . '<br>');
           echo('Часов ' . $hours . '<br>');
