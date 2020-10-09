@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Yekaterinburg');
 require_once('helpers.php');
 
 $is_auth = rand(0, 1);

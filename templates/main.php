@@ -84,12 +84,39 @@
         </div>
     </div>
     <div class="popular__posts">
-        <?php foreach ($posts as &$post):
-          foreach ($post as $note) {
-            if (is_string($note)) {
-              htmlspecialchars($note);
+        <?php foreach ($posts as $post_number => &$post):
+          foreach ($post as $key => $value) {
+            if (is_string($value)) {
+              $post[$key] = htmlspecialchars($value);
             }
           }
+
+// https://www.php.net/manual/ru/language.references.whatdo.php
+// [138] SunilKmCharde Powerful Function to get two date difference.
+          $current_time = date_create();
+          $random_time = date_create(generate_random_date($post_number));
+          $interval = date_diff($random_time, $current_time);
+
+          $minutes = $interval->format('%i');
+          $hours = $interval->format('%h');
+          $days = $interval->format('%d');
+          $months = $interval->format('%m');
+          $years = $interval->format('%y');
+
+          echo('Минут ' . $minutes . '<br>');
+          echo('Часов ' . $hours . '<br>');
+          echo('Дней ' . $days . '<br>');
+          echo('Месяцев ' . $months . '<br>');
+          echo('Лет ' . $years. '<br>');
+
+          // function dateDifference($date_1 , $date_2 , $differenceFormat = '%a' ) {
+          //   $datetime1 = date_create($date_1);
+          //   $datetime2 = date_create($date_2);
+          //
+          //   $interval = date_diff($datetime1, $datetime2);
+          //
+          //   return $interval->format($differenceFormat);
+          // }
         ?>
         <article class="popular__post post <?= $post['type'] ?>">
             <header class="post__header">
