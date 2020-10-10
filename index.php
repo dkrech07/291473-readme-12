@@ -68,19 +68,21 @@ function crop_text($text, $characters_count = 300) {
   }
 }
 
-// Нужно добавить годы и месяцы;
 // Нужно сделать округление периодов в большую сторону;
 function get_post_interval($post_time) {
   $current_time = date_create();
   $interval = date_diff(date_create($post_time), $current_time);
 
-  $minutes = $interval->i;
-  $hours = $interval->h;
-  $days = $interval->d;
+  $years = $interval->y;
+  $months = $interval->m;
   $weeks = $days / 7;
-  $months = $weeks / 4;
+  $days = $interval->d;
+  $hours = $interval->h;
+  $minutes = $interval->i;
 
-  if ($weeks > 5) {
+  if ($years) {
+    $time = $years . ' ' . get_noun_plural_form($years, "год", "года", "лет") . " назад";
+  } else if ($months) {
     $time = $months . ' ' . get_noun_plural_form($months, "месяц", "месяца", "месяцев") . " назад";
   } else if ($days > 7) {
     $time = $weeks . ' ' . get_noun_plural_form($weeks, "неделя", "недели", "недель") . " назад";
