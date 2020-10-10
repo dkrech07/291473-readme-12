@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Yekaterinburg');
 require_once('helpers.php');
 
 $is_auth = rand(0, 1);
@@ -67,6 +68,36 @@ function crop_text($text, $characters_count = 300) {
   }
 }
 
+function get_post_interval($post_time) {
+  $current_time = date_create();
+  $interval = date_diff(date_create($post_time), $current_time);
+
+  $years = floor($interval->y);
+  $months = floor($interval->m);
+  $days = floor($interval->d);
+  $weeks = floor($days / 7);
+  $hours = floor($interval->h);
+  $minutes = floor($interval->i);
+
+  if ($years) {
+    $time = $years . ' ' . get_noun_plural_form($years, 'год', 'года', 'лет') . ' назад';
+  } else if ($months) {
+    $time = $months . ' ' . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . ' назад';
+  } else if ($days > 7) {
+    $time = $weeks . ' ' . get_noun_plural_form($weeks, 'неделя', 'недели', 'недель') . ' назад';
+  } else if ($days) {
+    $time = $days . ' ' . get_noun_plural_form($days, 'день', 'дня', 'дней') . ' назад';
+  } else if ($hours) {
+    $time = $hours . ' ' . get_noun_plural_form($hours, 'час', 'часа', 'часов') . ' назад';
+  } else if ($minutes) {
+    $time = $minutes . ' ' . get_noun_plural_form($minutes, 'минута', 'минуты', 'минут') . ' назад';
+  } else {
+    $time = 'Только что';
+  }
+
+  return $time;
+}
+
 $page_content = include_template('main.php', ['posts' => $posts]);
 
 $layout_content = include_template('layout.php', [
@@ -76,4 +107,4 @@ $layout_content = include_template('layout.php', [
   'content' => $page_content,
 ]);
 
-print($layout_content);
+echo($layout_content);
