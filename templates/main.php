@@ -98,54 +98,32 @@
           $random_time = date_create($rnd);
           $interval = date_diff($random_time, $current_time);
 
-          $minutes = $interval->format('%i');
-          $hours = $interval->format('%H');
-          $days = $interval->format('%d');
-          $months = $interval->format('%m');
-          $years = $interval->format('%Y');
+          $minutes = $interval->i;
+          $hours = $interval->h;
+          $days = $interval->d;
+          $weeks = $days / 7;
+          $months = $weeks / 4;
 
-          if ($minutes) {
-            $time = $minutes . ' ' . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
+          print($interval->d . '<br>');
+
+          if ($weeks > 5) {
+            $time = $months . ' ' . get_noun_plural_form($months, "неделя", "недели", "недель") . " назад";
             print($time . '<br>');
-          }
-
-          if ($hours) {
-            $time = $hours . ' ' . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
+          } else if ($days > 7) {
+            $time = $weeks . ' ' . get_noun_plural_form($weeks, "неделя", "недели", "недель") . " назад";
             print($time . '<br>');
-          }
-
-          if ($days) {
+          } else if ($days) {
             $time = $days . ' ' . get_noun_plural_form($days, "день", "дня", "дней") . " назад";
             print($time . '<br>');
-          }
-
-          if ($months) {
-            $time = $months . ' ' . get_noun_plural_form($months, "месяц", "месяца", "месяцев") . " назад";
+          } else if ($hours) {
+            $time = $hours . ' ' . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
             print($time . '<br>');
-          }
-
-          if ($years) {
-            $time = $years . ' ' . get_noun_plural_form($years, "год", "года", "лет") . " назад";
+          } else if ($minutes) {
+            $time = $minutes . ' ' . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
             print($time . '<br>');
+          } else {
+            print('Только что' . '<br>');
           }
-
-          echo('Время ' . date('Y-m-d H:i:s') . '<br>');
-          echo('Время ' . $rnd . '<br>');
-
-          echo('Минут ' . $minutes . '<br>');
-          echo('Часов ' . $hours . '<br>');
-          echo('Дней ' . $days . '<br>');
-          echo('Месяцев ' . $months . '<br>');
-          echo('Лет ' . $years. '<br>');
-
-          // function dateDifference($date_1 , $date_2 , $differenceFormat = '%a' ) {
-          //   $datetime1 = date_create($date_1);
-          //   $datetime2 = date_create($date_2);
-          //
-          //   $interval = date_diff($datetime1, $datetime2);
-          //
-          //   return $interval->format($differenceFormat);
-          // }
         ?>
         <article class="popular__post post <?= $post['type'] ?>">
             <header class="post__header">
