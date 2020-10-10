@@ -68,17 +68,16 @@ function crop_text($text, $characters_count = 300) {
   }
 }
 
-// Нужно сделать округление периодов в большую сторону;
 function get_post_interval($post_time) {
   $current_time = date_create();
   $interval = date_diff(date_create($post_time), $current_time);
 
-  $years = $interval->y;
-  $months = $interval->m;
-  $weeks = $days / 7;
-  $days = $interval->d;
-  $hours = $interval->h;
-  $minutes = $interval->i;
+  $years = ceil($interval->y);
+  $months = ceil($interval->m);
+  $days = ceil($interval->d);
+  $weeks = ceil($days / 7);
+  $hours = ceil($interval->h);
+  $minutes = ceil($interval->i);
 
   if ($years) {
     $time = $years . ' ' . get_noun_plural_form($years, "год", "года", "лет") . " назад";

@@ -151,7 +151,7 @@
                         </div>
                         <div class="post__info">
                             <b class="post__author-name"><?= $post['user_name'] ?></b>
-                            <time class="post__time" datetime="<?= $post_time ?>" title="<?= date("Y-m-d H:m:i", strtotime($post_time)) ?>"><?= get_post_interval($post_time) ?></time>
+                            <time class="post__time" datetime="<?= $post_time ?>" title="<?= date("Y-m-d H:i:s", strtotime($post_time)) ?>"><?= get_post_interval($post_time) ?></time>
                         </div>
                     </a>
                 </div>
