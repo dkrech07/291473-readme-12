@@ -72,25 +72,25 @@ function get_post_interval($post_time) {
   $current_time = date_create();
   $interval = date_diff(date_create($post_time), $current_time);
 
-  $years = ceil($interval->y);
-  $months = ceil($interval->m);
-  $days = ceil($interval->d);
-  $weeks = ceil($days / 7);
-  $hours = ceil($interval->h);
-  $minutes = ceil($interval->i);
+  $years = floor($interval->y);
+  $months = floor($interval->m);
+  $days = floor($interval->d);
+  $weeks = floor($days / 7);
+  $hours = floor($interval->h);
+  $minutes = floor($interval->i);
 
   if ($years) {
-    $time = $years . ' ' . get_noun_plural_form($years, "год", "года", "лет") . " назад";
+    $time = $years . ' ' . get_noun_plural_form($years, 'год', 'года', 'лет') . ' назад';
   } else if ($months) {
-    $time = $months . ' ' . get_noun_plural_form($months, "месяц", "месяца", "месяцев") . " назад";
+    $time = $months . ' ' . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . ' назад';
   } else if ($days > 7) {
-    $time = $weeks . ' ' . get_noun_plural_form($weeks, "неделя", "недели", "недель") . " назад";
+    $time = $weeks . ' ' . get_noun_plural_form($weeks, 'неделя', 'недели', 'недель') . ' назад';
   } else if ($days) {
-    $time = $days . ' ' . get_noun_plural_form($days, "день", "дня", "дней") . " назад";
+    $time = $days . ' ' . get_noun_plural_form($days, 'день', 'дня', 'дней') . ' назад';
   } else if ($hours) {
-    $time = $hours . ' ' . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
+    $time = $hours . ' ' . get_noun_plural_form($hours, 'час', 'часа', 'часов') . ' назад';
   } else if ($minutes) {
-    $time = $minutes . ' ' . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
+    $time = $minutes . ' ' . get_noun_plural_form($minutes, 'минута', 'минуты', 'минут') . ' назад';
   } else {
     $time = 'Только что';
   }
