@@ -91,39 +91,7 @@
             }
           }
 
-// https://www.php.net/manual/ru/language.references.whatdo.php
-// [138] SunilKmCharde Powerful Function to get two date difference.
-          $current_time = date_create();
-          $rnd = generate_random_date($post_number);
-          $random_time = date_create($rnd);
-          $interval = date_diff($random_time, $current_time);
-
-          $minutes = $interval->i;
-          $hours = $interval->h;
-          $days = $interval->d;
-          $weeks = $days / 7;
-          $months = $weeks / 4;
-
-          print($interval->d . '<br>');
-
-          if ($weeks > 5) {
-            $time = $months . ' ' . get_noun_plural_form($months, "неделя", "недели", "недель") . " назад";
-            print($time . '<br>');
-          } else if ($days > 7) {
-            $time = $weeks . ' ' . get_noun_plural_form($weeks, "неделя", "недели", "недель") . " назад";
-            print($time . '<br>');
-          } else if ($days) {
-            $time = $days . ' ' . get_noun_plural_form($days, "день", "дня", "дней") . " назад";
-            print($time . '<br>');
-          } else if ($hours) {
-            $time = $hours . ' ' . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
-            print($time . '<br>');
-          } else if ($minutes) {
-            $time = $minutes . ' ' . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
-            print($time . '<br>');
-          } else {
-            print('Только что' . '<br>');
-          }
+          $post_time = generate_random_date($post_number);
         ?>
         <article class="popular__post post <?= $post['type'] ?>">
             <header class="post__header">
@@ -183,7 +151,7 @@
                         </div>
                         <div class="post__info">
                             <b class="post__author-name"><?= $post['user_name'] ?></b>
-                            <time class="post__time" datetime="">дата</time>
+                            <time class="post__time" datetime="<?= $post_time ?>" title="<?= date("Y-m-d H:m:i", strtotime($post_time)) ?>"><?= get_post_interval($post_time) ?></time>
                         </div>
                     </a>
                 </div>

@@ -68,6 +68,35 @@ function crop_text($text, $characters_count = 300) {
   }
 }
 
+// Нужно добавить годы и месяцы;
+// Нужно сделать округление периодов в большую сторону;
+function get_post_interval($post_time) {
+  $current_time = date_create();
+  $interval = date_diff(date_create($post_time), $current_time);
+
+  $minutes = $interval->i;
+  $hours = $interval->h;
+  $days = $interval->d;
+  $weeks = $days / 7;
+  $months = $weeks / 4;
+
+  if ($weeks > 5) {
+    $time = $months . ' ' . get_noun_plural_form($months, "месяц", "месяца", "месяцев") . " назад";
+  } else if ($days > 7) {
+    $time = $weeks . ' ' . get_noun_plural_form($weeks, "неделя", "недели", "недель") . " назад";
+  } else if ($days) {
+    $time = $days . ' ' . get_noun_plural_form($days, "день", "дня", "дней") . " назад";
+  } else if ($hours) {
+    $time = $hours . ' ' . get_noun_plural_form($hours, "час", "часа", "часов") . " назад";
+  } else if ($minutes) {
+    $time = $minutes . ' ' . get_noun_plural_form($minutes, "минута", "минуты", "минут") . " назад";
+  } else {
+    $time = 'Только что';
+  }
+
+  return $time;
+}
+
 $page_content = include_template('main.php', ['posts' => $posts]);
 
 $layout_content = include_template('layout.php', [
