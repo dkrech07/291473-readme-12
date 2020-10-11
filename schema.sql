@@ -19,11 +19,6 @@ CREATE TABLE content_types (
   class_name VARCHAR(128) NOT NULL
 );
 
-CREATE TABLE hashtags (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  hashtag_name VARCHAR(128)
-);
-
 CREATE TABLE posts (
   id  INT AUTO_INCREMENT PRIMARY KEY,
   date_add  DATETIME,
@@ -36,10 +31,8 @@ CREATE TABLE posts (
   views INT NOT NULL DEFAULT 0,
   user_id INT NOT NULL,
   content_type_id INT NOT NULL,
-  hashtag_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (content_type_id) REFERENCES content_types(id),
-  FOREIGN KEY (hashtag_id) REFERENCES hashtags(id)
+  FOREIGN KEY (content_type_id) REFERENCES content_types(id)
 );
 
 CREATE TABLE comments (
@@ -77,3 +70,24 @@ CREATE TABLE messages (
   FOREIGN KEY (sender_id) REFERENCES users(id),
   FOREIGN KEY (recipient_id) REFERENCES users(id)
 );
+
+CREATE TABLE hashtags (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hashtag_name VARCHAR(128)
+);
+
+CREATE TABLE post_hashtags (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hashtag_id INT NOT NULL,
+  user_id INT NOT NULL,
+  FOREIGN KEY (hashtag_id) REFERENCES hashtags(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE INDEX c_email_login ON users(email, login);
+CREATE INDEX c_title ON posts(title);
+CREATE INDEX c_user_post ON comments(user_id, post_id);
+CREATE INDEX c_user_post ON likes(user_id, post_id);
+CREATE INDEX c_subscriber_user ON subscriptions(subscriber_id, user_id);
+CREATE INDEX c_sender_recipient ON messages(sender_id, recipient_id);
+CREATE INDEX c_hashtags ON hashtags(hashtag_name);
