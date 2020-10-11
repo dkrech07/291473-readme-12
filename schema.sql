@@ -13,6 +13,17 @@ CREATE TABLE users (
   avatar  VARCHAR(128)
 );
 
+CREATE TABLE content_types (
+  id  INT AUTO_INCREMENT PRIMARY KEY,
+  type_name VARCHAR(128) NOT NULL,
+  class_name VARCHAR(128) NOT NULL
+);
+
+CREATE TABLE hashtags (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hashtag_name VARCHAR(128)
+);
+
 CREATE TABLE posts (
   id  INT AUTO_INCREMENT PRIMARY KEY,
   date_add  DATETIME,
@@ -25,9 +36,10 @@ CREATE TABLE posts (
   views INT NOT NULL DEFAULT 0,
   user_id INT NOT NULL,
   content_type_id INT NOT NULL,
-  hashtag_id INT REFERENCES hashtags(id),
+  hashtag_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
-  FOREIGN KEY (content_type_id) REFERENCES content_types(id)
+  FOREIGN KEY (content_type_id) REFERENCES content_types(id),
+  FOREIGN KEY (hashtag_id) REFERENCES hashtags(id)
 );
 
 CREATE TABLE comments (
@@ -64,15 +76,4 @@ CREATE TABLE messages (
   recipient_id INT NOT NULL,
   FOREIGN KEY (sender_id) REFERENCES users(id),
   FOREIGN KEY (recipient_id) REFERENCES users(id)
-);
-
-CREATE TABLE hashtags (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  hashtag_name VARCHAR(128)
-);
-
-CREATE TABLE content_types (
-  id  INT AUTO_INCREMENT PRIMARY KEY,
-  type_name VARCHAR(128) NOT NULL,
-  class_name VARCHAR(128) NOT NULL
 );
