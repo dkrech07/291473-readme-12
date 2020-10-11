@@ -34,27 +34,45 @@ CREATE TABLE comments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   date_add  DATETIME,
   description TEXT,
-  user_id VARCHAR(128) NOT NULL,
-  post_id VARCHAR(128) NOT NULL,
+  user_id INT NOT NULL,
+  post_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (post_id) REFERENCES posts(id)
 );
 
 CREATE TABLE likes (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  user_id VARCHAR(128) NOT NULL,
-  post_id VARCHAR(128) NOT NULL,
+  user_id INT NOT NULL,
+  post_id INT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users(id),
   FOREIGN KEY (post_id) REFERENCES posts(id)
+);
+
+CREATE TABLE subscriptions (
+  id  INT AUTO_INCREMENT PRIMARY KEY,
+  subscriber_id INT NOT NULL,
+  user_id INT NOT NULL,
+  FOREIGN KEY (subscriber_id) REFERENCES users(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE messages (
+  id  INT AUTO_INCREMENT PRIMARY KEY,
+  date_add  DATETIME,
+  description TEXT,
+  sender_id  INT NOT NULL,
+  recipient_id INT NOT NULL,
+  FOREIGN KEY (sender_id) REFERENCES users(id),
+  FOREIGN KEY (recipient_id) REFERENCES users(id)
+);
+
+CREATE TABLE hashtags (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  hashtag_name VARCHAR(128)
 );
 
 CREATE TABLE content_types (
   id  INT AUTO_INCREMENT PRIMARY KEY,
   type_name VARCHAR(128) NOT NULL,
   class_name VARCHAR(128) NOT NULL
-);
-
-CREATE TABLE hashtags (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  hashtag_name VARCHAR(128)
 );
