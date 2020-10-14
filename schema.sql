@@ -10,7 +10,9 @@ CREATE TABLE users (
   email VARCHAR(128) NOT NULL UNIQUE,
   login VARCHAR(128) NOT NULL UNIQUE,
   password  CHAR(64) NOT NULL,
-  avatar  VARCHAR(128)
+  avatar  VARCHAR(128),
+  INDEX c_email(email),
+  INDEX c_login(login)
 );
 
 CREATE TABLE content_types (
@@ -46,8 +48,8 @@ CREATE TABLE comments (
 );
 
 CREATE TABLE likes (
-  like_author_id INT UNSIGNED NOT NULL,
-  post_id INT UNSIGNED NOT NULL,
+  like_author_id INT UNSIGNED NOT NULL UNIQUE,
+  post_id INT UNSIGNED NOT NULL UNIQUE,
   FOREIGN KEY (like_author_id) REFERENCES users(id),
   FOREIGN KEY (post_id) REFERENCES posts(id)
 );
@@ -71,7 +73,8 @@ CREATE TABLE messages (
 
 CREATE TABLE hashtags (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
-  hashtag_name VARCHAR(128)
+  hashtag_name VARCHAR(128),
+  INDEX c_hashtag_name(hashtag_name)
 );
 
 CREATE TABLE post_hashtags (
@@ -80,14 +83,3 @@ CREATE TABLE post_hashtags (
   FOREIGN KEY (hashtag_id) REFERENCES hashtags(id),
   FOREIGN KEY (post_id) REFERENCES posts(id)
 );
-
-CREATE INDEX c_email ON users(email);
-CREATE INDEX c_login ON users(login);
-
--- CREATE INDEX c_email_login ON users(email, login);
--- CREATE INDEX c_title ON posts(title);
--- CREATE INDEX c_user_post ON comments(user_id, post_id);
--- CREATE INDEX c_user_post ON likes(user_id, post_id);
--- CREATE INDEX c_subscriber_user ON subscriptions(subscriber_id, user_id);
--- CREATE INDEX c_sender_recipient ON messages(sender_id, recipient_id);
--- CREATE INDEX c_hashtags ON hashtags(hashtag_name);
