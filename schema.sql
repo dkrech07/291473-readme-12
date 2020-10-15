@@ -11,8 +11,7 @@ CREATE TABLE users (
   login VARCHAR(128) NOT NULL,
   password  CHAR(64) NOT NULL,
   avatar  VARCHAR(128),
-  UNIQUE INDEX email(email),
-  UNIQUE INDEX login(login)
+  UNIQUE INDEX email_login(email, login)
 );
 
 CREATE TABLE content_types (
@@ -52,8 +51,7 @@ CREATE TABLE likes (
   post_id INT UNSIGNED NOT NULL,
   FOREIGN KEY (like_author_id) REFERENCES users(id),
   FOREIGN KEY (post_id) REFERENCES posts(id),
-  UNIQUE INDEX like_author_id(like_author_id),
-  UNIQUE INDEX post_id(post_id)
+  UNIQUE INDEX like_author_post(like_author_id, post_id)
 );
 
 CREATE TABLE subscriptions (
