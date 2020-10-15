@@ -85,4 +85,4 @@ CREATE TABLE post_hashtags (
 );
 
 CREATE UNIQUE INDEX c_email_login ON users(email, login);
-CREATE UNIQUE INDEX c_like_author_posts ON likes(like_author_id, post_id);
+CREATE UNIQUE INDEX c_like_author_post ON likes(like_author_id, post_id);
