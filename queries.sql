@@ -36,6 +36,7 @@ SELECT posts.id, posts.date_add, posts.title, posts.content, posts.quote_author,
 
 -- Получает список постов для конкретного пользователя (по логину, результат с именем автора и названием типа контента);
 SELECT posts.id, posts.date_add, posts.title, posts.content, posts.quote_author, posts.image, posts.video, posts.link, posts.views, users.login, content_types.type_name FROM posts INNER JOIN users ON posts.post_author_id = users.id INNER JOIN content_types ON posts.content_type_id = content_types.id WHERE login = 'larisa';
+
 -- Получает список постов для конкретного пользователя (по id, результат с id автора и id типа контента);
 SELECT * FROM posts WHERE post_author_id = '1';
 
@@ -43,3 +44,7 @@ SELECT * FROM posts WHERE post_author_id = '1';
 SELECT comments.content, users.login FROM comments JOIN users ON comments.comment_author_id = users.id WHERE post_id = '1';
 
 -- Добавляет лайк к посту;
+INSERT INTO likes SET like_author_id = '2', post_id = '1';
+
+-- Подписывается на пользователя;
+INSERT INTO subscriptions SET subscriber_id = '1', author_id = '2';
