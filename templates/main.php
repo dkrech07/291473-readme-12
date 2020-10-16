@@ -84,7 +84,7 @@
         </div>
     </div>
     <div class="popular__posts">
-        <?php foreach ($posts as $post_number => $post):
+        <?php foreach ($posts as $post_number => &$post):
           foreach ($post as &$note) {
             if (is_string($note)) {
               $note = htmlspecialchars($note);
