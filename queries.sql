@@ -32,19 +32,19 @@ INSERT INTO comments SET date_add = '2020-10-16 11:35:26', content = 'Гориз
 INSERT INTO comments SET date_add = '2020-10-16 11:35:26', content = 'Красиво)))', comment_author_id = '2', post_id = '4';
 
 -- Получает список постов с сортировкой по популярности и вместе с именами авторов и типом контента;
-SELECT posts.id, posts.date_add, posts.title, posts.content, posts.quote_author, posts.image, posts.video, posts.link, posts.views, users.login, content_types.type_name FROM posts INNER JOIN users ON posts.post_author_id = users.id INNER JOIN content_types ON posts.content_type_id = content_types.id ORDER BY views DESC;
+SELECT p.*, u.login, ct.type_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC;
 
 -- Получает список постов для конкретного пользователя (по логину, результат с именем автора и названием типа контента);
-SELECT posts.id, posts.date_add, posts.title, posts.content, posts.quote_author, posts.image, posts.video, posts.link, posts.views, users.login, content_types.type_name FROM posts INNER JOIN users ON posts.post_author_id = users.id INNER JOIN content_types ON posts.content_type_id = content_types.id WHERE login = 'larisa';
+SELECT p.*, u.login, ct.type_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE login = 'larisa';
 
 -- Получает список постов для конкретного пользователя (по id, результат с id автора и id типа контента);
-SELECT * FROM posts WHERE post_author_id = '1';
+SELECT * FROM posts WHERE post_author_id = 1;
 
 -- Получает список комментариев для одного поста, в комментариях должен быть логин пользователя;
-SELECT comments.content, users.login FROM comments JOIN users ON comments.comment_author_id = users.id WHERE post_id = '1';
+SELECT comments.content, users.login FROM comments INNER JOIN users ON users.id = comments.comment_author_id WHERE post_id = 1;
 
 -- Добавляет лайк к посту;
-INSERT INTO likes SET like_author_id = '2', post_id = '1';
+INSERT INTO likes (like_author_id, post_id) VALUES (2, 1);
 
 -- Подписывается на пользователя;
-INSERT INTO subscriptions SET subscriber_id = '1', author_id = '2';
+INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 2);
