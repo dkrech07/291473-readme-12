@@ -91,9 +91,8 @@
             }
           }
 
-          $post_time = generate_random_date($post_number);
         ?>
-        <article class="popular__post post <?= $post['type'] ?>">
+        <article class="popular__post post post-<?= $post['class_name'] ?>">
             <header class="post__header">
                 <h2><?= $post['title'] ?></h2>
             </header>
@@ -101,6 +100,9 @@
                 <?php if ('post-'. $post['class_name'] == "post-quote"): ?>
                 <blockquote>
                     <?= crop_text($post['content']) ?>
+                    <?php if (!$post['quote_author']): ?>
+                      <cite>Неизвестный Автор</cite>
+                    <?php endif; ?>
                     <cite><?= $post['quote_author'] ?></cite>
                 </blockquote>
 
@@ -151,7 +153,7 @@
                         </div>
                         <div class="post__info">
                             <b class="post__author-name"><?= $post['login'] ?></b>
-                            <time class="post__time" datetime="<?= $post_time ?>" title="<?= date("Y-m-d H:i:s", strtotime($post_time)) ?>"><?= get_post_interval($post_time) ?></time>
+                            <time class="post__time" datetime="<?= $post['date_add'] ?>" title="<?= date("Y-m-d H:i:s", strtotime($post['date_add'])) ?>"><?= get_post_interval($post['date_add']) ?></time>
                         </div>
                     </a>
                 </div>
