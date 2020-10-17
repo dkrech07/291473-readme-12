@@ -51,11 +51,17 @@ $user_name = 'Дмитрий';
 // ];
 
 $con = mysqli_connect("localhost", "root", "root","readme");
-$sql = "SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC";
-$result = mysqli_query($con, $sql);
 
-$posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-print_r($posts);
+$content_types_select = 'SELECT * FROM content_types';
+$posts_select = 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC';
+
+$content_types_query = mysqli_query($con, $content_types_select);
+$posts_query = mysqli_query($con, $posts_select);
+
+$content_types = mysqli_fetch_all($content_types_query, MYSQLI_ASSOC);
+$posts = mysqli_fetch_all($posts_query, MYSQLI_ASSOC);
+// print_r($posts);
+print_r($content_types);
 
 function crop_text($text, $characters_count = 300) {
   if (mb_strlen($text) <= $characters_count) {
@@ -105,7 +111,7 @@ function get_post_interval($post_time) {
   return $time;
 }
 
-$page_content = include_template('main.php', ['posts' => $posts]);
+$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types]);
 
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
