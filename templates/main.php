@@ -69,10 +69,11 @@
                 <?php if ('post-'. $post['class_name'] == "post-quote"): ?>
                 <blockquote>
                     <?= crop_text($post['content']) ?>
-                    <?php if (!$post['quote_author']): ?>
+                    <?php if ($post['quote_author']): ?>
+                      <cite><?= $post['quote_author'] ?></cite>
+                    <?php else: ?>
                       <cite>Неизвестный Автор</cite>
                     <?php endif; ?>
-                    <cite><?= $post['quote_author'] ?></cite>
                 </blockquote>
 
                 <?php elseif ('post-'. $post['class_name'] == "post-link"): ?>

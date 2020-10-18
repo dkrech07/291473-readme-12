@@ -25,7 +25,6 @@ function select_query($con, $sql) {
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-
 $content_types = select_query($con, $content_types_select);
 $posts = select_query($con, $posts_select);
 
