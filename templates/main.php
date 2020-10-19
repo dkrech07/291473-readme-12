@@ -66,7 +66,7 @@
                 <h2><?= $post['title'] ?></h2>
             </header>
             <div class="post__main">
-                <?php if ('post-'. $post['class_name'] == "post-quote"): ?>
+                <?php if ($post['class_name'] == "quote"): ?>
                 <blockquote>
                     <?= crop_text($post['content']) ?>
                     <?php if ($post['quote_author']): ?>
@@ -76,7 +76,7 @@
                     <?php endif; ?>
                 </blockquote>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-link"): ?>
+                <?php elseif ($post['class_name'] == "link"): ?>
                 <div class="post-link__wrapper">
                     <a class="post-link__external" href="http://<?= $post['link'] ?>" title="Перейти по ссылке">
                         <div class="post-link__info-wrapper">
@@ -91,12 +91,12 @@
                     </a>
                 </div>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-photo"): ?>
+                <?php elseif ($post['class_name'] == "photo"): ?>
                 <div class="post-photo__image-wrapper">
                     <img src="<?= $post['image'] ?>" alt="Фото от пользователя" width="360" height="240">
                 </div>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-video"): ?>
+                <?php elseif ($post['class_name'] == "video"): ?>
                 <div class="post-video__block">
                     <div class="post-video__preview">
                         <?=embed_youtube_cover($post['video']); ?>
@@ -110,7 +110,7 @@
                     </a>
                 </div>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-text"): ?>
+                <?php elseif ($post['class_name'] == "text"): ?>
                 <?= crop_text($post['content']) ?>
 
                 <?php endif; ?>

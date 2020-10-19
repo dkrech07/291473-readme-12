@@ -5,28 +5,19 @@ require_once('helpers.php');
 $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
-$con = mysqli_connect("localhost", "root", "root","readme");
-$content_types_select = 'SELECT * FROM content_types';
-$posts_select = 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC';
+$con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
+// $content_types_select = 'SELECT * FROM content_types';
+// $posts_select = 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC';
 
 function select_query($con, $sql) {
   mysqli_set_charset($con, "utf8");
-
-  if (!$con) {
-    echo ("Ошибка подключения: " . mysqli_connect_error());
-    return null;
-  }
-
-  $result = mysqli_query($con, $sql);
-  if (!$result) {
-    return null;
-  }
+  $result = mysqli_query($con, $sql) or trigger_error();
 
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-$content_types = select_query($con, $content_types_select);
-$posts = select_query($con, $posts_select);
+$content_types = select_query($con, 'SELECT * FROM content_types');
+$posts = select_query($con, 'SELECT p.*, u.login1, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC');
 
 function crop_text($text, $characters_count = 300) {
   if (mb_strlen($text) <= $characters_count) {
