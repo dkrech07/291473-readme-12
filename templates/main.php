@@ -40,46 +40,16 @@
                         <span>Все</span>
                     </a>
                 </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--photo button" href="#">
-                        <span class="visually-hidden">Фото</span>
-                        <svg class="filters__icon" width="22" height="18">
-                            <use xlink:href="#icon-filter-photo"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--video button" href="#">
-                        <span class="visually-hidden">Видео</span>
-                        <svg class="filters__icon" width="24" height="16">
-                            <use xlink:href="#icon-filter-video"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--text button" href="#">
-                        <span class="visually-hidden">Текст</span>
-                        <svg class="filters__icon" width="20" height="21">
-                            <use xlink:href="#icon-filter-text"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--quote button" href="#">
-                        <span class="visually-hidden">Цитата</span>
-                        <svg class="filters__icon" width="21" height="20">
-                            <use xlink:href="#icon-filter-quote"></use>
-                        </svg>
-                    </a>
-                </li>
-                <li class="popular__filters-item filters__item">
-                    <a class="filters__button filters__button--link button" href="#">
-                        <span class="visually-hidden">Ссылка</span>
-                        <svg class="filters__icon" width="21" height="18">
-                            <use xlink:href="#icon-filter-link"></use>
-                        </svg>
-                    </a>
-                </li>
+                <?php foreach ($content_types as $content_type): ?>
+                  <li class="popular__filters-item filters__item">
+                      <a class="filters__button filters__button--<?= $content_type['class_name'] ?> button" href="#">
+                          <span class="visually-hidden"><?= $content_type['type_name'] ?></span>
+                          <svg class="filters__icon" width="22" height="18">
+                              <use xlink:href="#icon-filter-<?= $content_type['class_name'] ?>"></use>
+                          </svg>
+                      </a>
+                  </li>
+              <?php endforeach; ?>
             </ul>
         </div>
     </div>
@@ -90,23 +60,25 @@
               $note = htmlspecialchars($note);
             }
           }
-
-          $post_time = generate_random_date($post_number);
         ?>
-        <article class="popular__post post <?= $post['type'] ?>">
+        <article class="popular__post post post-<?= $post['class_name'] ?>">
             <header class="post__header">
                 <h2><?= $post['title'] ?></h2>
             </header>
             <div class="post__main">
-                <?php if ($post['type'] == "post-quote"): ?>
+                <?php if ('post-'. $post['class_name'] == "post-quote"): ?>
                 <blockquote>
-                    <?= crop_text($post['description']) ?>
-                    <cite>Неизвестный Автор</cite>
+                    <?= crop_text($post['content']) ?>
+                    <?php if ($post['quote_author']): ?>
+                      <cite><?= $post['quote_author'] ?></cite>
+                    <?php else: ?>
+                      <cite>Неизвестный Автор</cite>
+                    <?php endif; ?>
                 </blockquote>
 
-                <?php elseif ($post['type'] == "post-link"): ?>
+                <?php elseif ('post-'. $post['class_name'] == "post-link"): ?>
                 <div class="post-link__wrapper">
-                    <a class="post-link__external" href="http://<?= $post['description'] ?>" title="Перейти по ссылке">
+                    <a class="post-link__external" href="http://<?= $post['link'] ?>" title="Перейти по ссылке">
                         <div class="post-link__info-wrapper">
                             <div class="post-link__icon-wrapper">
                                 <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -115,19 +87,19 @@
                                 <h3><?= $post['title'] ?></h3>
                             </div>
                         </div>
-                        <span><?= $post['description'] ?></span>
+                        <span><?= $post['content'] ?></span>
                     </a>
                 </div>
 
-                <?php elseif ($post['type'] == "post-photo"): ?>
+                <?php elseif ('post-'. $post['class_name'] == "post-photo"): ?>
                 <div class="post-photo__image-wrapper">
-                    <img src="img/<?= $post['description'] ?>" alt="Фото от пользователя" width="360" height="240">
+                    <img src="<?= $post['image'] ?>" alt="Фото от пользователя" width="360" height="240">
                 </div>
 
-                <?php elseif ($post['type'] == "post-video"): ?>
+                <?php elseif ('post-'. $post['class_name'] == "post-video"): ?>
                 <div class="post-video__block">
                     <div class="post-video__preview">
-                        <?=embed_youtube_cover($post['description']); ?>
+                        <?=embed_youtube_cover($post['video']); ?>
                         <img src="img/coast-medium.jpg" alt="Превью к видео" width="360" height="188">
                     </div>
                     <a href="post-details.html" class="post-video__play-big button">
@@ -138,8 +110,8 @@
                     </a>
                 </div>
 
-                <?php elseif ($post['type'] == "post-text"): ?>
-                <?= crop_text($post['description']) ?>
+                <?php elseif ('post-'. $post['class_name'] == "post-text"): ?>
+                <?= crop_text($post['content']) ?>
 
                 <?php endif; ?>
             </div>
@@ -147,11 +119,11 @@
                 <div class="post__author">
                     <a class="post__author-link" href="#" title="Автор">
                         <div class="post__avatar-wrapper">
-                            <img class="post__author-avatar" src="img/<?= $post['avatar'] ?>" alt="Аватар пользователя">
+                            <img class="post__author-avatar" src="<?= $post['avatar'] ?>" alt="Аватар пользователя">
                         </div>
                         <div class="post__info">
-                            <b class="post__author-name"><?= $post['user_name'] ?></b>
-                            <time class="post__time" datetime="<?= $post_time ?>" title="<?= date("Y-m-d H:i:s", strtotime($post_time)) ?>"><?= get_post_interval($post_time) ?></time>
+                            <b class="post__author-name"><?= $post['login'] ?></b>
+                            <time class="post__time" datetime="<?= $post['date_add'] ?>" title="<?= date("Y-m-d H:i:s", strtotime($post['date_add'])) ?>"><?= get_post_interval($post['date_add']) ?></time>
                         </div>
                     </a>
                 </div>
