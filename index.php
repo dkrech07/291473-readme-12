@@ -6,18 +6,17 @@ $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
 $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
-// $content_types_select = 'SELECT * FROM content_types';
-// $posts_select = 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC';
 
 function select_query($con, $sql) {
   mysqli_set_charset($con, "utf8");
-  $result = mysqli_query($con, $sql) or trigger_error();
+
+  $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);;
 
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
 $content_types = select_query($con, 'SELECT * FROM content_types');
-$posts = select_query($con, 'SELECT p.*, u.login1, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC');
+$posts = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC');
 
 function crop_text($text, $characters_count = 300) {
   if (mb_strlen($text) <= $characters_count) {
