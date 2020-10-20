@@ -66,7 +66,9 @@ function get_post_interval($post_time) {
   return $time;
 }
 
-$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types]);
+$post_type = filter_input(INPUT_GET, 'post_type');
+
+$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'post_type' => $post_type]);
 
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
