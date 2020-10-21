@@ -7,7 +7,7 @@
             <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
             <ul class="popular__sorting-list sorting__list">
                 <li class="sorting__item sorting__item--popular">
-                    <a class="sorting__link sorting__link--active" href="index.php?sort=popular">
+                    <a class="sorting__link <?= !$current_sorting_type ? 'sorting__link--active' : '' ?>" href="index.php?sort=popular">
                         <span>Популярность</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="index.php?sort=likes">
+                    <a class="sorting__link <?= $current_sorting_type == 'likes' ? 'sorting__link--active' : '' ?>" href="index.php?sort=likes">
                         <span>Лайки</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="index.php?sort=date">
+                    <a class="sorting__link <?= $current_sorting_type == 'date' ? 'sorting__link--active' : '' ?>" href="index.php?sort=date">
                         <span>Дата</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>

@@ -17,11 +17,10 @@ function select_query($con, $sql) {
 
 $content_types = select_query($con, 'SELECT * FROM content_types');
 $posts = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views DESC');
-$posts_by_date = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.date_add DESC');
+// $posts_by_date = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.date_add DESC');
 
-// if () {
-//     $post_sort == $content_type[date])
-// }
+$current_sorting_type = filter_input(INPUT_GET, 'sorting-type');
+
 
 function crop_text($text, $characters_count = 300) {
   if (mb_strlen($text) <= $characters_count) {
@@ -73,7 +72,12 @@ function get_post_interval($post_time) {
 
 $post_type = filter_input(INPUT_GET, 'post_type');
 
-$page_content = include_template('main.php', ['posts' => $posts, 'content_types' => $content_types, 'post_type' => $post_type]);
+$page_content = include_template('main.php', [
+    'posts' => $posts,
+    'content_types' => $content_types,
+    'post_type' => $post_type,
+    'current_sorting_type' => $current_sorting_type,
+]);
 
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
