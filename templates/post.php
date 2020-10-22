@@ -1,5 +1,5 @@
 <div class="container">
-  <h1 class="page__title page__title--publication">Наконец, обработала фотки!</h1>
+  <h1 class="page__title page__title--publication"><?= $post['title'] ?></h1>
   <section class="post-details">
     <h2 class="visually-hidden">Публикация</h2>
     <div class="post-details__wrapper post-photo">
@@ -114,14 +114,14 @@
         <div class="post-details__user-info user__info">
           <div class="post-details__avatar user__avatar">
             <a class="post-details__avatar-link user__avatar-link" href="#">
-              <img class="post-details__picture user__picture" src="img/userpic-elvira.jpg" alt="Аватар пользователя">
+              <img class="post-details__picture user__picture" src="<?= $post['avatar'] ?>" alt="Аватар пользователя">
             </a>
           </div>
           <div class="post-details__name-wrapper user__name-wrapper">
             <a class="post-details__name user__name" href="#">
-              <span>Эльвира Хайпулинова</span>
+              <span><?= $post['login'] ?></span>
             </a>
-            <time class="post-details__time user__time" datetime="2014-03-20">5 лет на сайте</time>
+            <time class="post-details__time user__time" datetime="<?= $post['date_add'] ?>"><?= $registration_time ?></time>
           </div>
         </div>
         <div class="post-details__rating user__rating">

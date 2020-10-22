@@ -7,16 +7,14 @@ $user_name = 'Дмитрий';
 
 $current_post_id = filter_input(INPUT_GET, 'id');
 $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
-$post = select_query($con, 'SELECT p.*, u.login, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id);
+$post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id, 'single');
+$registration_time = get_post_interval($post['date_add'], 'на сайте');
 
-$post2 = select_query($con, 'SELECT * FROM posts WHERE id = ' . $current_post_id);
+print_r($post);
 
-print_r($post2);
-print_r($post[0]['class_name']);
+$post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
-$post_content = include_template('post-' . $post[0]['class_name'] .'.php', ['post' => $post[0]]);
-
-$page_content = include_template('post.php', ['post_content' => $post_content]);
+$page_content = include_template('post.php', ['post' => $post, 'post_content' => $post_content, 'registration_time' => $registration_time,]);
 
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,

@@ -1,8 +1,11 @@
 <?php
-function select_query($con, $sql) {
+function select_query($con, $sql, $type = 'multiple') {
   mysqli_set_charset($con, "utf8");
-
   $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);;
+
+  if ($type == 'single') {
+    return mysqli_fetch_assoc($result);
+  }
 
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
@@ -25,7 +28,7 @@ function crop_text($text, $characters_count = 300) {
   }
 }
 
-function get_post_interval($post_time) {
+function get_post_interval($post_time, $caption) {
   $current_time = date_create();
   $interval = date_diff(date_create($post_time), $current_time);
 
@@ -37,17 +40,17 @@ function get_post_interval($post_time) {
   $minutes = floor($interval->i);
 
   if ($years) {
-    $time = $years . ' ' . get_noun_plural_form($years, 'год', 'года', 'лет') . ' назад';
+    $time = $years . ' ' . get_noun_plural_form($years, 'год', 'года', 'лет') . ' ' . $caption;
   } else if ($months) {
-    $time = $months . ' ' . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . ' назад';
+    $time = $months . ' ' . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . ' ' . $caption;
   } else if ($days > 7) {
-    $time = $weeks . ' ' . get_noun_plural_form($weeks, 'неделя', 'недели', 'недель') . ' назад';
+    $time = $weeks . ' ' . get_noun_plural_form($weeks, 'неделя', 'недели', 'недель') . ' ' . $caption;
   } else if ($days) {
-    $time = $days . ' ' . get_noun_plural_form($days, 'день', 'дня', 'дней') . ' назад';
+    $time = $days . ' ' . get_noun_plural_form($days, 'день', 'дня', 'дней') . ' ' . $caption;
   } else if ($hours) {
-    $time = $hours . ' ' . get_noun_plural_form($hours, 'час', 'часа', 'часов') . ' назад';
+    $time = $hours . ' ' . get_noun_plural_form($hours, 'час', 'часа', 'часов') . ' ' . $caption;
   } else if ($minutes) {
-    $time = $minutes . ' ' . get_noun_plural_form($minutes, 'минута', 'минуты', 'минут') . ' назад';
+    $time = $minutes . ' ' . get_noun_plural_form($minutes, 'минута', 'минуты', 'минут') . ' ' . $caption;
   } else {
     $time = 'Только что';
   }

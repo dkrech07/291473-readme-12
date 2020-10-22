@@ -126,7 +126,7 @@
                         </div>
                         <div class="post__info">
                             <b class="post__author-name"><?= $post['login'] ?></b>
-                            <time class="post__time" datetime="<?= $post['date_add'] ?>" title="<?= date("Y-m-d H:i:s", strtotime($post['date_add'])) ?>"><?= get_post_interval($post['date_add']) ?></time>
+                            <time class="post__time" datetime="<?= $post['date_add'] ?>" title="<?= date("Y-m-d H:i:s", strtotime($post['date_add'])) ?>"><?= get_post_interval($post['date_add'], 'назад') ?></time>
                         </div>
                     </a>
                 </div>

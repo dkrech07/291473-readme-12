@@ -4,7 +4,11 @@
         <p>
           <?= $post['content'] ?>
         </p>
-        <cite>Xью Оден</cite>
+        <?php if ($post['quote_author']): ?>
+          <cite><?= $post['quote_author'] ?></cite>
+        <?php else: ?>
+          <cite>Неизвестный Автор</cite>
+        <?php endif; ?>
       </blockquote>
     </div>
 </div>
