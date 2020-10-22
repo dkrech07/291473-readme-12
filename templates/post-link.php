@@ -5,9 +5,9 @@
         <img src="img/logo-vita.jpg" alt="Иконка">
       </div>
       <div class="post-link__info">
-        <h3>Стоматология «Вита»</h3>
-        <p>Семейная стоматология в Адлере</p>
-        <span>www.vitadental.ru</span>
+        <h3><?= $post['title'] ?></h3>
+        <p><?= $post['content'] ?></p>
+        <span><?= $post['link'] ?></span>
       </div>
       <svg class="post-link__arrow" width="11" height="16">
         <use xlink:href="#icon-arrow-right-ad"></use>

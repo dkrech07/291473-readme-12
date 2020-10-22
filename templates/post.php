@@ -9,7 +9,7 @@
           <img src="img/rock-default.jpg" alt="Фото от пользователя" width="760" height="507">
         </div> -->
 
-        <?= $content ?>
+        <?= $post_content ?>
 
         <div class="post__indicators">
           <div class="post__buttons">

@@ -2,7 +2,7 @@
     <div class="post__main">
       <blockquote>
         <p>
-          Тысячи людей живут без любви, но никто — без воды.
+          <?= $post['content'] ?>
         </p>
         <cite>Xью Оден</cite>
       </blockquote>
