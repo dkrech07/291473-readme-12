@@ -64,7 +64,7 @@
         <article class="popular__post post post-<?= $post['class_name'] ?>">
             <header class="post__header">
                 <h2>
-                    <a href="post.php/?id=<?=$post['id']?>"><?= $post['title'] ?></a>
+                    <a href="post.php?id=<?=$post['id']?>"><?= $post['title'] ?></a>
                 </h2>
 
             </header>
