@@ -11,18 +11,31 @@ if (!isset($_GET['id'])) {
     http_response_code(404);
     exit();
 }
-print($_GET['id']);
 
+// Получение ID поста из запроса;
 $current_post_id = filter_input(INPUT_GET, 'id');
+// Подключение к БД;
 $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
+// Получение поста за БД по ID запроса;
 $post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id, 'single');
+// Получение времени регистрации пользователя;
 $registration_time = get_post_interval($post['date_add'], 'на сайте');
+// Получение id автора поста;
+$post_author_id = select_query($con, 'SELECT post_author_id FROM posts WHERE posts.id = ' . $current_post_id, 'single2');
+// Получение общего количества постов автора текущего поста;
+$author_posts_count = select_query($con, 'SELECT COUNT(*) FROM posts WHERE post_author_id = ' . $post_author_id , 'single2');
 
-// print_r($post);
+print_r($post_author_id);
+print_r($author_posts_count);
 
 $post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
-$page_content = include_template('post.php', ['post' => $post, 'post_content' => $post_content, 'registration_time' => $registration_time,]);
+$page_content = include_template('post.php', [
+    'post' => $post,
+    'post_content' => $post_content,
+    'registration_time' => $registration_time,
+    'author_posts_count' => $author_posts_count
+]);
 
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
@@ -30,5 +43,7 @@ $layout_content = include_template('layout.php', [
   'title' => 'readme: публикация',
   'content' => $page_content,
 ]);
+
+print($post['avatar']);
 
 echo($layout_content);

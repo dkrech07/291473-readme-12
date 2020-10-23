@@ -7,6 +7,11 @@ function select_query($con, $sql, $type = 'multiple') {
     return mysqli_fetch_assoc($result);
   }
 
+  if ($type == 'single2') {
+    return mysqli_fetch_row($result)[0];
+  }
+
+
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
