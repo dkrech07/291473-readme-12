@@ -11,7 +11,6 @@ function select_query($con, $sql, $type = 'all') {
     return mysqli_fetch_row($result)[0];
   }
 
-
   return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
