@@ -6,7 +6,7 @@ $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
 // Получает ID поста из параметра запроса;
-$current_post_id = filter_input(INPUT_GET, 'id');
+$current_post_id = intval(filter_input(INPUT_GET, 'id'));
 // Проверяет наличие параметра запроса;
 if (!$current_post_id) {
   open_404_page();
@@ -27,7 +27,7 @@ $post_author_id = select_query($con, 'SELECT post_author_id FROM posts WHERE pos
 $author_posts_count = select_query($con, 'SELECT COUNT(*) FROM posts WHERE post_author_id = ' . $post_author_id , 'row');
 // Получает общее количество подписчиков автора открытого поста;
 $subscribers_count = select_query($con, 'SELECT COUNT(*) FROM subscriptions WHERE author_id = ' . $post_author_id, 'row');
-
+// Передает данные из БД в шаблоны;
 $post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
 $page_content = include_template('post.php', [

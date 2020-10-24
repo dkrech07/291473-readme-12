@@ -11,7 +11,7 @@ $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('О
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;
-$post_type = filter_input(INPUT_GET, 'post-type');
+$post_type = intval(filter_input(INPUT_GET, 'post-type'));
 if ($post_type) {
   $post_type_query = 'WHERE p.content_type_id = ' . $post_type;
 } else {
@@ -23,9 +23,10 @@ $posts = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.cla
 if (!$posts) {
   open_404_page();
 }
-// Получает из параметра запроса тип сортировки; Пока что на паузе;
-$sorting_type = filter_input(INPUT_GET, 'sorting_type');
+// Получает из параметра запроса тип сортировки; Этот пункт пока что что на паузе;
+$sorting_type = filter_input(INPUT_GET, 'sorting-type');
 
+// Передает данные из БД в шаблоны;
 $page_content = include_template('main.php', [
     'posts' => $posts,
     'content_types' => $content_types,
