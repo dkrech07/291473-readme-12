@@ -1,13 +1,13 @@
 <?php
-function select_query($con, $sql, $type = 'multiple') {
+function select_query($con, $sql, $type = 'all') {
   mysqli_set_charset($con, "utf8");
-  $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);;
+  $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);
 
-  if ($type == 'single') {
+  if ($type == 'assoc') {
     return mysqli_fetch_assoc($result);
   }
 
-  if ($type == 'single2') {
+  if ($type == 'row') {
     return mysqli_fetch_row($result)[0];
   }
 
@@ -61,4 +61,10 @@ function get_post_interval($post_time, $caption) {
   }
 
   return $time;
+}
+
+function open_404_page() {
+  echo('404 Запрошенная страница не найдена');
+  http_response_code(404);
+  exit();
 }

@@ -5,26 +5,28 @@ require_once('functions.php');
 $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
-if (!isset($_GET['id'])) {
-    echo('404 Запрошенная страница не найдена');
-    http_response_code(404);
-    exit();
-}
-
 // Получает ID поста из параметра запроса;
 $current_post_id = filter_input(INPUT_GET, 'id');
+// Проверяет наличие параметра запроса;
+if (!$current_post_id) {
+  open_404_page();
+}
 // Подключается к БД;
 $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 // Плучает пост за БД по ID запроса;
-$post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id, 'single');
+$post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id, 'assoc');
+// Проверяет наличие запрошенных данных в ответе от БД;
+if (!$post) {
+  open_404_page();
+}
 // Получает время регистрации пользователя;
 $registration_time = get_post_interval($post['date_add'], 'на сайте');
 // Получает id автора поста;
-$post_author_id = select_query($con, 'SELECT post_author_id FROM posts WHERE posts.id = ' . $current_post_id, 'single2');
+$post_author_id = select_query($con, 'SELECT post_author_id FROM posts WHERE posts.id = ' . $current_post_id, 'row');
 // Получает общее количества постов автора открытого поста;
-$author_posts_count = select_query($con, 'SELECT COUNT(*) FROM posts WHERE post_author_id = ' . $post_author_id , 'single2');
+$author_posts_count = select_query($con, 'SELECT COUNT(*) FROM posts WHERE post_author_id = ' . $post_author_id , 'row');
 // Получает общее количество подписчиков автора открытого поста;
-$subscribers_count = select_query($con, 'SELECT COUNT(*) FROM subscriptions WHERE author_id = ' . $post_author_id, 'single2');
+$subscribers_count = select_query($con, 'SELECT COUNT(*) FROM subscriptions WHERE author_id = ' . $post_author_id, 'row');
 
 $post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
