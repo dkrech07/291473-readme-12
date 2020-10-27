@@ -1,6 +1,6 @@
 <?php
 require_once('helpers.php');
-require_once('functions.php');
+require_once('includes/functions.inc.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';

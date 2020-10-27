@@ -42,7 +42,7 @@
                 </li>
                 <?php foreach ($content_types as $content_type): ?>
                   <li class="popular__filters-item filters__item">
-                      <a class="filters__button filters__button--<?= $content_type['class_name'] ?> button <?php if ($post_type == $content_type[id]): ?>filters__button--active<?php endif; ?>" href="index.php?post-type=<?= $content_type['id'] ?>">
+                      <a class="filters__button filters__button--<?= $content_type['class_name'] ?> button <?php if ($post_type == $content_type[id]): ?>filters__button--active<?php endif; ?>" href="?post-type=<?= $content_type['id'] ?>">
                           <span class="visually-hidden"><?= $content_type['type_name'] ?></span>
                           <svg class="filters__icon" width="22" height="18">
                               <use xlink:href="#icon-filter-<?= $content_type['class_name'] ?>"></use>

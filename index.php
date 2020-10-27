@@ -1,11 +1,13 @@
 <?php
 date_default_timezone_set('Asia/Yekaterinburg');
 require_once('helpers.php');
-require_once('functions.php');
+require_once('includes/functions.inc.php');
 
 $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
+// Получает из параметра запроса тип сортировки; Этот пункт пока что что на паузе;
+$sorting_type = filter_input(INPUT_GET, 'sorting-type');
 // Подключается к БД;
 $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 // Получает спиок типов контента для дальнейшего вывода на странице;
@@ -23,8 +25,6 @@ $posts = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.cla
 if (!$posts) {
   open_404_page();
 }
-// Получает из параметра запроса тип сортировки; Этот пункт пока что что на паузе;
-$sorting_type = filter_input(INPUT_GET, 'sorting-type');
 
 // Передает данные из БД в шаблоны;
 $page_content = include_template('main.php', [
