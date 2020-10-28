@@ -9,7 +9,7 @@ $user_name = 'Дмитрий';
 $current_post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 // Проверяет наличие параметра запроса;
 if (!$current_post_id) {
-  open_404_page();
+  open_404_page($is_auth, $user_name);
 }
 // Подключается к БД;
 $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
@@ -17,7 +17,7 @@ $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('О
 $post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id, 'assoc');
 // Проверяет наличие запрошенных данных в ответе от БД;
 if (!$post) {
-  open_404_page();
+  open_404_page($is_auth, $user_name);
 }
 // Получает время регистрации пользователя;
 $registration_time = get_post_interval($post['date_add'], 'на сайте');
@@ -45,11 +45,4 @@ $layout_content = include_template('layout.php', [
   'content' => $page_content,
 ]);
 
-/*6. В post.php не нужно делать
-```echo($layout_content);```
-лучше сделать функцию внутри, которая возвращает `$layout_content` и делать echo вызов_функции(); иначе потом будет трудно собирать все echo по куче файлов. То есть в файлах с расширением .inc.php лучше ничего не выводить в браузер напрямую.*/
-function get_layout_content($layout_content) {
-    return $layout_content;
-}
-
-echo(get_layout_content($layout_content));
+echo($layout_content);

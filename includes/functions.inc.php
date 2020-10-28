@@ -62,8 +62,16 @@ function get_post_interval($post_time, $caption) {
   return $time;
 }
 
-function open_404_page() {
-  echo('404 Запрошенная страница не найдена');
+function open_404_page($is_auth, $user_name) {
+  $page_content = include_template('page_404.php');
+  $layout_content = include_template('layout.php', [
+    'is_auth' => $is_auth,
+    'user_name' => $user_name,
+    'title' => 'readme: страница не найдена',
+    'content' => $page_content,
+  ]);
+  
+  echo($layout_content);
   http_response_code(404);
   exit();
 }

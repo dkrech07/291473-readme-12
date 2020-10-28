@@ -23,7 +23,7 @@ if ($post_type) {
 // Получает список постов (в зависимости от выбранного типа контента);
 $posts = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ORDER BY p.views DESC');
 if (!$posts) {
-  open_404_page();
+  open_404_page($is_auth, $user_name);
 }
 
 // Передает данные из БД в шаблоны;
