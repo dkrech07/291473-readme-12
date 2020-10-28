@@ -1,6 +1,6 @@
 <div class="post__main">
   <div class="post-link__wrapper">
-    <a class="post-link__external" href="http://<?= $post['link'] ?>" target="_blank" title="Перейти по ссылке">
+    <a class="post-link__external" href="<?= $post['link'] ?>" target="_blank" title="Перейти по ссылке">
       <div class="post-link__icon-wrapper">
         <img src="img/logo-vita.jpg" alt="Иконка">
       </div>

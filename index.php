@@ -13,7 +13,7 @@ $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('О
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;
-$post_type = intval(filter_input(INPUT_GET, 'post-type'));
+$post_type = filter_input(INPUT_GET, 'post-type', FILTER_VALIDATE_INT);
 if ($post_type) {
   $post_type_query = 'WHERE p.content_type_id = ' . $post_type;
 } else {

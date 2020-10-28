@@ -18,7 +18,7 @@ INSERT INTO posts (date_add, title, content, views, post_author_id, content_type
                                                                                             ('2020-10-10 16:31:26', 'Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 5, 2, 1);
 INSERT INTO posts (date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('2020-10-09 16:31:26', 'Наконец, обработал фотки!', 'rock-medium.jpg', 'img/rock-medium.jpg', 99, 3, 3),
                                                                                                    ('2020-02-16 16:31:26', 'Моя мечта', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 1, 3);
-INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id) VALUES ('2020-06-16 16:31:26', 'Лучшие курсы', 'www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 2, 5);
+INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id) VALUES ('2020-06-16 16:31:26', 'Лучшие курсы', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 2, 5);
 
 -- Добавляет комментарии к постам;
 INSERT INTO comments (date_add, content, comment_author_id, post_id) VALUES ('2020-10-16 11:35:26', 'Красивые стихи... Это Есенин?', 2, 1),

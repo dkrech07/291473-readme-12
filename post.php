@@ -6,7 +6,7 @@ $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
 // Получает ID поста из параметра запроса;
-$current_post_id = intval(filter_input(INPUT_GET, 'id'));
+$current_post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 // Проверяет наличие параметра запроса;
 if (!$current_post_id) {
   open_404_page();
@@ -45,4 +45,11 @@ $layout_content = include_template('layout.php', [
   'content' => $page_content,
 ]);
 
-echo($layout_content);
+/*6. В post.php не нужно делать
+```echo($layout_content);```
+лучше сделать функцию внутри, которая возвращает `$layout_content` и делать echo вызов_функции(); иначе потом будет трудно собирать все echo по куче файлов. То есть в файлах с расширением .inc.php лучше ничего не выводить в браузер напрямую.*/
+function get_layout_content($layout_content) {
+    return $layout_content;
+}
+
+echo(get_layout_content($layout_content));
