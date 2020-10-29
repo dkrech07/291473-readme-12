@@ -7,7 +7,7 @@
             <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
             <ul class="popular__sorting-list sorting__list">
                 <li class="sorting__item sorting__item--popular">
-                    <a class="sorting__link sorting__link--active" href="#">
+                    <a class="sorting__link <?= !$sorting_type ? 'sorting__link--active' : '' ?>" href="?sorting-type=popular">
                         <span>Популярность</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="#">
+                    <a class="sorting__link <?= $sorting_type == 'likes' ? 'sorting__link--active' : '' ?>" href="?sorting-type=likes">
                         <span>Лайки</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link" href="#">
+                    <a class="sorting__link <?= $sorting_type == 'date' ? 'sorting__link--active' : '' ?>" href="?sorting-type=date">
                         <span>Дата</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -36,13 +36,13 @@
             <b class="popular__filters-caption filters__caption">Тип контента:</b>
             <ul class="popular__filters-list filters__list">
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                    <a class="filters__button filters__button--ellipse filters__button--all filters__button--active" href="#">
+                    <a class="filters__button filters__button--ellipse filters__button--all <?= !$post_type ? 'filters__button--active' : '' ?>" href="index.php">
                         <span>Все</span>
                     </a>
                 </li>
                 <?php foreach ($content_types as $content_type): ?>
                   <li class="popular__filters-item filters__item">
-                      <a class="filters__button filters__button--<?= $content_type['class_name'] ?> button" href="#">
+                      <a class="filters__button filters__button--<?= $content_type['class_name'] ?> button <?= $post_type == $content_type[id] ? 'filters__button--active' : '' ?>" href="?post-type=<?= $content_type['id'] ?>">
                           <span class="visually-hidden"><?= $content_type['type_name'] ?></span>
                           <svg class="filters__icon" width="22" height="18">
                               <use xlink:href="#icon-filter-<?= $content_type['class_name'] ?>"></use>
@@ -63,10 +63,13 @@
         ?>
         <article class="popular__post post post-<?= $post['class_name'] ?>">
             <header class="post__header">
-                <h2><?= $post['title'] ?></h2>
+                <h2>
+                    <a href="post.php?id=<?=$post['id']?>"><?= $post['title'] ?></a>
+                </h2>
+
             </header>
             <div class="post__main">
-                <?php if ('post-'. $post['class_name'] == "post-quote"): ?>
+                <?php if ($post['class_name'] == "quote"): ?>
                 <blockquote>
                     <?= crop_text($post['content']) ?>
                     <?php if ($post['quote_author']): ?>
@@ -76,9 +79,9 @@
                     <?php endif; ?>
                 </blockquote>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-link"): ?>
+                <?php elseif ($post['class_name'] == "link"): ?>
                 <div class="post-link__wrapper">
-                    <a class="post-link__external" href="http://<?= $post['link'] ?>" title="Перейти по ссылке">
+                    <a class="post-link__external" href="<?= $post['link'] ?>" title="Перейти по ссылке">
                         <div class="post-link__info-wrapper">
                             <div class="post-link__icon-wrapper">
                                 <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
@@ -91,12 +94,12 @@
                     </a>
                 </div>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-photo"): ?>
+                <?php elseif ($post['class_name'] == "photo"): ?>
                 <div class="post-photo__image-wrapper">
                     <img src="<?= $post['image'] ?>" alt="Фото от пользователя" width="360" height="240">
                 </div>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-video"): ?>
+                <?php elseif ($post['class_name'] == "video"): ?>
                 <div class="post-video__block">
                     <div class="post-video__preview">
                         <?=embed_youtube_cover($post['video']); ?>
@@ -110,7 +113,7 @@
                     </a>
                 </div>
 
-                <?php elseif ('post-'. $post['class_name'] == "post-text"): ?>
+                <?php elseif ($post['class_name'] == "text"): ?>
                 <?= crop_text($post['content']) ?>
 
                 <?php endif; ?>
@@ -123,7 +126,7 @@
                         </div>
                         <div class="post__info">
                             <b class="post__author-name"><?= $post['login'] ?></b>
-                            <time class="post__time" datetime="<?= $post['date_add'] ?>" title="<?= date("Y-m-d H:i:s", strtotime($post['date_add'])) ?>"><?= get_post_interval($post['date_add']) ?></time>
+                            <time class="post__time" datetime="<?= $post['date_add'] ?>" title="<?= date("Y-m-d H:i:s", strtotime($post['date_add'])) ?>"><?= get_post_interval($post['date_add'], 'назад') ?></time>
                         </div>
                     </a>
                 </div>
