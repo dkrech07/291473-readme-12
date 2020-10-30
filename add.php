@@ -19,17 +19,47 @@ if (!$_GET['post_type']) {
 }
 
 // filter_input(INPUT_GET, 'post_type', FILTER_VALIDATE_INT);
-print($post_type);
 
+function check_validity($required_fields = ['title', 'content']) {
+    $errors = [];
+
+    foreach ($required_fields as $field) {
+        if (empty($_POST[$field])) {
+            $errors[$field] = 'Поле не заполнено';
+        }
+    }
+
+    if (mb_strlen($_POST['text-content']) > 70) {
+        $errors['content'] = 'Цитата. Она не должна превышать 70 знаков.';
+    }
+
+    if ($_POST && count($errors)) {
+        return $errors;
+    }
+
+    if ($_POST) {
+        return $_POST;
+    }
+}
+
+$errors = check_validity();
+print_r($errors);
+// print_r($_POST);
 
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');
 
 // Передает данные из БД в шаблоны;
-$add_content = include_template('add-' . $content_type['class_name'] . '.php', ['content_type' => $content_type]);
+$add_content = include_template('add-' . $content_type['class_name'] . '.php', [
+    'content_type' => $content_type,
+    'errors' => $errors,
+]);
 
 // Передает данные из БД в шаблоны;
-$page_content = include_template('add.php', ['add_content' => $add_content, 'content_types' => $content_types,]);
+$page_content = include_template('add.php', [
+    'add_content' => $add_content,
+    'content_types' => $content_types,
+]);
 
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
