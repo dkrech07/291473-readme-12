@@ -8,7 +8,7 @@
         <ul class="adding-post__tabs-list filters__list tabs__list">
           <?php foreach($content_types as $content_type): ?>
           <li class="adding-post__tabs-item filters__item">
-            <a class="adding-post__tabs-link filters__button filters__button--<?= $content_type['class_name'] ?> tabs__item tabs__item--active button">
+            <a class="adding-post__tabs-link filters__button filters__button--<?= $content_type['class_name'] ?> tabs__item tabs__item--active button" href="?post_type=<?= $content_type['id'] ?>">
               <svg class="filters__icon" width="22" height="18">
                 <use xlink:href="#icon-filter-<?= $content_type['class_name'] ?>"></use>
               </svg>
@@ -66,3 +66,4 @@
     </div>
   </div>
 </div>
+<script src="js/custom.js"></script>

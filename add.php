@@ -12,7 +12,15 @@ $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('О
 $content_types = select_query($con, 'SELECT * FROM content_types');
 
 // Получает ID типа конента из параметра запроса (временно задал значение '1');
-$current_content_type_id = 1;
+$current_content_type_id = $_GET['post_type'];
+
+if (!$_GET['post_type']) {
+    $current_content_type_id = 1;
+}
+
+// filter_input(INPUT_GET, 'post_type', FILTER_VALIDATE_INT);
+print($post_type);
+
 
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');
