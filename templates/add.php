@@ -59,7 +59,9 @@
         </ul>
       </div>
       <div class="adding-post__tab-content">
+        <section class="adding-post__photo tabs__content tabs__content--active">
         <?= $add_content ?>
+        </section>
       </div>
     </div>
   </div>
