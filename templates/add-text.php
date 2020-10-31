@@ -53,7 +53,7 @@ $tags = $_POST['text-tags'] ?? '';
       </ul>
     </div>
   </div>
-  <input class="visually-hidden" type="text" name="content-type" value="text">
+  <input class="visually-hidden" type="text" name="content-type" value="1">
   <div class="adding-post__buttons">
     <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
     <a class="adding-post__close" href="#">Закрыть</a>

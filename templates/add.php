@@ -11,6 +11,8 @@
       <div class="adding-post__tabs filters">
         <ul class="adding-post__tabs-list filters__list tabs__list">
           <?php foreach($content_types as $content_type): ?>
+          <?= $content_type['id'] ?>
+          <?= $current_content_type_id ?>
           <li class="adding-post__tabs-item filters__item">
             <a class="adding-post__tabs-link filters__button filters__button--<?= $content_type['class_name'] ?> <?= get_filter_active($current_content_type_id, $content_type) ?> tabs__item tabs__item--active button" href="?post_type=<?= $content_type['id'] ?>">
               <svg class="filters__icon" width="22" height="18">

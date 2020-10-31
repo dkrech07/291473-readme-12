@@ -77,7 +77,9 @@ function open_404_page($is_auth, $user_name) {
 }
 
 function get_filter_active($current_content_type_id, $content_type) {
-  if ($current_content_type_id == $content_type['id'] || $current_content_type_id == $_POST['content-type']) {
+  if ($current_content_type_id == $content_type['id']) {
     return 'filters__button--active';
   }
 }
+
+// || $current_content_type_id == $_POST['content-type']

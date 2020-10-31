@@ -14,15 +14,21 @@ $content_types = select_query($con, 'SELECT * FROM content_types');
 // Получает ID типа конента из параметра запроса (временно задал значение '1');
 $current_content_type_id = filter_input(INPUT_GET, 'post_type', FILTER_VALIDATE_INT);
 
+// Получает ID типа контента, когда в адресной строке нет параметра запроса:
+// при первом открытии add.php, после отправки формы и перехода на add.php;
 if (!$current_content_type_id) {
-    $current_content_type_id = 1;
+    if ($_POST) {
+      $current_content_type_id = $_POST['content-type'];
+    } else {
+      $current_content_type_id = 1;
+    }
 }
 
-function check_validity() {
-  $post_type = $_POST ? $_POST['content-type'] : 1;
+function check_validity($current_content_type_id) {
+  $post_type = $current_content_type_id;
   $errors = [];
 
-  if ($post_type == 'text') {
+  if ($_POST && $post_type == 1) {
     $required_fields = ['text-heading', 'text-content'];
 
     foreach ($required_fields as $field) {
@@ -36,7 +42,7 @@ function check_validity() {
     }
   }
 
-  if ($post_type == 'quote') {
+  if ($_POST && $post_type == 2) {
     $required_fields = ['quote-heading', 'quote-content', 'quote-author'];
 
     foreach ($required_fields as $field) {
@@ -59,9 +65,9 @@ function check_validity() {
   }
 }
 
-$errors = check_validity('text');
+$errors = check_validity($current_content_type_id);
 // print_r($errors);
-// print_r($_POST);
+print_r($_POST);
 // print_r($_SERVER);
 
 // echo($content_type['class_name']);

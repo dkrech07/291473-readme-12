@@ -1,8 +1,8 @@
 <?php
-$title = $_POST['text-heading'] ?? '';
-$content = $_POST['text-content'] ?? '';
+$title = $_POST['quote-heading'] ?? '';
+$content = $_POST['quote-content'] ?? '';
 $author = $_POST['quote-author'] ?? '';
-$tags = $_POST['text-tags'] ?? '';
+$tags = $_POST['quote-tags'] ?? '';
 ?>
 
 <h2 class="visually-hidden">Форма добавления цитаты</h2>
@@ -45,7 +45,7 @@ $tags = $_POST['text-tags'] ?? '';
       <div class="adding-post__input-wrapper form__input-wrapper">
         <label class="adding-post__label form__label" for="cite-tags">Теги</label>
         <div class="form__input-section">
-          <input class="adding-post__input form__input" id="cite-tags" type="text" name="photo-heading" value="<?= $tags ?>" placeholder="Введите теги">
+          <input class="adding-post__input form__input" id="cite-tags" type="text" name="quote-tags" value="<?= $tags ?>" placeholder="Введите теги">
           <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
           <div class="form__error-text">
             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -65,7 +65,7 @@ $tags = $_POST['text-tags'] ?? '';
       </ul>
     </div>
   </div>
-  <input class="visually-hidden" type="text" name="content-type" value="quote">
+  <input class="visually-hidden" type="text" name="content-type" value="2">
   <div class="adding-post__buttons">
     <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
     <a class="adding-post__close" href="#">Закрыть</a>
