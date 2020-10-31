@@ -18,20 +18,35 @@ if (!$current_content_type_id) {
     $current_content_type_id = 1;
 }
 
-function check_validity($post_type) {
+function check_validity() {
+  $post_type = $_POST ? $_POST['content-type'] : 1;
   $errors = [];
 
   if ($post_type == 'text') {
-    if ($_POST && empty($_POST['text-heading'])) {
-        $errors['title'] = 'Заголовок. Это поле должно быть заполнено.';
-    }
+    $required_fields = ['text-heading', 'text-content'];
 
-    if ($_POST && empty($_POST['text-content'])) {
-        $errors['content'] = 'Текст поста. Это поле должно быть заполнено.';
-    }
+    foreach ($required_fields as $field) {
+        if (empty($_POST[$field])) {
+            $errors[$field] = 'Поле не заполнено';
+        }
 
-    if ($_POST && mb_strlen($_POST['text-content']) > 70) {
-        $errors['content'] = 'Цитата. Она не должна превышать 70 знаков.';
+        if ($_POST[$field] > 70) {
+            $errors[$field] = 'Не должна превышать 70 знаков.';
+        }
+    }
+  }
+
+  if ($post_type == 'quote') {
+    $required_fields = ['text-heading', 'text-content'];
+
+    foreach ($required_fields as $field) {
+        if (empty($_POST[$field])) {
+            $errors[$field] = 'Поле не заполнено';
+        }
+
+        if ($_POST[$field] > 70) {
+            $errors[$field] = 'Не должна превышать 70 знаков.';
+        }
     }
   }
 
@@ -42,14 +57,6 @@ function check_validity($post_type) {
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Location: /post.php?id=1');
   }
-
-    // foreach ($required_fields as $field) {
-    //     if (empty($_POST[$field])) {
-    //         $errors[$field] = 'Поле не заполнено';
-    //     }
-    // }
-
-    // header('Location: /post.php?id=1');
 }
 
 $errors = check_validity('text');
