@@ -12,39 +12,51 @@ $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('О
 $content_types = select_query($con, 'SELECT * FROM content_types');
 
 // Получает ID типа конента из параметра запроса (временно задал значение '1');
-$current_content_type_id = $_GET['post_type'];
+$current_content_type_id = filter_input(INPUT_GET, 'post_type', FILTER_VALIDATE_INT);
 
-if (!$_GET['post_type']) {
+if (!$current_content_type_id) {
     $current_content_type_id = 1;
 }
 
-// filter_input(INPUT_GET, 'post_type', FILTER_VALIDATE_INT);
+function check_validity($post_type) {
+  $errors = [];
 
-function check_validity($required_fields = ['title', 'content']) {
-    $errors = [];
-
-    foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
-            $errors[$field] = 'Поле не заполнено';
-        }
+  if ($post_type == 'text') {
+    if ($_POST && empty($_POST['text-heading'])) {
+        $errors['title'] = 'Заголовок. Это поле должно быть заполнено.';
     }
 
-    if (mb_strlen($_POST['text-content']) > 70) {
+    if ($_POST && empty($_POST['text-content'])) {
+        $errors['content'] = 'Текст поста. Это поле должно быть заполнено.';
+    }
+
+    if ($_POST && mb_strlen($_POST['text-content']) > 70) {
         $errors['content'] = 'Цитата. Она не должна превышать 70 знаков.';
     }
+  }
 
-    if ($_POST && count($errors)) {
-        return $errors;
-    }
+  if ($_POST && count($errors)) {
+      return $errors;
+  }
 
-    if ($_POST) {
-        return $_POST;
-    }
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    header('Location: /post.php?id=1');
+  }
+
+    // foreach ($required_fields as $field) {
+    //     if (empty($_POST[$field])) {
+    //         $errors[$field] = 'Поле не заполнено';
+    //     }
+    // }
+
+    // header('Location: /post.php?id=1');
 }
 
-$errors = check_validity();
+$errors = check_validity('text');
 print_r($errors);
-// print_r($_POST);
+print_r($_POST);
+// print_r($_SERVER);
+
 
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');

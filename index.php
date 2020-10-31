@@ -3,7 +3,7 @@ date_default_timezone_set('Asia/Yekaterinburg');
 require_once('helpers.php');
 require_once('includes/functions.inc.php');
 
-$is_auth = rand(0, 1);
+$is_auth = 1;
 $user_name = 'Дмитрий';
 
 // Получает из параметра запроса тип сортировки; Этот пункт пока что что на паузе;
