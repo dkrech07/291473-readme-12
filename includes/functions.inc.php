@@ -70,8 +70,14 @@ function open_404_page($is_auth, $user_name) {
     'title' => 'readme: страница не найдена',
     'content' => $page_content,
   ]);
-  
+
   echo($layout_content);
   http_response_code(404);
   exit();
+}
+
+function get_filter_active($current_content_type_id, $content_type) {
+  if ($current_content_type_id == $content_type['id'] || $current_content_type_id == $_POST['content-type']) {
+    return 'filters__button--active';
+  }
 }

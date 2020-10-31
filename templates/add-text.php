@@ -55,6 +55,7 @@ $photo = $_POST['photo-heading'] ?? '';
       </ul>
     </div>
   </div>
+  <input class="visually-hidden" type="text" name="content-type" value="text">
   <div class="adding-post__buttons">
     <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
     <a class="adding-post__close" href="#">Закрыть</a>

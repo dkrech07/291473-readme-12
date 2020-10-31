@@ -53,10 +53,12 @@ function check_validity($post_type) {
 }
 
 $errors = check_validity('text');
-print_r($errors);
-print_r($_POST);
+// print_r($errors);
+// print_r($_POST);
 // print_r($_SERVER);
 
+// echo($content_type['class_name']);
+// echo($current_content_type_id);
 
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');
@@ -71,6 +73,7 @@ $add_content = include_template('add-' . $content_type['class_name'] . '.php', [
 $page_content = include_template('add.php', [
     'add_content' => $add_content,
     'content_types' => $content_types,
+    "current_content_type_id" => $current_content_type_id,
 ]);
 
 $layout_content = include_template('layout.php', [
