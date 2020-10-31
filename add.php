@@ -37,7 +37,7 @@ function check_validity() {
   }
 
   if ($post_type == 'quote') {
-    $required_fields = ['text-heading', 'text-content'];
+    $required_fields = ['quote-heading', 'quote-content', 'quote-author'];
 
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {

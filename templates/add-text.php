@@ -50,8 +50,6 @@ $tags = $_POST['text-tags'] ?? '';
               <li class="form__invalid-item"><?= $error ?></li>
           <?php endforeach; ?>
         <?php endif; ?>
-        <!-- <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
-        <li class="form__invalid-item">Цитата. Она не должна превышать 70 знаков.</li> -->
       </ul>
     </div>
   </div>
