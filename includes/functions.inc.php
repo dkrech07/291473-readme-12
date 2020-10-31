@@ -82,4 +82,43 @@ function get_filter_active($current_content_type_id, $content_type) {
   }
 }
 
-// || $current_content_type_id == $_POST['content-type']
+function check_input($required_fields, $fields_map) {
+  $errors = [];
+
+  foreach ($required_fields as $field) {
+      if (empty($_POST[$field])) {
+          $errors[$field] = $fields_map[$field] . 'Поле не заполнено';
+      }
+
+      if (mb_strlen($_POST[$field]) > 70) {
+          $errors[$field] = $fields_map[$field] . 'Не должна превышать 70 знаков.';
+      }
+  }
+
+  return $errors;
+}
+
+function check_validity($current_content_type_id, $fields_map) {
+  if ($_POST && $current_content_type_id == 1) {
+    $required_fields = ['text-heading', 'text-content'];
+    $errors = check_input($required_fields, $fields_map);
+  }
+
+  if ($_POST && $current_content_type_id == 2) {
+    $required_fields = ['quote-heading', 'quote-content', 'quote-author'];
+    $errors = check_input($required_fields, $fields_map);
+  }
+
+  if ($_POST && $current_content_type_id == 3) {
+    $required_fields = ['quote-heading', 'quote-content', 'quote-author'];
+    $errors = check_input($required_fields, $fields_map);
+  }
+
+  if ($_POST && count($errors)) {
+      return $errors;
+  }
+
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    header('Location: /post.php?id=1');
+  }
+}

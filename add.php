@@ -32,49 +32,6 @@ $fields_map = [
     'quote-author' => 'Автор цитаты. ',
 ];
 
-print_r($fields_map['text-heading']);
-
-function check_validity($current_content_type_id, $fields_map) {
-  $post_type = $current_content_type_id;
-  $errors = [];
-
-  if ($_POST && $post_type == 1) {
-    $required_fields = ['text-heading', 'text-content'];
-
-    foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
-            $errors[$field] = $fields_map[$field] . 'Поле не заполнено';
-        }
-
-        if (mb_strlen($_POST[$field]) > 70) {
-            $errors[$field] = $fields_map[$field] . 'Не должна превышать 70 знаков.';
-        }
-    }
-  }
-
-  if ($_POST && $post_type == 2) {
-    $required_fields = ['quote-heading', 'quote-content', 'quote-author'];
-
-    foreach ($required_fields as $field) {
-        if (empty($_POST[$field])) {
-            $errors[$field] = $fields_map[$field] . 'Поле не заполнено';
-        }
-
-        if (mb_strlen($_POST[$field]) > 70) {
-            $errors[$field] = $fields_map[$field] . 'Не должна превышать 70 знаков.';
-        }
-    }
-  }
-
-  if ($_POST && count($errors)) {
-      return $errors;
-  }
-
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    header('Location: /post.php?id=1');
-  }
-}
-
 $errors = check_validity($current_content_type_id, $fields_map);
 // print_r($errors);
 // print_r($_POST);
