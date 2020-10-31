@@ -1,22 +1,29 @@
+<?php
+$title = $_POST['photo-heading'] ?? '';
+$link = $_POST['photo-link'] ?? '';
+$tags = $_POST['photo-tags'] ?? '';
+$title = $_POST['photo-heading'] ?? '';
+?>
+
 <h2 class="visually-hidden">Форма добавления фото</h2>
-<form class="adding-post__form form" action="#" method="post" enctype="multipart/form-data">
+<form class="adding-post__form form" action="add.php" method="post" enctype="multipart/form-data">
   <div class="form__text-inputs-wrapper">
     <div class="form__text-inputs">
       <div class="adding-post__input-wrapper form__input-wrapper">
         <label class="adding-post__label form__label" for="photo-heading">Заголовок <span class="form__input-required">*</span></label>
-        <div class="form__input-section">
-          <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" placeholder="Введите заголовок">
+        <div class="form__input-section <?= $errors['photo-heading'] ? 'form__input-section--error' : '' ?>">
+          <input class="adding-post__input form__input" id="photo-heading" type="text" name="photo-heading" value="<?= $title ?>" placeholder="Введите заголовок">
           <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
           <div class="form__error-text">
             <h3 class="form__error-title">Заголовок сообщения</h3>
-            <p class="form__error-desc">Текст сообщения об ошибке, подробно объясняющий, что не так.</p>
+            <p class="form__error-desc"><?= $errors['photo-heading'] ? 'Заполните это поле' : '' ?></p>
           </div>
         </div>
       </div>
       <div class="adding-post__input-wrapper form__input-wrapper">
         <label class="adding-post__label form__label" for="photo-url">Ссылка из интернета</label>
         <div class="form__input-section">
-          <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-heading" placeholder="Введите ссылку">
+          <input class="adding-post__input form__input" id="photo-url" type="text" name="photo-link" value="<?= $link ?>" placeholder="Введите ссылку">
           <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
           <div class="form__error-text">
             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -27,7 +34,7 @@
       <div class="adding-post__input-wrapper form__input-wrapper">
         <label class="adding-post__label form__label" for="photo-tags">Теги</label>
         <div class="form__input-section">
-          <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-heading" placeholder="Введите теги">
+          <input class="adding-post__input form__input" id="photo-tags" type="text" name="photo-tags" vaule="<?= $tags ?>" placeholder="Введите теги">
           <button class="form__error-button button" type="button">!<span class="visually-hidden">Информация об ошибке</span></button>
           <div class="form__error-text">
             <h3 class="form__error-title">Заголовок сообщения</h3>
@@ -62,6 +69,7 @@
 
     </div>
   </div>
+  <input class="visually-hidden" type="text" name="content-type" value="3">
   <div class="adding-post__buttons">
     <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
     <a class="adding-post__close" href="#">Закрыть</a>

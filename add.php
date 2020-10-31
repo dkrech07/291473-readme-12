@@ -30,11 +30,12 @@ $fields_map = [
     'quote-heading' => 'Заголовок. ',
     'quote-content' => 'Цитата. ',
     'quote-author' => 'Автор цитаты. ',
+    'photo-heading' => 'Заголовок. ',
 ];
 
 $errors = check_validity($current_content_type_id, $fields_map);
 // print_r($errors);
-// print_r($_POST);
+print_r($_POST);
 // print_r($_SERVER);
 
 // echo($content_type['class_name']);

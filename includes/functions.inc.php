@@ -100,17 +100,17 @@ function check_input($required_fields, $fields_map) {
 
 function check_validity($current_content_type_id, $fields_map) {
   if ($_POST && $current_content_type_id == 1) {
-    $required_fields = ['text-heading', 'text-content'];
+    $required_fields = ['text-heading', 'text-content',];
     $errors = check_input($required_fields, $fields_map);
   }
 
   if ($_POST && $current_content_type_id == 2) {
-    $required_fields = ['quote-heading', 'quote-content', 'quote-author'];
+    $required_fields = ['quote-heading', 'quote-content', 'quote-author',];
     $errors = check_input($required_fields, $fields_map);
   }
 
   if ($_POST && $current_content_type_id == 3) {
-    $required_fields = ['quote-heading', 'quote-content', 'quote-author'];
+    $required_fields = ['photo-heading',];
     $errors = check_input($required_fields, $fields_map);
   }
 
