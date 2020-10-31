@@ -24,7 +24,17 @@ if (!$current_content_type_id) {
     }
 }
 
-function check_validity($current_content_type_id) {
+$fields_map = [
+    'text-heading' => 'Заголовок. ',
+    'text-content' => 'Публикация. ',
+    'quote-heading' => 'Заголовок. ',
+    'quote-content' => 'Цитата. ',
+    'quote-author' => 'Автор цитаты. ',
+];
+
+print_r($fields_map['text-heading']);
+
+function check_validity($current_content_type_id, $fields_map) {
   $post_type = $current_content_type_id;
   $errors = [];
 
@@ -33,11 +43,11 @@ function check_validity($current_content_type_id) {
 
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
-            $errors[$field] = 'Поле не заполнено';
+            $errors[$field] = $fields_map[$field] . 'Поле не заполнено';
         }
 
-        if ($_POST[$field] > 70) {
-            $errors[$field] = 'Не должна превышать 70 знаков.';
+        if (mb_strlen($_POST[$field]) > 70) {
+            $errors[$field] = $fields_map[$field] . 'Не должна превышать 70 знаков.';
         }
     }
   }
@@ -47,11 +57,11 @@ function check_validity($current_content_type_id) {
 
     foreach ($required_fields as $field) {
         if (empty($_POST[$field])) {
-            $errors[$field] = 'Поле не заполнено';
+            $errors[$field] = $fields_map[$field] . 'Поле не заполнено';
         }
 
-        if ($_POST[$field] > 70) {
-            $errors[$field] = 'Не должна превышать 70 знаков.';
+        if (mb_strlen($_POST[$field]) > 70) {
+            $errors[$field] = $fields_map[$field] . 'Не должна превышать 70 знаков.';
         }
     }
   }
@@ -65,9 +75,9 @@ function check_validity($current_content_type_id) {
   }
 }
 
-$errors = check_validity($current_content_type_id);
+$errors = check_validity($current_content_type_id, $fields_map);
 // print_r($errors);
-print_r($_POST);
+// print_r($_POST);
 // print_r($_SERVER);
 
 // echo($content_type['class_name']);
