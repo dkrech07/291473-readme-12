@@ -31,6 +31,8 @@ $fields_map = [
     'quote-content' => 'Цитата. ',
     'quote-author' => 'Автор цитаты. ',
     'photo-heading' => 'Заголовок. ',
+    'video-heading' => 'Заголовок. ',
+    'video-link' => 'Ссылка. ', 
 ];
 
 $errors = check_validity($current_content_type_id, $fields_map);

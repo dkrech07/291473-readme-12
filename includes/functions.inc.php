@@ -87,7 +87,7 @@ function check_input($required_fields, $fields_map) {
 
   foreach ($required_fields as $field) {
       if (empty($_POST[$field])) {
-          $errors[$field] = $fields_map[$field] . 'Поле не заполнено';
+          $errors[$field] = $fields_map[$field] . 'Поле не заполнено.';
       }
 
       if (mb_strlen($_POST[$field]) > 70) {
@@ -111,6 +111,11 @@ function check_validity($current_content_type_id, $fields_map) {
 
   if ($_POST && $current_content_type_id == 3) {
     $required_fields = ['photo-heading',];
+    $errors = check_input($required_fields, $fields_map);
+  }
+
+  if ($_POST && $current_content_type_id == 4) {
+    $required_fields = ['video-heading', 'video-link',];
     $errors = check_input($required_fields, $fields_map);
   }
 
