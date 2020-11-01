@@ -82,46 +82,50 @@ function get_filter_active($current_content_type_id, $content_type) {
   }
 }
 
-function check_input($required_fields, $fields_map) {
-  $errors = [];
+// function check_length_field($fields, $fields_map, $errors) {
+//   foreach ($fields as $field) {
+//     if (mb_strlen($_POST[$field]) > 70) {
+//         $errors[$field] = $fields_map[$field] . 'Не должна превышать 70 знаков.';
+//     }
+//   }
+//   return $errors;
+// }
 
+function check_empty_field($required_fields, $fields_map, $errors) {
   foreach ($required_fields as $field) {
       if (empty($_POST[$field])) {
           $errors[$field] = $fields_map[$field] . 'Поле не заполнено.';
       }
-
-      if (mb_strlen($_POST[$field]) > 70) {
-          $errors[$field] = $fields_map[$field] . 'Не должна превышать 70 знаков.';
-      }
   }
-
   return $errors;
 }
 
 function check_validity($current_content_type_id, $fields_map) {
+  $errors = [];
+
   if ($_POST && $current_content_type_id == 1) {
     $required_fields = ['text-heading', 'text-content',];
-    $errors = check_input($required_fields, $fields_map);
+    $errors = check_empty_field($required_fields, $fields_map, $errors);
   }
 
   if ($_POST && $current_content_type_id == 2) {
     $required_fields = ['quote-heading', 'quote-content', 'quote-author',];
-    $errors = check_input($required_fields, $fields_map);
+    $errors = check_empty_field($required_fields, $fields_map, $errors);
   }
 
   if ($_POST && $current_content_type_id == 3) {
     $required_fields = ['photo-heading',];
-    $errors = check_input($required_fields, $fields_map);
+    $errors = check_empty_field($required_fields, $fields_map, $errors);
   }
 
   if ($_POST && $current_content_type_id == 4) {
     $required_fields = ['video-heading', 'video-link',];
-    $errors = check_input($required_fields, $fields_map);
+    $errors = check_empty_field($required_fields, $fields_map, $errors);
   }
 
   if ($_POST && $current_content_type_id == 5) {
     $required_fields = ['link-heading', 'link-content',];
-    $errors = check_input($required_fields, $fields_map);
+    $errors = check_empty_field($required_fields, $fields_map, $errors);
   }
 
   if ($_POST && count($errors)) {

@@ -46,7 +46,11 @@ $title = $_POST['photo-heading'] ?? '';
     <div class="form__invalid-block">
       <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
       <ul class="form__invalid-list">
-        <li class="form__invalid-item">Заголовок. Это поле должно быть заполнено.</li>
+        <?php if ($errors): ?>
+          <?php foreach($errors as $error): ?>
+              <li class="form__invalid-item"><?= $error ?></li>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </ul>
     </div>
   </div>
