@@ -39,11 +39,7 @@ $fields_map = [
 
 $errors = check_validity($current_content_type_id, $fields_map);
 // print_r($errors);
-print_r($_POST);
-// print_r($_SERVER);
-
-// echo($content_type['class_name']);
-// echo($current_content_type_id);
+// print_r($_POST);
 
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');

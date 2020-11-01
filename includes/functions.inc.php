@@ -133,6 +133,24 @@ function check_validity($current_content_type_id, $fields_map) {
   }
 
   if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    header('Location: /post.php?id=1');
+    date_default_timezone_set('Asia/Yekaterinburg');
+
+    $date = date("Y-m-d H:i:s");
+    $title = $_POST['text-heading'];
+    $content = $_POST['text-content'];
+    $tags = $_POST['text-tags'];
+
+    $con = mysqli_connect('localhost', 'root', 'root','readme');
+
+    $posts_count_query = "SELECT id FROM posts";
+    $posts_count = mysqli_num_rows(mysqli_query($con, $posts_count_query));
+
+    // print($date);
+    // print($title);
+    // print($content);
+    $text_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count' + 1, '$date', '$title', '$content', 2, 1, 1)";
+    mysqli_query($con, $text_query);
+    print($posts_count);
+    // header('Location: /post.php?id=1');
   }
 }
