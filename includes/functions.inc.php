@@ -105,45 +105,49 @@ function send_data() {
     if ($_POST['content-type'] == 1) {
       $title = $_POST['text-heading'];
       $content = $_POST['text-content'];
-      // $tags = $_POST['text-tags'];
+      $tags = $_POST['text-tags'];
 
-      $query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', 0, 1, 1)";
+      $post_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', 0, 1, 1)";
     }
 
     if ($_POST['content-type'] == 2) {
       $title = $_POST['quote-heading'];
       $content = $_POST['quote-content'];
       $author = $_POST['quote-author'];
-      // $tags = $_POST['quote-tags'];
+      $tags = $_POST['quote-tags'];
 
-      $query = "INSERT INTO posts (id, date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', '$author', 0, 1, 2)";
+      $post_query = "INSERT INTO posts (id, date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', '$author', 0, 1, 2)";
     }
 
     if ($_POST['content-type'] == 3) {
       $title = $_POST['photo-heading'];
-      // $tags = $_POST['photo-tags'];
+      $tags = $_POST['photo-tags'];
 
-      $query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'rock-medium.jpg', 'img/rock-medium.jpg', 0, 1, 3)";
+      $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'rock-medium.jpg', 'img/rock-medium.jpg', 0, 1, 3)";
     }
 
     if ($_POST['content-type'] == 4) {
       $title = $_POST['video-heading'];
       $video = $_POST['video-link'];
-      // $tags = $_POST['photo-tags'];
+      $tags = $_POST['video-tags'];
 
-      $query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 0, 1, 4)";
+      $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 0, 1, 4)";
     }
 
     if ($_POST['content-type'] == 5) {
       $title = $_POST['link-heading'];
       $link = $_POST['link-content'];
-      // $tags = $_POST['photo-tags'];
+      $tags = $_POST['photo-tags'];
 
-      $query = "INSERT INTO posts (id, date_add, title, content, link, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$link', '$link', 0, 1, 5)";
+      $post_query = "INSERT INTO posts (id, date_add, title, content, link, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$link', '$link', 0, 1, 5)";
     }
 
+    // Хештеги можно добавить для всех типов контента;
+    $hastags_query = "INSERT INTO hashtags (hashtag_name) VALUES ('$tags')";
+
     // Записывает данные поста в БД;
-    mysqli_query($con, $query);
+    mysqli_query($con, $post_query);
+    mysqli_query($con, $hastags_query);
     // Открыает страницу со созданным постом;
     header('Location: /post.php?id=' . $posts_count);
   }
