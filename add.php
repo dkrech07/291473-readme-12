@@ -32,7 +32,9 @@ $fields_map = [
     'quote-author' => 'Автор цитаты. ',
     'photo-heading' => 'Заголовок. ',
     'video-heading' => 'Заголовок. ',
-    'video-link' => 'Ссылка. ', 
+    'video-link' => 'Ссылка. ',
+    'link-heading' => 'Заголовок. ',
+    'link-content' => 'Ссылка. ',
 ];
 
 $errors = check_validity($current_content_type_id, $fields_map);

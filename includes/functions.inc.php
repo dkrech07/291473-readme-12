@@ -119,6 +119,11 @@ function check_validity($current_content_type_id, $fields_map) {
     $errors = check_input($required_fields, $fields_map);
   }
 
+  if ($_POST && $current_content_type_id == 5) {
+    $required_fields = ['link-heading', 'link-content',];
+    $errors = check_input($required_fields, $fields_map);
+  }
+
   if ($_POST && count($errors)) {
       return $errors;
   }
