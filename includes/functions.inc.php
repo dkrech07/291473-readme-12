@@ -91,6 +91,32 @@ function get_filter_active($current_content_type_id, $content_type) {
 //   return $errors;
 // }
 
+function send_data() {
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    date_default_timezone_set('Asia/Yekaterinburg');
+    $con = mysqli_connect('localhost', 'root', 'root','readme');
+
+    // Полуает id для нового поста;
+    $posts_count_query = "SELECT id FROM posts";
+    $posts_count = mysqli_num_rows(mysqli_query($con, $posts_count_query)) + 1;
+
+    // Проверяет тип поста;
+    if ($_POST['content-type'] == 1) {
+      $date = date("Y-m-d H:i:s");
+      $title = $_POST['text-heading'];
+      $content = $_POST['text-content'];
+      $tags = $_POST['text-tags'];
+
+      $query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', 2, 1, 1)";
+    }
+
+    // Записывает данные поста в БД;
+    mysqli_query($con, $query);
+    // Открыает страницу со созданным постом;
+    header('Location: /post.php?id=' . $posts_count);
+  }
+}
+
 function check_empty_field($required_fields, $fields_map, $errors) {
   foreach ($required_fields as $field) {
       if (empty($_POST[$field])) {
@@ -132,25 +158,5 @@ function check_validity($current_content_type_id, $fields_map) {
       return $errors;
   }
 
-  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    date_default_timezone_set('Asia/Yekaterinburg');
-
-    $date = date("Y-m-d H:i:s");
-    $title = $_POST['text-heading'];
-    $content = $_POST['text-content'];
-    $tags = $_POST['text-tags'];
-
-    $con = mysqli_connect('localhost', 'root', 'root','readme');
-
-    $posts_count_query = "SELECT id FROM posts";
-    $posts_count = mysqli_num_rows(mysqli_query($con, $posts_count_query));
-
-    // print($date);
-    // print($title);
-    // print($content);
-    $text_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count' + 1, '$date', '$title', '$content', 2, 1, 1)";
-    mysqli_query($con, $text_query);
-    print($posts_count);
-    // header('Location: /post.php?id=1');
-  }
+  send_data();
 }
