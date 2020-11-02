@@ -35,12 +35,9 @@
           <span class="post__view">500 просмотров</span>
         </div>
         <ul class="post__tags">
-          <li><a href="#">#nature</a></li>
-          <li><a href="#">#globe</a></li>
-          <li><a href="#">#photooftheday</a></li>
-          <li><a href="#">#canon</a></li>
-          <li><a href="#">#landscape</a></li>
-          <li><a href="#">#щикарныйвид</a></li>
+          <?php foreach($post_hashtags as $post_hashtag): ?>
+          <li><a href="#">#<?= $post_hashtag ?></a></li>
+          <?php endforeach; ?>
         </ul>
         <div class="comments">
           <form class="comments__form form" action="#" method="post">

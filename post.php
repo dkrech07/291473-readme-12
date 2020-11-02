@@ -19,6 +19,11 @@ $post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_n
 if (!$post) {
   open_404_page($is_auth, $user_name);
 }
+
+// Получает id хештегов по id поста;
+$hashtags_id = select_query($con, 'SELECT hashtag_id FROM post_hashtags WHERE post_id = ' . $post['id']);
+// Получает текст хештгов по id поста;
+$post_hashtags = get_hastag_name($con, $hashtags_id);
 // Получает время регистрации пользователя;
 $registration_time = get_post_interval($post['date_add'], 'на сайте');
 // Получает id автора поста;
@@ -36,6 +41,7 @@ $page_content = include_template('post.php', [
     'registration_time' => $registration_time,
     'author_posts_count' => $author_posts_count,
     'subscribers_count' => $subscribers_count,
+    'post_hashtags' => $post_hashtags,
 ]);
 
 $layout_content = include_template('layout.php', [
