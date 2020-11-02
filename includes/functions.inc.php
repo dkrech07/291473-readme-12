@@ -148,8 +148,39 @@ function send_data() {
     // Записывает данные поста в БД;
     mysqli_query($con, $post_query);
     mysqli_query($con, $hastags_query);
+
+
+
+    // Записывает данные поста в БД;
+    // mysqli_query($con, $post_query);
+
+    // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
+    if ($tags_line) {
+        // Разделяет хештеги по пробелам;
+        $tags = explode(' ', $tags_line);
+        foreach ($tags as $tag_key => $tag) {
+            $hastags_query = "INSERT INTO hashtags (hashtag_name) VALUES ('$tag')";
+            // Записывает теги по одному в БД;
+            mysqli_query($con, $hastags_query);
+
+            // Получает ID последнего созданного хештега;
+            $hastags_query = "SELECT id FROM hashtags";
+            $hastags_count_query = mysqli_num_rows(mysqli_query($con, $hastags_query));
+            print('количество хештегов ' . $hastags_count_query . '<br>');
+            print('количество постов ' . $posts_count . '<br>');
+
+            //Записывает id созданного хештега в таблицу с соответствиями поста и хештегов;
+            $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES ('$hastags_count_query', '$posts_count')";
+            mysqli_query($con, $hastags_id_post_query);
+            // $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (1, 2)";
+
+
+            // Записывает id поста и соответствующием ему id хештегов в таблицу с соответствиями поста и хештегов;
+
+        }
+    }
     // Открыает страницу со созданным постом;
-    header('Location: /post.php?id=' . $posts_count);
+    header('Location: post.php?id=' . $posts_count);
   }
 }
 
