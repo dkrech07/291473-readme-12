@@ -105,7 +105,7 @@ function send_data() {
     if ($_POST['content-type'] == 1) {
       $title = $_POST['text-heading'];
       $content = $_POST['text-content'];
-      $tags = $_POST['text-tags'];
+      $tags_line = $_POST['text-tags'];
 
       $post_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', 0, 1, 1)";
     }
@@ -114,14 +114,14 @@ function send_data() {
       $title = $_POST['quote-heading'];
       $content = $_POST['quote-content'];
       $author = $_POST['quote-author'];
-      $tags = $_POST['quote-tags'];
+      $tags_line = $_POST['quote-tags'];
 
       $post_query = "INSERT INTO posts (id, date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', '$author', 0, 1, 2)";
     }
 
     if ($_POST['content-type'] == 3) {
       $title = $_POST['photo-heading'];
-      $tags = $_POST['photo-tags'];
+      $tags_line = $_POST['photo-tags'];
 
       $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'rock-medium.jpg', 'img/rock-medium.jpg', 0, 1, 3)";
     }
@@ -129,7 +129,7 @@ function send_data() {
     if ($_POST['content-type'] == 4) {
       $title = $_POST['video-heading'];
       $video = $_POST['video-link'];
-      $tags = $_POST['video-tags'];
+      $tags_line = $_POST['video-tags'];
 
       $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 0, 1, 4)";
     }
@@ -137,40 +137,35 @@ function send_data() {
     if ($_POST['content-type'] == 5) {
       $title = $_POST['link-heading'];
       $link = $_POST['link-content'];
-      $tags = $_POST['photo-tags'];
+      $tags_line = $_POST['photo-tags'];
 
       $post_query = "INSERT INTO posts (id, date_add, title, content, link, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$link', '$link', 0, 1, 5)";
     }
 
-    // Хештеги можно добавить для всех типов контента;
-    $hastags_query = "INSERT INTO hashtags (hashtag_name) VALUES ('$tags')";
-
     // Записывает данные поста в БД;
     mysqli_query($con, $post_query);
-    mysqli_query($con, $hastags_query);
-
-
-
-    // Записывает данные поста в БД;
-    // mysqli_query($con, $post_query);
 
     // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
     if ($tags_line) {
         // Разделяет хештеги по пробелам;
         $tags = explode(' ', $tags_line);
         foreach ($tags as $tag_key => $tag) {
-            $hastags_query = "INSERT INTO hashtags (hashtag_name) VALUES ('$tag')";
-            // Записывает теги по одному в БД;
+            // Получает ID последнего созданного хештега;
+            $hastags_query = "SELECT id FROM hashtags";
+            $new_hastag_id = mysqli_num_rows(mysqli_query($con, $hastags_query)) + 1;
+
+            // Записывает теги по одному в таблицу хештегов;;
+            $hastags_query = "INSERT INTO hashtags (id, hashtag_name) VALUES ('$new_hastag_id', '$tag')";
             mysqli_query($con, $hastags_query);
 
             // Получает ID последнего созданного хештега;
-            $hastags_query = "SELECT id FROM hashtags";
-            $hastags_count_query = mysqli_num_rows(mysqli_query($con, $hastags_query));
-            print('количество хештегов ' . $hastags_count_query . '<br>');
-            print('количество постов ' . $posts_count . '<br>');
+            // $hastags_query = "SELECT id FROM hashtags";
+            // $hastags_count_query = mysqli_num_rows(mysqli_query($con, $hastags_query));
+            // print('количество хештегов ' . $hastags_count_query . '<br>');
+            // print('количество постов ' . $posts_count . '<br>');
 
-            //Записывает id созданного хештега в таблицу с соответствиями поста и хештегов;
-            $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES ('$hastags_count_query', '$posts_count')";
+            // Записывает id созданного хештега в таблицу с соответствиями поста и хештегов;
+            $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES ('$new_hastag_id', '$posts_count')";
             mysqli_query($con, $hastags_id_post_query);
             // $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (1, 2)";
 
@@ -180,7 +175,7 @@ function send_data() {
         }
     }
     // Открыает страницу со созданным постом;
-    header('Location: post.php?id=' . $posts_count);
+    // header('Location: post.php?id=' . $posts_count);
   }
 }
 
