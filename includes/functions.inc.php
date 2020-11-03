@@ -93,7 +93,7 @@ function get_filter_active($current_content_type_id, $content_type) {
 
 function get_hastag_name($con, $hashtags_id) {
   $post_hashtags = [];
-  
+
   foreach ($hashtags_id as $hashtag_index => $hashtag_id) {
     $hashtags_name = select_query($con, 'SELECT hashtag_name FROM hashtags WHERE id = ' . $hashtag_id['hashtag_id']);
     $post_hashtags[$hashtag_index] = $hashtags_name[0]['hashtag_name'];
@@ -135,6 +135,8 @@ function send_data() {
       $tags_line = $_POST['photo-tags'];
 
       $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'rock-medium.jpg', 'img/rock-medium.jpg', 0, 1, 3)";
+
+      print_r($_FILES); // Временно вывел массив с изображением;
     }
 
     if ($_POST['content-type'] == 4) {
@@ -177,7 +179,7 @@ function send_data() {
     }
 
     // Открыает страницу со созданным постом;
-    header('Location: post.php?id=' . $posts_count);
+    // header('Location: post.php?id=' . $posts_count); Временно закомментировал переход на страницу поста;
   }
 }
 
