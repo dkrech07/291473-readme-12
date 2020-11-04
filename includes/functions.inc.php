@@ -155,13 +155,23 @@ function send_data() {
       $title = $_POST['photo-heading'];
       $tags_line = $_POST['photo-tags'];
       $photo_link = $_POST['photo-link'];
+      $file_path = 'uploads/';
 
-      $file_name = check_loaded_image($photo_link, $posts_count);
-      $file_url = 'uploads/' . $file_name;
+      // Если при загрузке картинки из дропзоны получена ошибка;
+      if ($_FILES['userpic-file-photo']['error'] != 0) {
+        $photo_link = $_POST['photo-link'];
+        $file_name = check_loaded_image($photo_link, $posts_count);
+        $file_url = 'uploads/' . $file_name;
+      // В случае, если была выполнена загрузка из дропзоны;
+      } else {
+        $file_name = $_FILES['userpic-file-photo']['name'];
+        $file_path = 'uploads/';
+        $file_url = 'uploads/' . $file_name;
+
+        move_uploaded_file($_FILES['userpic-file-photo']['tmp_name'], $file_path . $file_name);
+      }
+
       $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$file_name', '$file_url', 0, 1, 3)";
-
-
-      // print_r($_FILES); // Временно вывел массив с изображением;
     }
 
     if ($_POST['content-type'] == 4) {
