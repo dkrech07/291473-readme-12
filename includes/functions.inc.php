@@ -82,6 +82,27 @@ function get_filter_active($current_content_type_id, $content_type) {
   }
 }
 
+// Проверяет загружаемое по ссылке изображение;
+function check_loaded_image($photo_link, $posts_count) {
+  // Полуачет расширение изображения
+  $file = new SplFileInfo($photo_link);
+  $extension = $file->getExtension();
+
+  // Проверяет совпадает ли расширение загружаемого файла с одним из трех;
+  if ($extension == 'png' || 'jpg' || 'gif') {
+      $file_name = 'img-' . $posts_count . '.' . $extension;
+      $file_url = 'uploads/' . $file_name;
+      // Сохранает изображение на сервере;
+      file_put_contents($file_url, file_get_contents($photo_link));
+      // Возвращает ссылку на сохраненное изображение;
+      return $file_name;
+  }
+  // Вовращает false, если проверка на соответствие расширения файла не пройдена;
+  return false;
+}
+
+// Проверяет загружаемую ссылку на youtube;
+
 // function check_length_field($fields, $fields_map, $errors) {
 //   foreach ($fields as $field) {
 //     if (mb_strlen($_POST[$field]) > 70) {
@@ -133,10 +154,14 @@ function send_data() {
     if ($_POST['content-type'] == 3) {
       $title = $_POST['photo-heading'];
       $tags_line = $_POST['photo-tags'];
+      $photo_link = $_POST['photo-link'];
 
-      $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'rock-medium.jpg', 'img/rock-medium.jpg', 0, 1, 3)";
+      $file_name = check_loaded_image($photo_link, $posts_count);
+      $file_url = 'uploads/' . $file_name;
+      $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$file_name', '$file_url', 0, 1, 3)";
 
-      print_r($_FILES); // Временно вывел массив с изображением;
+
+      // print_r($_FILES); // Временно вывел массив с изображением;
     }
 
     if ($_POST['content-type'] == 4) {
@@ -179,7 +204,7 @@ function send_data() {
     }
 
     // Открыает страницу со созданным постом;
-    // header('Location: post.php?id=' . $posts_count); Временно закомментировал переход на страницу поста;
+    header('Location: post.php?id=' . $posts_count);
   }
 }
 
