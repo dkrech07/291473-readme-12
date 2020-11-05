@@ -31,6 +31,8 @@ $fields_map = [
     'quote-content' => 'Цитата. ',
     'quote-author' => 'Автор. ',
     'photo-heading' => 'Заголовок. ',
+    'photo-link' => 'Ссылка. ',
+    'userpic-file-photo' => 'Изображение. ',
     'video-heading' => 'Заголовок. ',
     'video-link' => 'Ссылка. ',
     'link-heading' => 'Заголовок. ',
@@ -38,7 +40,7 @@ $fields_map = [
 ];
 
 $errors = check_validity($current_content_type_id, $fields_map);
-// print_r($errors);
+print_r($errors);
 // print_r($_POST);
 
 // Получает выбранный тип конента ;
