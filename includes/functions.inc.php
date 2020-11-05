@@ -101,6 +101,16 @@ function check_loaded_image($photo_link, $posts_count) {
   return false;
 }
 
+// Проверяет ссылку на youtube-видео;
+function check_loaded_video($video_link) {
+    $check_video_format = filter_var($video_link, FILTER_VALIDATE_URL);
+    $check_video_link = check_youtube_url($video_link);
+
+    if ($check_video_format && $check_video_link) {
+        return $video_link;
+    }
+}
+
 // Проверяет загружаемую ссылку на youtube;
 
 // function check_length_field($fields, $fields_map, $errors) {
@@ -176,10 +186,12 @@ function send_data() {
 
     if ($_POST['content-type'] == 4) {
       $title = $_POST['video-heading'];
-      $video = $_POST['video-link'];
+      $video_link = $_POST['video-link'];
       $tags_line = $_POST['video-tags'];
 
-      $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 'https://www.youtube.com/watch?v=iKdu4Enctq4', 0, 1, 4)";
+      $video = check_loaded_video($video_link);
+
+      $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$video', '$video', 0, 1, 4)";
     }
 
     if ($_POST['content-type'] == 5) {
