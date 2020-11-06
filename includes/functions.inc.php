@@ -118,6 +118,7 @@ function check_loaded_video($video_link) {
 
 // Добаляет хештеги в таблицу хештегов / Не добавляет ничего, если хештегов нет;
 function get_hashtags($tags_line, $posts_count, $con) {
+            print($tags_line);
   if ($tags_line) {
       // Разделяет хештеги по пробелам;
       $tags = explode(' ', $tags_line);
@@ -182,7 +183,6 @@ function check_validity($current_content_type_id, $fields_map) {
       $title = $_POST['text-heading'];
       $content = $_POST['text-content'];
       $tags_line = $_POST['text-tags'];
-      get_hashtags($tags_line, $posts_count, $con);
       $post_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', 0, 1, 1)";
     }
   }
@@ -196,7 +196,6 @@ function check_validity($current_content_type_id, $fields_map) {
       $content = $_POST['quote-content'];
       $author = $_POST['quote-author'];
       $tags_line = $_POST['quote-tags'];
-      get_hashtags($tags_line, $posts_count, $con);
       $post_query = "INSERT INTO posts (id, date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', '$author', 0, 1, 2)";
     }
   }
@@ -209,6 +208,17 @@ function check_validity($current_content_type_id, $fields_map) {
     if (empty($_POST['photo-link']) && $_FILES['userpic-file-photo']['error'] != 0) {
       $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
     }
+
+    if (empty($errors)) {
+        $title = $_POST['photo-heading'];
+        $tags_line = $_POST['photo-tags'];
+        $photo_link = $_POST['photo-link'];
+
+        $file_name = check_loaded_image($photo_link, $posts_count);
+        $file_url = 'uploads/' . $file_name;
+
+        $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$file_name', '$file_url', 0, 1, 3)";
+    }
   }
 
   if ($_POST && $current_content_type_id == 4) {
@@ -218,13 +228,30 @@ function check_validity($current_content_type_id, $fields_map) {
     // Доп. проверка на формат ссылки;
     $check_video_format = filter_var($_POST['video-link'], FILTER_VALIDATE_URL);
     if (!$check_video_format) {
-      $errors['video-link'] = $fields_map['video-link'] . 'Неверный формат ссылки.';
+        $errors['video-link'] = $fields_map['video-link'] . 'Неверный формат ссылки.';
+    }
+
+    if (empty($errors)) {
+        $title = $_POST['video-heading'];
+        $video_link = $_POST['video-link'];
+        $tags_line = $_POST['video-tags'];
+        $video = check_loaded_video($video_link);
+
+        $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$video', '$video', 0, 1, 4)";
     }
   }
 
   if ($_POST && $current_content_type_id == 5) {
     $required_fields = ['link-heading', 'link-content',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
+
+    if (empty($errors)) {
+        $title = $_POST['link-heading'];
+        $link = $_POST['link-content'];
+        $tags_line = $_POST['photo-tags'];
+        print($tags_line);
+        $post_query = "INSERT INTO posts (id, date_add, title, content, link, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$link', '$link', 0, 1, 5)";
+    }
   }
 
   if (count($errors)) {
@@ -233,6 +260,7 @@ function check_validity($current_content_type_id, $fields_map) {
   }
 
   if (isset($post_query)) {
+    get_hashtags($tags_line, $posts_count, $con);
     // Записывает данные поста в БД;
     // mysqli_query($con, $post_query);
     // // Переходит на страницу с созданным постом;
