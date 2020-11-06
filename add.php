@@ -40,7 +40,7 @@ $fields_map = [
 ];
 
 $errors = check_validity($current_content_type_id, $fields_map);
-print_r($errors);
+// print_r($errors);
 // print_r($_POST);
 
 // Получает выбранный тип конента ;
