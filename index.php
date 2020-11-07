@@ -6,8 +6,6 @@ require_once('includes/functions.inc.php');
 $is_auth = 1;
 $user_name = 'Дмитрий';
 
-// Получает из параметра запроса тип сортировки; Этот пункт пока что что на паузе;
-$sorting_type = filter_input(INPUT_GET, 'sorting-type');
 // Подключается к БД;
 $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 // Получает спиок типов контента для дальнейшего вывода на странице;
@@ -20,8 +18,13 @@ if ($post_type) {
   $post_type = null;
   $post_type_query = null;
 }
+
+// Получает из параметра запроса тип сортировки; Этот пункт пока что что на паузе;
+$sorting_type = filter_input(INPUT_GET, 'sorting-type');
+
 // Получает список постов (в зависимости от выбранного типа контента);
 $posts = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ORDER BY p.views DESC');
+
 if (!$posts) {
   open_404_page($is_auth, $user_name);
 }

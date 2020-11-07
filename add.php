@@ -46,6 +46,10 @@ $errors = check_validity($current_content_type_id, $fields_map);
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');
 
+if (!$content_type) {
+  open_404_page($is_auth, $user_name);
+}
+
 // Передает данные из БД в шаблоны;
 $add_content = include_template('add-' . $content_type['class_name'] . '.php', [
     'content_type' => $content_type,

@@ -1,9 +1,10 @@
-const addingPostFilterElement = document.querySelector(`.adding-post__tabs`);
-const addingPostButtonElements = addingPostFilterElement.querySelectorAll(`.adding-post__tabs-link`);
+window.custom = {
+  getSorting : function(sortingElement) {
+    sortingElement.forEach(function(item) {
 
-addingPostButtonElements.forEach((item) => {
-
-  item.addEventListener('click', (evt) => {
-    window.location.href = item.href;
-  });
-});
+      item.addEventListener('click', (evt) => {
+        window.location.href = item.href;
+      });
+    });
+  },
+};

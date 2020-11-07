@@ -31,3 +31,4 @@ require_once('includes/functions.inc.php');
   </div>
 </div>
 <script src="js/custom.js"></script>
+<script src="js/custom-add.js"></script>

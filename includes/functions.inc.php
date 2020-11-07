@@ -84,11 +84,15 @@ function get_filter_active($current_content_type_id, $content_type) {
 
 // Проверяет загружаемое по ссылке изображение;
 function check_loaded_image($photo_link, $posts_count) {
+  $check_photo_link_format = filter_var($photo_link, FILTER_VALIDATE_URL);
+  if (!$check_photo_link_format) {
+    return false;
+  }
 
   $file = new SplFileInfo($photo_link);
   $extension = $file->getExtension();
 
-  if ($extension == 'png' || 'jpg' || 'gif') {
+  if ($extension == 'png' || $extension == 'jpg' || $extension == 'gif') {
       $file_name = 'img-' . $posts_count . '.' . $extension;
       $file_url = 'uploads/' . $file_name;
       file_put_contents($file_url, file_get_contents($photo_link));
@@ -185,12 +189,13 @@ function check_validity($current_content_type_id, $fields_map) {
   if ($_POST && $current_content_type_id == 3) {
     $required_fields = ['photo-heading',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
-    $check_photo_link_format = filter_var($_POST['photo-link'], FILTER_VALIDATE_URL);
 
-    // Доп. проверка на формат ссылки;
+    // Доп. проверка на формат ссылки / формата изображения;
+    $check_photo_link_format = filter_var($_POST['photo-link'], FILTER_VALIDATE_URL);
     if (!$check_photo_link_format) {
         $errors['photo-link'] = $fields_map['photo-link'] . 'Неверный формат ссылки.';
     }
+
     // Доп. проверка на случай, если поле для ссылки и дропзона пустые;
     if (empty($_POST['photo-link']) && $_FILES['userpic-file-photo']['error'] != 0) {
       $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
@@ -199,9 +204,9 @@ function check_validity($current_content_type_id, $fields_map) {
     if (empty($errors)) {
       $title = $_POST['photo-heading'];
       $tags_line = $_POST['photo-tags'];
+
       $file_name = check_loaded_image($_POST['photo-link'], $posts_count);
       $file_url = 'uploads/' . $file_name;
-
       $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$file_name', '$file_url', 0, 1, 3)";
 
       // Загрузка фотографии из дропзоны;
