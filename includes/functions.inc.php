@@ -105,11 +105,16 @@ function check_loaded_image($photo_link, $posts_count) {
 // Проверяет ссылку на youtube-видео;
 function check_loaded_video($video_link) {
     $check_video_format = filter_var($video_link, FILTER_VALIDATE_URL);
-    $check_video_link = check_youtube_url($video_link);
 
-    if ($check_video_format && $check_video_link) {
+    if ($check_video_format) {
+      $check_video_link = check_youtube_url($video_link);
+
+      if ($check_video_link === true) {
         return $video_link;
+      }
     }
+
+    return false;
 }
 
 // Получает хештеги для вывода в посте;
@@ -134,13 +139,13 @@ function get_hashtags($tags_line, $posts_count, $con) {
           $new_hastag_id = mysqli_num_rows(mysqli_query($con, $hastags_query)) + 1;
 
           // $hastags_query = "INSERT INTO hashtags (id, hashtag_name) VALUES ('$new_hastag_id', '$tag')";
-          $hastags_sql = "INSERT INTO hashtags (id, hashtag_name) VALUES (?, ?)";
-          $stmt = mysqli_prepare($con, $hastags_sql);
+          $hastags_query = "INSERT INTO hashtags (id, hashtag_name) VALUES (?, ?)";
+          $stmt = mysqli_prepare($con, $hastags_query);
           mysqli_stmt_bind_param($stmt, 'is', $new_hastag_id, $tag);
           mysqli_stmt_execute($stmt);
 
-          $hastags_id_post_sql = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (?, ?)";
-          $stmt = mysqli_prepare($con, $hastags_id_post_sql);
+          $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (?, ?)";
+          $stmt = mysqli_prepare($con, $hastags_id_post_query);
           mysqli_stmt_bind_param($stmt, 'ii', $new_hastag_id, $posts_count);
           mysqli_stmt_execute($stmt);
       }
@@ -176,14 +181,11 @@ function check_validity($current_content_type_id, $fields_map) {
       $views = 0;
       $post_author_id = 1;
       $content_type_id = 1;
-      // $post_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES ('$posts_count', '$date', '$title', '$content', 0, 1, 1)";
-      $sql = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $sql);
+
+      $post_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      $stmt = mysqli_prepare($con, $post_query);
       mysqli_stmt_bind_param($stmt, 'isssiii', $posts_count, $date, $title, $content, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
-      header('Location: post.php?id=' . $posts_count);
-
-      get_hashtags($tags_line, $posts_count, $con);
     }
   }
 
@@ -200,13 +202,10 @@ function check_validity($current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 2;
 
-      $sql = "INSERT INTO posts (id, date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $sql);
-      mysqli_stmt_bind_param($stmt, 'isssiii', $posts_count, $date, $title, $content, $author, $views, $post_author_id, $content_type_id);
+      $post_query = "INSERT INTO posts (id, date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $stmt = mysqli_prepare($con, $post_query);
+      mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $content, $author, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
-      header('Location: post.php?id=' . $posts_count);
-
-      get_hashtags($tags_line, $posts_count, $con);
     }
   }
 
@@ -236,13 +235,11 @@ function check_validity($current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 3;
 
-      $sql = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $sql);
+      $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $stmt = mysqli_prepare($con, $post_query);
       mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $file_name, $file_url, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
-      header('Location: post.php?id=' . $posts_count);
 
-      get_hashtags($tags_line, $posts_count, $con);
       // Загрузка фотографии из дропзоны;
       // $file_name = $_FILES['userpic-file-photo']['name'];
       // $file_path = 'uploads/';
@@ -256,28 +253,24 @@ function check_validity($current_content_type_id, $fields_map) {
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
     // Доп. проверка на формат ссылки;
-    $check_video_format = filter_var($_POST['video-link'], FILTER_VALIDATE_URL);
-    if (!$check_video_format) {
+    $video_link = $_POST['video-link'];
+    $video = check_loaded_video($video_link);
+    if (!$video) {
       $errors['video-link'] = $fields_map['video-link'] . 'Неверный формат ссылки.';
     }
 
     if (empty($errors)) {
       $title = $_POST['video-heading'];
-      $video_link = $_POST['video-link'];
       $tags_line = $_POST['video-tags'];
-      $video = check_loaded_video($video_link);
 
       $views = 0;
       $post_author_id = 1;
       $content_type_id = 4;
 
-      $sql = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $sql);
+      $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $stmt = mysqli_prepare($con, $post_query);
       mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $video, $video, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
-      header('Location: post.php?id=' . $posts_count);
-
-      get_hashtags($tags_line, $posts_count, $con);
     }
   }
 
@@ -294,33 +287,21 @@ function check_validity($current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 5;
 
-      $sql = "INSERT INTO posts (id, date_add, title, content, link, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $sql);
+      $post_query = "INSERT INTO posts (id, date_add, title, content, link, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $stmt = mysqli_prepare($con, $post_query);
       mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $link, $link, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
-      header('Location: post.php?id=' . $posts_count);
-
-      get_hashtags($tags_line, $posts_count, $con);
     }
   }
 
+  // Возвращает ошибки для вывода на странице формы;
   if ($_POST && count($errors)) {
       return $errors;
   }
 
-  // // Записывает данные поста в БД;
-  // if (isset($post_query)) {
-  //   // Записывает созданный пост в таблицу постов;
-  //   mysqli_query($con, $post_query);
-  //   // Записывает хештеги в таблицу хештегов / в таблицу с сопоставлением хештега и поста;
-  //   get_hashtags($tags_line, $posts_count, $con);
-  //   // Открыает страницу со созданным постом;
-  //   header('Location: post.php?id=' . $posts_count);
-  // }
-
-
-  // Записывает созданный пост в таблицу постов;
-  // get_hashtags($tags_line, $posts_count, $con);
-  // Открыает страницу со созданным постом;
-
+  // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
+  if ($_POST && count($errors) == 0) {
+    get_hashtags($tags_line, $posts_count, $con);
+    header('Location: post.php?id=' . $posts_count);
+  }
 }
