@@ -39,9 +39,8 @@ $fields_map = [
     'link-content' => 'Ссылка. ',
 ];
 
-$errors = check_validity($current_content_type_id, $fields_map);
-// print_r($errors);
-// print_r($_POST);
+// Получает список ошибок для вывода в шаблоне формы;
+$errors = check_validity($con, $current_content_type_id, $fields_map);
 
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');

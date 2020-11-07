@@ -85,18 +85,17 @@ function get_filter_active($current_content_type_id, $content_type) {
 // Проверяет загружаемое по ссылке изображение;
 function check_loaded_image($photo_link, $posts_count) {
   $check_photo_link_format = filter_var($photo_link, FILTER_VALIDATE_URL);
-  if (!$check_photo_link_format) {
-    return false;
-  }
 
-  $file = new SplFileInfo($photo_link);
-  $extension = $file->getExtension();
+  if ($check_photo_link_format) {
+    $file = new SplFileInfo($photo_link);
+    $extension = $file->getExtension();
 
-  if ($extension == 'png' || $extension == 'jpg' || $extension == 'gif') {
-      $file_name = 'img-' . $posts_count . '.' . $extension;
-      $file_url = 'uploads/' . $file_name;
-      file_put_contents($file_url, file_get_contents($photo_link));
-      return $file_name;
+    if ($extension == 'png' || $extension == 'jpg' || $extension == 'gif') {
+        $file_name = 'img-' . $posts_count . '.' . $extension;
+        $file_url = 'uploads/' . $file_name;
+        file_put_contents($file_url, file_get_contents($photo_link));
+        return $file_name;
+    }
   }
 
   return false;
@@ -104,17 +103,11 @@ function check_loaded_image($photo_link, $posts_count) {
 
 // Проверяет ссылку на youtube-видео;
 function check_loaded_video($video_link) {
-    $check_video_format = filter_var($video_link, FILTER_VALIDATE_URL);
-
-    if ($check_video_format) {
-      $check_video_link = check_youtube_url($video_link);
-
-      if ($check_video_link === true) {
-        return $video_link;
-      }
-    }
-
-    return false;
+  $check_video_format = filter_var($video_link, FILTER_VALIDATE_URL);
+  if ($check_video_format) {
+    return check_youtube_url($video_link);
+  }
+  return 'Видео по такой ссылке не найдено. Проверьте ссылку на видео';
 }
 
 // Получает хештеги для вывода в посте;
@@ -161,9 +154,8 @@ function check_empty_field($required_fields, $fields_map, $errors) {
   return $errors;
 }
 
-function check_validity($current_content_type_id, $fields_map) {
+function check_validity($con, $current_content_type_id, $fields_map) {
   date_default_timezone_set('Asia/Yekaterinburg');
-  $con = mysqli_connect('localhost', 'root', 'root','readme');
   $date = date("Y-m-d H:i:s");
   $posts_count_query = "SELECT id FROM posts";
   $posts_count = mysqli_num_rows(mysqli_query($con, $posts_count_query)) + 1;
@@ -174,7 +166,6 @@ function check_validity($current_content_type_id, $fields_map) {
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
     if (empty($errors)) {
-
       $title = $_POST['text-heading'];
       $content = $_POST['text-content'];
       $tags_line = $_POST['text-tags'];
@@ -213,24 +204,22 @@ function check_validity($current_content_type_id, $fields_map) {
     $required_fields = ['photo-heading',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
-    // Доп. проверка на формат ссылки / формата изображения;
-    $check_photo_link_format = filter_var($_POST['photo-link'], FILTER_VALIDATE_URL);
-    if (!$check_photo_link_format) {
-        $errors['photo-link'] = $fields_map['photo-link'] . 'Неверный формат ссылки.';
-    }
-
     // Доп. проверка на случай, если поле для ссылки и дропзона пустые;
     if (empty($_POST['photo-link']) && $_FILES['userpic-file-photo']['error'] != 0) {
       $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
     }
 
     if (empty($errors)) {
+      // Доп. проверка на формат ссылки / формата изображения;
+      $check_photo_link_format = filter_var($_POST['photo-link'], FILTER_VALIDATE_URL);
+      if (!$check_photo_link_format) {
+          $errors['photo-link'] = $fields_map['photo-link'] . 'Неверный формат ссылки.';
+      }
+
       $title = $_POST['photo-heading'];
       $tags_line = $_POST['photo-tags'];
-
       $file_name = check_loaded_image($_POST['photo-link'], $posts_count);
       $file_url = 'uploads/' . $file_name;
-
       $views = 0;
       $post_author_id = 1;
       $content_type_id = 3;
@@ -252,37 +241,41 @@ function check_validity($current_content_type_id, $fields_map) {
     $required_fields = ['video-heading', 'video-link',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
-    // Доп. проверка на формат ссылки;
-    $video_link = $_POST['video-link'];
-    $video = check_loaded_video($video_link);
-    if (!$video) {
-      $errors['video-link'] = $fields_map['video-link'] . 'Неверный формат ссылки.';
-    }
-
     if (empty($errors)) {
+      // Доп. проверка на формат ссылки;
+      $video_link = $_POST['video-link'];
+      $check_video_link = check_loaded_video($video_link);
+      if (check_loaded_video($video_link) != 1) {
+        $errors['video-link'] = $fields_map['video-link']  . $check_video_link . '.';
+      }
+
       $title = $_POST['video-heading'];
       $tags_line = $_POST['video-tags'];
-
       $views = 0;
       $post_author_id = 1;
       $content_type_id = 4;
 
       $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $video, $video, $views, $post_author_id, $content_type_id);
+      mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $video_link, $video_link, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
     }
   }
 
   if ($_POST && $current_content_type_id == 5) {
     $required_fields = ['link-heading', 'link-content',];
+    $link = $_POST['link-content'];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
     if (empty($errors)) {
-      $title = $_POST['link-heading'];
-      $link = $_POST['link-content'];
-      $tags_line = $_POST['link-tags'];
+      // Доп. проверка на формат ссылки;
+      $check_link_format = filter_var($link, FILTER_VALIDATE_URL);
+      if (!$check_link_format) {
+        $errors['link-content'] = $fields_map['link-content'] . 'Неверный формат ссылки.';;
+      }
 
+      $title = $_POST['link-heading'];
+      $tags_line = $_POST['link-tags'];
       $views = 0;
       $post_author_id = 1;
       $content_type_id = 5;
