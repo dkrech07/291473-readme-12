@@ -7,7 +7,7 @@
             <b class="popular__sorting-caption sorting__caption">Сортировка:</b>
             <ul class="popular__sorting-list sorting__list">
                 <li class="sorting__item sorting__item--popular">
-                    <a class="sorting__link <?= $sorting_type == 'popular' ? 'sorting__link--active' : '' ?> <?= $sorting_direction == 'asc' ? 'sorting__link--reverse' : '' ?>" href="?sorting-type=popular">
+                    <a class="sorting__link <?= $sorting_type == 'popular' ? 'sorting__link--active' : '' ?> <?= $sorting_direction == 'asc' ? 'sorting__link--reverse' : '' ?>" href="?sorting-type=popular&sorting-direction=<?= $sorting_direction !== 'asc' ? 'asc' : 'desc' ?>">
                         <span>Популярность</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link <?= $sorting_type == 'likes' ? 'sorting__link--active' : '' ?> <?= $sorting_direction == 'asc' ? 'sorting__link--reverse' : '' ?>" href="?sorting-type=likes">
+                    <a class="sorting__link <?= $sorting_type == 'likes' ? 'sorting__link--active' : '' ?> <?= $sorting_direction == 'asc' ? 'sorting__link--reverse' : '' ?>" href="?sorting-type=likes&sorting-direction=<?= $sorting_direction !== 'asc' ? 'asc' : 'desc' ?>">
                         <span>Лайки</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="sorting__item">
-                    <a class="sorting__link <?= $sorting_type == 'date' ? 'sorting__link--active' : '' ?> <?= $sorting_direction == 'asc' ? 'sorting__link--reverse' : '' ?>" href="?sorting-type=date">
+                    <a class="sorting__link <?= $sorting_type == 'date' ? 'sorting__link--active' : '' ?> <?= $sorting_direction == 'asc' ? 'sorting__link--reverse' : '' ?>" href="?sorting-type=date&sorting-direction=<?= $sorting_direction !== 'asc' ? 'asc' : 'desc' ?>">
                         <span>Дата</span>
                         <svg class="sorting__icon" width="10" height="12">
                             <use xlink:href="#icon-sort"></use>
