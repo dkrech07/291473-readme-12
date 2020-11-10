@@ -11,14 +11,14 @@ $con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('О
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 
-// Получает ID типа конента из параметра запроса (временно задал значение '1');
+// Получает ID типа конента из параметра запроса;
 $current_content_type_id = filter_input(INPUT_GET, 'post_type', FILTER_VALIDATE_INT);
 
 // Получает ID типа контента, когда в адресной строке нет параметра запроса:
 // при первом открытии add.php, после отправки формы и перехода на add.php;
 if (!$current_content_type_id) {
-    if ($_POST) {
-      $current_content_type_id = $_POST['content-type'];
+    if (isset($_POST['content-type'])) {
+      $current_content_type_id = intval($_POST['content-type']);
     } else {
       $current_content_type_id = 1;
     }

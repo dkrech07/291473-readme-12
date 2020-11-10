@@ -83,18 +83,17 @@ function get_filter_active($current_content_type_id, $content_type) {
 }
 
 // Проверяет загружаемое по ссылке изображение;
-function check_loaded_image($photo_link, $posts_count) {
+function check_loaded_image($photo_link) {
   $check_photo_link_format = filter_var($photo_link, FILTER_VALIDATE_URL);
 
   if ($check_photo_link_format) {
-    $file = new SplFileInfo($photo_link);
-    $extension = $file->getExtension();
+    $img_format = exif_imagetype($check_photo_link_format);
 
-    if ($extension == 'png' || $extension == 'jpg' || $extension == 'gif') {
-        $file_name = 'img-' . $posts_count . '.' . $extension;
-        $file_url = 'uploads/' . $file_name;
-        file_put_contents($file_url, file_get_contents($photo_link));
-        return $file_name;
+    if ($img_format == IMAGETYPE_PNG || $img_format == IMAGETYPE_JPEG || $img_format == IMAGETYPE_GIF) {
+      $file_name = htmlspecialchars(basename($photo_link));
+      $file_url = 'uploads/' . $file_name;
+      file_put_contents($file_url, file_get_contents($photo_link));
+      return $file_name;
     }
   }
 
@@ -210,15 +209,15 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     }
 
     if (empty($errors)) {
+      $file_name = check_loaded_image($_POST['photo-link']);
       // Доп. проверка на формат ссылки / формата изображения;
       $check_photo_link_format = filter_var($_POST['photo-link'], FILTER_VALIDATE_URL);
-      if (!$check_photo_link_format) {
+      if (!$check_photo_link_format || !$file_name) {
           $errors['photo-link'] = $fields_map['photo-link'] . 'Неверный формат ссылки.';
       }
 
       $title = $_POST['photo-heading'];
       $tags_line = $_POST['photo-tags'];
-      $file_name = check_loaded_image($_POST['photo-link'], $posts_count);
       $file_url = 'uploads/' . $file_name;
       $views = 0;
       $post_author_id = 1;
