@@ -111,14 +111,22 @@ function check_loaded_video($video_link) {
 
 // Получает хештеги для вывода в посте;
 function get_hastag_name($con, $hashtags_id) {
-  $post_hashtags = [];
-
+  $hashtags_ids = [];
   foreach ($hashtags_id as $hashtag_index => $hashtag_id) {
-    $hashtags_name = select_query($con, 'SELECT hashtag_name FROM hashtags WHERE id = ' . $hashtag_id['hashtag_id']);
-    $post_hashtags[$hashtag_index] = $hashtags_name[0]['hashtag_name'];
+    array_push($hashtags_ids, $hashtags_id[$hashtag_index]['hashtag_id']);
   }
 
-  return $post_hashtags;
+  if (!empty($hashtags_ids)) {
+    $ids_list = implode(",", $hashtags_ids);
+    $hashtags_names = select_query($con, 'SELECT hashtag_name FROM hashtags WHERE id IN (' . $ids_list . ')');
+
+    $hashtags_list = [];
+    foreach ($hashtags_names as $name_number => $name) {
+      array_push($hashtags_list, $name['hashtag_name']);
+    }
+
+    return array_combine($hashtags_ids, $hashtags_list);
+  }
 }
 
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
