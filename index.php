@@ -25,22 +25,16 @@ $sorting_direction = filter_input(INPUT_GET, 'sorting-direction');
 
 if (!$sorting_direction) {
   $sorting_type == 'popular';
-  $sorting_direction = 'asc';
-  $sorting_order = 'ORDER BY p.views ASC';
+  $sorting_direction = 'desc';
+  $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
 }
 
-if ($sorting_type == 'popular' && $sorting_direction == 'asc') {
-  $sorting_order = 'ORDER BY p.views ASC';
-} else if ($sorting_type == 'popular' && $sorting_direction == 'desc') {
-  $sorting_order = 'ORDER BY p.views DESC';
-} else if ($sorting_type == 'likes' && $sorting_direction == 'asc') {
-  $sorting_order = 'ORDER BY p.views ASC';
-} else if ($sorting_type == 'likes' && $sorting_direction == 'desc') {
-  $sorting_order = 'ORDER BY p.views DESC';
-} else if ($sorting_type == 'date' && $sorting_direction == 'asc') {
-  $sorting_order = 'ORDER BY p.date_add ASC';
-} else if ($sorting_type == 'date' && $sorting_direction == 'desc') {
-  $sorting_order = 'ORDER BY p.date_add DESC';
+if ($sorting_type == 'popular') {
+  $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
+} else if ($sorting_type == 'likes') {
+  $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
+} else if ($sorting_type == 'date') {
+  $sorting_order = 'ORDER BY p.date_add ' . $sorting_direction;
 }
 
 // SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN likes l ON l.post_id = p.id INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views ASC;
