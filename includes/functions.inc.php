@@ -165,8 +165,8 @@ function check_empty_field($required_fields, $fields_map, $errors) {
 function check_validity($con, $current_content_type_id, $fields_map) {
   date_default_timezone_set('Asia/Yekaterinburg');
   $date = date("Y-m-d H:i:s");
-  $posts_count_query = "SELECT id FROM posts";
-  $posts_count = mysqli_num_rows(mysqli_query($con, $posts_count_query)) + 1;
+  // $posts_count_query = "SELECT id FROM posts";
+  // $posts_count = mysqli_num_rows(mysqli_query($con, $posts_count_query)) + 1;
   $errors = [];
 
   if ($_POST && $current_content_type_id == 1) {
@@ -181,9 +181,9 @@ function check_validity($con, $current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 1;
 
-      $post_query = "INSERT INTO posts (id, date_add, title, content, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+      $post_query = "INSERT INTO posts (date_add, title, content, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'isssiii', $posts_count, $date, $title, $content, $views, $post_author_id, $content_type_id);
+      mysqli_stmt_bind_param($stmt, 'sssiii', $date, $title, $content, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
     }
   }
@@ -201,9 +201,9 @@ function check_validity($con, $current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 2;
 
-      $post_query = "INSERT INTO posts (id, date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $post_query = "INSERT INTO posts (date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $content, $author, $views, $post_author_id, $content_type_id);
+      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $content, $author, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
     }
   }
@@ -232,9 +232,9 @@ function check_validity($con, $current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 3;
 
-      $post_query = "INSERT INTO posts (id, date_add, title, content, image, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $post_query = "INSERT INTO posts (date_add, title, content, image, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $file_name, $file_url, $views, $post_author_id, $content_type_id);
+      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $file_name, $file_url, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
 
       // Загрузка фотографии из дропзоны;
@@ -263,9 +263,9 @@ function check_validity($con, $current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 4;
 
-      $post_query = "INSERT INTO posts (id, date_add, title, content, video, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $post_query = "INSERT INTO posts (date_add, title, content, video, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $video_link, $video_link, $views, $post_author_id, $content_type_id);
+      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $video_link, $video_link, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
     }
   }
@@ -288,9 +288,9 @@ function check_validity($con, $current_content_type_id, $fields_map) {
       $post_author_id = 1;
       $content_type_id = 5;
 
-      $post_query = "INSERT INTO posts (id, date_add, title, content, link, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+      $post_query = "INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
       $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'issssiii', $posts_count, $date, $title, $link, $link, $views, $post_author_id, $content_type_id);
+      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $link, $link, $views, $post_author_id, $content_type_id);
       mysqli_stmt_execute($stmt);
     }
   }
@@ -302,6 +302,9 @@ function check_validity($con, $current_content_type_id, $fields_map) {
 
   // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
   if ($_POST && count($errors) == 0) {
+
+    $posts_count = select_query($con, "SELECT LAST_INSERT_ID()", 'row');
+    // print_r($posts_count);
     get_hashtags($tags_line, $posts_count, $con);
     header('Location: post.php?id=' . $posts_count);
   }
