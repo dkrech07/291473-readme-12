@@ -165,11 +165,9 @@ function check_empty_field($required_fields, $fields_map, $errors) {
 function check_validity($con, $current_content_type_id, $fields_map) {
   date_default_timezone_set('Asia/Yekaterinburg');
   $date = date("Y-m-d H:i:s");
-  // $posts_count_query = "SELECT id FROM posts";
-  // $posts_count = mysqli_num_rows(mysqli_query($con, $posts_count_query)) + 1;
   $errors = [];
 
-  if ($_POST && $current_content_type_id == 1) {
+  if ($current_content_type_id == 1) {
     $required_fields = ['text-heading', 'text-content',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
@@ -188,7 +186,7 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     }
   }
 
-  if ($_POST && $current_content_type_id == 2) {
+  if ($current_content_type_id == 2) {
     $required_fields = ['quote-heading', 'quote-content', 'quote-author',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
@@ -208,7 +206,7 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     }
   }
 
-  if ($_POST && $current_content_type_id == 3) {
+  if ($current_content_type_id == 3) {
     $required_fields = ['photo-heading',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
@@ -245,7 +243,7 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     }
   }
 
-  if ($_POST && $current_content_type_id == 4) {
+  if ($current_content_type_id == 4) {
     $required_fields = ['video-heading', 'video-link',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
@@ -270,7 +268,7 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     }
   }
 
-  if ($_POST && $current_content_type_id == 5) {
+  if ($current_content_type_id == 5) {
     $required_fields = ['link-heading', 'link-content',];
     $link = $_POST['link-content'];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
@@ -296,15 +294,13 @@ function check_validity($con, $current_content_type_id, $fields_map) {
   }
 
   // Возвращает ошибки для вывода на странице формы;
-  if ($_POST && count($errors)) {
+  if ($_POST && !empty($errors)) {
       return $errors;
   }
 
   // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
-  if ($_POST && count($errors) == 0) {
-
-    $posts_count = select_query($con, "SELECT LAST_INSERT_ID()", 'row');
-    // print_r($posts_count);
+  if (empty($errors)) {
+    $posts_count = select_query($con, "SELECT LAST_INSERT_ID()", "row");
     get_hashtags($tags_line, $posts_count, $con);
     header('Location: post.php?id=' . $posts_count);
   }

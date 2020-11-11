@@ -19,7 +19,7 @@ if ($post_type) {
   $post_type_query = null;
 }
 
-// Получает из параметра запроса тип сортировки; Этот пункт пока что что на паузе;
+// Получает из параметра запроса тип сортировки;
 $sorting_type = filter_input(INPUT_GET, 'sorting-type');
 $sorting_direction = filter_input(INPUT_GET, 'sorting-direction');
 
