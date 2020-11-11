@@ -35,9 +35,11 @@
           <span class="post__view">500 просмотров</span>
         </div>
         <ul class="post__tags">
+        <?php if ($post_hashtags): ?>
           <?php foreach($post_hashtags as $post_hashtag): ?>
           <li><a href="#">#<?= $post_hashtag ?></a></li>
           <?php endforeach; ?>
+        <?php endif; ?>
         </ul>
         <div class="comments">
           <form class="comments__form form" action="#" method="post">
