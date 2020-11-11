@@ -75,7 +75,7 @@ CREATE TABLE messages (
 CREATE TABLE hashtags (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
   hashtag_name VARCHAR(128),
-  INDEX c_hashtag_name(hashtag_name)
+  UNIQUE INDEX c_hashtag_name(hashtag_name)
 );
 
 CREATE TABLE post_hashtags (

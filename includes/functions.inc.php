@@ -132,23 +132,24 @@ function get_hastag_name($con, $hashtags_id) {
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
 function get_hashtags($tags_line, $posts_count, $con) {
   if ($tags_line) {
-      $tags = explode(' ', $tags_line);
-      foreach ($tags as $tag_key => $tag) {
+    $tags = explode(' ', $tags_line);
+    foreach ($tags as $tag_key => $tag) {
 
-          $hastags_query = "SELECT id FROM hashtags";
-          $new_hastag_id = mysqli_num_rows(mysqli_query($con, $hastags_query)) + 1;
+      // Сохраняет теги в таблицу hashtags (id тегов и тегами);
+      $hastags_query = "INSERT IGNORE INTO hashtags (hashtag_name) VALUES (?)";
+      $stmt = mysqli_prepare($con, $hastags_query);
+      mysqli_stmt_bind_param($stmt, 's', $tag);
+      mysqli_stmt_execute($stmt);
 
-          // $hastags_query = "INSERT INTO hashtags (id, hashtag_name) VALUES ('$new_hastag_id', '$tag')";
-          $hastags_query = "INSERT INTO hashtags (id, hashtag_name) VALUES (?, ?)";
-          $stmt = mysqli_prepare($con, $hastags_query);
-          mysqli_stmt_bind_param($stmt, 'is', $new_hastag_id, $tag);
-          mysqli_stmt_execute($stmt);
+      // Получает id созданных хештегов;
+      $new_hastag_id = select_query($con, "SELECT id FROM hashtags WHERE hashtag_name = '$tag'", 'row');
 
-          $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (?, ?)";
-          $stmt = mysqli_prepare($con, $hastags_id_post_query);
-          mysqli_stmt_bind_param($stmt, 'ii', $new_hastag_id, $posts_count);
-          mysqli_stmt_execute($stmt);
-      }
+      // Сохганяет id созданных тегов и id поста в котором эти теги созданы;
+      $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (?, ?)";
+      $stmt = mysqli_prepare($con, $hastags_id_post_query);
+      mysqli_stmt_bind_param($stmt, 'ii', $new_hastag_id, $posts_count);
+      mysqli_stmt_execute($stmt);
+    }
   }
 }
 
