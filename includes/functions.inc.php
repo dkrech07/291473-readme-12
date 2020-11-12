@@ -294,14 +294,12 @@ function check_validity($con, $current_content_type_id, $fields_map) {
   }
 
   // Возвращает ошибки для вывода на странице формы;
-  if ($_POST && !empty($errors)) {
+  if (!empty($errors)) {
       return $errors;
   }
 
   // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
-  if (empty($errors)) {
-    $posts_count = select_query($con, "SELECT LAST_INSERT_ID()", "row");
-    get_hashtags($tags_line, $posts_count, $con);
-    header('Location: post.php?id=' . $posts_count);
-  }
+  $posts_count = $con->insert_id;
+  get_hashtags($tags_line, $posts_count, $con);
+  header('Location: post.php?id=' . $posts_count);
 }

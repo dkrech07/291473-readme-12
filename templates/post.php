@@ -35,7 +35,7 @@
           <span class="post__view">500 просмотров</span>
         </div>
         <ul class="post__tags">
-        <?php if ($post_hashtags): ?>
+        <?php if (!empty($post_hashtags)): ?>
           <?php foreach($post_hashtags as $post_hashtag): ?>
           <li><a href="#">#<?= $post_hashtag ?></a></li>
           <?php endforeach; ?>
