@@ -131,6 +131,28 @@ function get_hastag_name($con, $hashtags_id) {
 
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
 function get_hashtags($tags_line, $posts_count, $con) {
+    $incoming_tags = explode(' ', $tags_line); // Тут будет проверка пользовательских тегов тега;
+    $verified_tags = "'" . implode ( "', '", $incoming_tags ) . "'";
+
+    // Получает список совпадающих хештегов из БД;
+    $old_tags = select_query($con, "SELECT * FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
+
+    // Сохраняет совпадающие хештеги в массив;
+    $saved_tags = [];
+    foreach ($old_tags as $old_tag_number => $old_tag) {
+        array_push($saved_tags, $old_tag['hashtag_name']);
+    }
+
+    // Получает хештеги, которых нет в БД;
+    $new_tags = array_diff($incoming_tags, $saved_tags);
+
+    print_r($new_tags);
+    print('<br>');
+    print_r($old_tags);
+
+    // Добавляет новые хештеги (которых нет в таблице hashtags) в массив;
+    // INSERT IGNORE INTO hashtags (hashtag_name) VALUES (имя1, имя2);
+
   if ($tags_line) {
     $tags = explode(' ', $tags_line);
     foreach ($tags as $tag_key => $tag) {
@@ -301,5 +323,5 @@ function check_validity($con, $current_content_type_id, $fields_map) {
   // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
   $posts_count = $con->insert_id;
   get_hashtags($tags_line, $posts_count, $con);
-  header('Location: post.php?id=' . $posts_count);
+  // header('Location: post.php?id=' . $posts_count);
 }
