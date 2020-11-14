@@ -131,89 +131,36 @@ function get_hastag_name($con, $hashtags_id) {
 
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
 function get_hashtags($tags_line, $posts_count, $con) {
-    $incoming_tags = explode(' ', $tags_line); // Тут будет проверка пользовательских тегов;
-    $verified_tags = "'" . implode ( "', '", $incoming_tags ) . "'";
-
-    // Получает список совпадающих хештегов из БД;
-    $old_tags = select_query($con, "SELECT * FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
-
-    // Сохраняет совпадающие хештеги в массив;
-    $saved_tags = [];
-    foreach ($old_tags as $old_tag_number => $old_tag) {
-        array_push($saved_tags, $old_tag['hashtag_name']);
+    $incoming_tags = explode(' ', $tags_line);
+    // Проверяет хештеги на наличие символов/заполнение;
+    foreach ($incoming_tags as $incoming_tags_number => $incoming_tag) {
+      $verification_result = preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
     }
-
-    // Получает хештеги, которых нет в БД;
-    $new_tags = "('" . implode ( "'), ('", array_diff($incoming_tags, $saved_tags) ) . "')";
-
-    // И записывает их в таблицу hashtags;
-    mysqli_query($con, "INSERT IGNORE INTO hashtags (hashtag_name) VALUES $new_tags");
-
-    // Получает id хештегов записанных в таблицу;
-    $new_tags_ids = select_query($con, "SELECT id FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
-
-    $new_ids = [];
-    foreach ($new_tags_ids as $tags_nubmer => $tag_id) {
-      $new_ids[$tags_nubmer] = $new_tags_ids[$tags_nubmer]['id'];
+    if ($verification_result) {
+      $verified_tags = "'" . implode ( "', '", $incoming_tags ) . "'";
+      // Получает список совпадающих хештегов из БД;
+      $old_tags = select_query($con, "SELECT * FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
+      // Сохраняет совпадающие (уже сохраненные в БД) хештеги в массив;
+      $already_saved_tags = [];
+      foreach ($old_tags as $old_tag_number => $old_tag) {
+          array_push($already_saved_tags, $old_tag['hashtag_name']);
+      }
+      // Получает хештеги, которых нет в БД;
+      $new_tags = "('" . implode ( "'), ('", array_diff($incoming_tags, $already_saved_tags) ) . "')";
+      // И записывает их в таблицу hashtags;
+      mysqli_query($con, "INSERT IGNORE INTO hashtags (hashtag_name) VALUES $new_tags");
+      // Получает id хештегов записанных в таблицу;
+      $new_tags_ids = select_query($con, "SELECT id FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
+      // Сохраняет id хештегов текущего поста в массив;
+      $new_ids = [];
+      foreach ($new_tags_ids as $tags_nubmer => $tag_id) {
+        $new_ids[$tags_nubmer] = $new_tags_ids[$tags_nubmer]['id'];
+      }
+      // Формирует строку с id хештегов и id поста для последующей записи таблицу post_hashtags;
+      $new_ids_list = '(' . implode ( ', '. $posts_count . '), ' . ' (', $new_ids) . ', ' . $posts_count . ')';
+      // Сохраняет id хештегов и постов в таблицу post_hashtags;
+      mysqli_query($con, "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES $new_ids_list");
     }
-
-    $new_ids_list = '(' . implode ( ', '. $posts_count . '), ' . ' (', $new_ids) . ', ' . $posts_count . ')';
-
-    mysqli_query($con, "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES $new_ids_list");
-
-    // print_r($new_ids_list);
-    // print('<br>');
-    // print($posts_count);
-
-
-    // $new_tags =
-    // $tags_and_post =
-
-
-    // $new_ids = [];
-
-    // $new_ids_list = implode ( ", ", $new_ids );
-    // $new_ids_list = "('" . implode ( "'), ('", $new_ids ) . "')";
-
-    // print('<br>');
-    // print($posts_count);
-
-    // $new_tags_ids = "('" . implode ( "'), ('", $new_tags_ids_query) . "')";
-    // print_r($new_ids_list);
-    // // Сохраняет id созданных тегов и id поста в котором эти теги созданы в таблицу post_hashtags;
-    // mysqli_query($con, "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES ($new_ids_list), ($posts_count)");
-    // mysqli_query($con, "INSERT IGNORE INTO post_hashtags (hashtag_id, post_id) VALUES ('500'), ('550')");
-    // mysqli_query($con, "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (354, 5), (353, 5), (355, 5)");
-
-
-
-    // print_r($old_tags);
-    // print_r('<br>');
-    // print_r($new_tags);
-
-    // Добавляет новые хештеги (которых нет в таблице hashtags) в массив;
-    // INSERT IGNORE INTO hashtags (hashtag_name) VALUES (имя1, имя2);
-
-  // if ($tags_line) {
-  //   $tags = explode(' ', $tags_line);
-  //   foreach ($tags as $tag_key => $tag) {
-  //
-  //     // Сохраняет теги в таблицу hashtags (id тегов и тегами);
-  //     $hastags_query = "INSERT IGNORE INTO hashtags (hashtag_name) VALUES (?)";
-  //     $stmt = mysqli_prepare($con, $hastags_query);
-  //     mysqli_stmt_bind_param($stmt, 's', $tag);
-  //     mysqli_stmt_execute($stmt);
-  //
-  //     // Получает id созданных хештегов;
-  //     $new_hastag_id = select_query($con, "SELECT id FROM hashtags WHERE hashtag_name = '$tag'", 'row');
-  //
-  //     // Сохганяет id созданных тегов и id поста в котором эти теги созданы;
-  //     $hastags_id_post_query = "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES (?, ?)";
-  //     $stmt = mysqli_prepare($con, $hastags_id_post_query);
-  //     mysqli_stmt_bind_param($stmt, 'ii', $new_hastag_id, $posts_count);
-  //     mysqli_stmt_execute($stmt);
-  //   }
-  // }
 }
 
 function check_empty_field($required_fields, $fields_map, $errors) {
