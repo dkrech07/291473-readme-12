@@ -109,8 +109,18 @@ function check_loaded_video($video_link) {
   return 'Видео по такой ссылке не найдено. Проверьте ссылку на видео';
 }
 
+// Получает id хештегов по именам;;
+function get_hashtags_ids($con, $post_tags_names) {
+  return select_query($con, "SELECT id FROM hashtags WHERE (hashtag_name) IN ($post_tags_names)");
+}
+
+// Получает названия хештегов по id;
+function get_hashtags_names($con, $post_tags_ids){
+  return select_query($con, "SELECT hashtag_name FROM hashtags WHERE (id) IN ($post_tags_ids)");
+}
+
 // Получает хештеги для вывода в посте;
-function get_hastag_name($con, $hashtags_id) {
+function get_hashtag_name($con, $hashtags_id) {
   $hashtags_ids = [];
   foreach ($hashtags_id as $hashtag_index => $hashtag_id) {
     array_push($hashtags_ids, $hashtags_id[$hashtag_index]['hashtag_id']);
@@ -118,13 +128,12 @@ function get_hastag_name($con, $hashtags_id) {
 
   if (!empty($hashtags_ids)) {
     $ids_list = implode(",", $hashtags_ids);
-    $hashtags_names = select_query($con, 'SELECT hashtag_name FROM hashtags WHERE id IN (' . $ids_list . ')');
+    $hashtags_names = get_hashtags_names($con, $ids_list);
 
     $hashtags_list = [];
     foreach ($hashtags_names as $name_number => $name) {
       array_push($hashtags_list, $name['hashtag_name']);
     }
-
     return array_combine($hashtags_ids, $hashtags_list);
   }
 }
@@ -134,7 +143,8 @@ function get_hashtags($tags_line, $posts_count, $con) {
     $incoming_tags = explode(' ', $tags_line);
     // Проверяет хештеги на наличие символов/заполнение;
     foreach ($incoming_tags as $incoming_tags_number => $incoming_tag) {
-      $verification_result = preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
+      // $verification_result = preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
+      $verification_result = 1;
     }
     if ($verification_result) {
       $verified_tags = "'" . implode ( "', '", $incoming_tags ) . "'";
@@ -150,7 +160,7 @@ function get_hashtags($tags_line, $posts_count, $con) {
       // И записывает их в таблицу hashtags;
       mysqli_query($con, "INSERT IGNORE INTO hashtags (hashtag_name) VALUES $new_tags");
       // Получает id хештегов записанных в таблицу;
-      $new_tags_ids = select_query($con, "SELECT id FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
+      $new_tags_ids = get_hashtags_ids($con, $verified_tags);
       // Сохраняет id хештегов текущего поста в массив;
       $new_ids = [];
       foreach ($new_tags_ids as $tags_nubmer => $tag_id) {

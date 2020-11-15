@@ -33,6 +33,7 @@ CREATE TABLE posts (
   views INT UNSIGNED NOT NULL DEFAULT 0,
   post_author_id INT UNSIGNED NOT NULL,
   content_type_id INT UNSIGNED NOT NULL,
+  likes_count INT,
   FOREIGN KEY (post_author_id) REFERENCES users(id),
   FOREIGN KEY (content_type_id) REFERENCES content_types(id)
 );

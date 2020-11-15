@@ -38,6 +38,7 @@ if ($sorting_type == 'popular') {
   $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
 }
 
+// SELECT COUNT(*) FROM likes WHERE (post_id) IN (1, 2, 3, 4) GROUP BY post_id;
 // SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN likes l ON l.post_id = p.id INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views ASC;
 // SELECT COUNT(*) FROM likes WHERE likes.post_id = 1;
 // SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN likes l ON l.post_id = p.id INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views ASC;

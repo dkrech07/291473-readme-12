@@ -40,7 +40,16 @@ SELECT * FROM posts WHERE post_author_id = 1;
 SELECT comments.content, users.login FROM comments INNER JOIN users ON users.id = comments.comment_author_id WHERE post_id = 1;
 
 -- Добавляет лайк к посту;
-INSERT INTO likes (like_author_id, post_id) VALUES (2, 1);
+INSERT INTO likes (like_author_id, post_id) VALUES (1, 1);
+INSERT INTO likes (like_author_id, post_id) VALUES (2, 2);
+INSERT INTO likes (like_author_id, post_id) VALUES (3, 3);
+INSERT INTO likes (like_author_id, post_id) VALUES (4, 1);
+INSERT INTO likes (like_author_id, post_id) VALUES (5, 2);
+INSERT INTO likes (like_author_id, post_id) VALUES (1, 2);
+INSERT INTO likes (like_author_id, post_id) VALUES (2, 3);
+INSERT INTO likes (like_author_id, post_id) VALUES (3, 4);
+INSERT INTO likes (like_author_id, post_id) VALUES (4, 5);
+INSERT INTO likes (like_author_id, post_id) VALUES (5, 1);
 
 -- Подписывается на пользователя;
 INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 2);

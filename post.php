@@ -23,7 +23,7 @@ if (!$post) {
 // Получает id хештегов по id поста;
 $hashtags_id = select_query($con, 'SELECT hashtag_id FROM post_hashtags WHERE post_id = ' . $post['id']);
 // Получает текст хештгов по id поста;
-$post_hashtags = get_hastag_name($con, $hashtags_id);
+$post_hashtags = get_hashtag_name($con, $hashtags_id);
 // Получает время регистрации пользователя;
 $registration_time = get_post_interval($post['date_add'], 'на сайте');
 // Получает id автора поста;
