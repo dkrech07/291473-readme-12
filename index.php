@@ -31,7 +31,7 @@ if (!$sorting_direction) {
 if ($sorting_type == 'popular') {
   $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
 } else if ($sorting_type == 'likes') {
-  $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
+  $sorting_order = 'ORDER BY p.likes_count ' . $sorting_direction;
 } else if ($sorting_type == 'date') {
   $sorting_order = 'ORDER BY p.date_add ' . $sorting_direction;
 } else {

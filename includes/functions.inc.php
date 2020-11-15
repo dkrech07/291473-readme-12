@@ -231,10 +231,11 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
     // Доп. проверка на случай, если поле для ссылки и дропзона пустые;
-    if (empty($_POST['photo-link']) && $_FILES['userpic-file-photo']['error'] != 0) {
-      $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
-    }
-
+    // Временно закомментировал проверку;
+    // if (empty($_POST['photo-link']) && $_FILES['userpic-file-photo']['error'] != 0) {
+    //   $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
+    // }
+    print_r($_FILES);
     if (empty($errors)) {
       $file_name = check_loaded_image($_POST['photo-link']);
       // Доп. проверка на формат ссылки / формата изображения;

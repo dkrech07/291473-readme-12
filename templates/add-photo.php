@@ -54,7 +54,7 @@ $title = $_POST['photo-heading'] ?? '';
       </ul>
     </div>
   </div>
-  <div class="adding-post__input-file-container form__input-container form__input-container--file">
+  <!-- <div class="adding-post__input-file-container form__input-container form__input-container--file">
     <div class="adding-post__input-file-wrapper form__input-file-wrapper">
       <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
         <input class="adding-post__input-file form__input-file" id="userpic-file-photo" type="file" name="userpic-file-photo" title=" ">
@@ -72,7 +72,7 @@ $title = $_POST['photo-heading'] ?? '';
     <div class="adding-post__file adding-post__file--photo form__file dropzone-previews">
 
     </div>
-  </div>
+  </div> -->
   <input class="visually-hidden" type="text" name="content-type" value="3">
   <div class="adding-post__buttons">
     <button class="adding-post__submit button button--main" type="submit">Опубликовать</button>
