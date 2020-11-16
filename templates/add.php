@@ -25,9 +25,9 @@ require_once('includes/functions.inc.php');
       <div class="adding-post__tab-content">
         <section class="adding-post__photo tabs__content tabs__content--active">
         <?= $add_content ?>
-        
+
         <!--Вынес дропзону отдельно от формы для сохранения картинки;-->
-        <?php if ($current_content_type_id == 3): ?>
+        <?php if ($current_content_type_id === 3): ?>
           <div class="adding-post__input-file-container form__input-container form__input-container--file">
             <div class="adding-post__input-file-wrapper form__input-file-wrapper">
               <div class="adding-post__file-zone adding-post__file-zone--photo form__file-zone dropzone">
@@ -47,7 +47,7 @@ require_once('includes/functions.inc.php');
 
             </div>
           </div>
-        <? endif; ?>
+        <?php endif; ?>
         </section>
       </div>
     </div>

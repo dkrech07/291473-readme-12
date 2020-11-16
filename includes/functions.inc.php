@@ -143,8 +143,7 @@ function get_hashtags($tags_line, $posts_count, $con) {
     $incoming_tags = explode(' ', $tags_line);
     // Проверяет хештеги на наличие символов/заполнение;
     foreach ($incoming_tags as $incoming_tags_number => $incoming_tag) {
-      // $verification_result = preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
-      $verification_result = 1;
+      $verification_result = preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
     }
     if ($verification_result) {
       $verified_tags = "'" . implode ( "', '", $incoming_tags ) . "'";
