@@ -123,7 +123,7 @@ function get_hashtags_names($con, $post_tags_ids){
 function get_hashtag_name($con, $hashtags_id) {
   $hashtags_ids = [];
   foreach ($hashtags_id as $hashtag_index => $hashtag_id) {
-    array_push($hashtags_ids, $hashtags_id[$hashtag_index]['hashtag_id']);
+    $hashtags_ids[] = $hashtags_id[$hashtag_index]['hashtag_id'];
   }
 
   if (!empty($hashtags_ids)) {
@@ -132,18 +132,19 @@ function get_hashtag_name($con, $hashtags_id) {
 
     $hashtags_list = [];
     foreach ($hashtags_names as $name_number => $name) {
-      array_push($hashtags_list, $name['hashtag_name']);
+      $hashtags_list[] = $name['hashtag_name'];
     }
     return array_combine($hashtags_ids, $hashtags_list);
   }
 }
 
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
-function get_hashtags($tags_line, $posts_count, $con) {
+function get_hashtags($tags_line, $post_id, $con) {
     $incoming_tags = explode(' ', $tags_line);
     // Проверяет хештеги на наличие символов/заполнение;
+    $verification_result = true;
     foreach ($incoming_tags as $incoming_tags_number => $incoming_tag) {
-      $verification_result = preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
+      $verification_result = $verification_result && preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
     }
     if ($verification_result) {
       $verified_tags = "'" . implode ( "', '", $incoming_tags ) . "'";
@@ -152,7 +153,7 @@ function get_hashtags($tags_line, $posts_count, $con) {
       // Сохраняет совпадающие (уже сохраненные в БД) хештеги в массив;
       $already_saved_tags = [];
       foreach ($old_tags as $old_tag_number => $old_tag) {
-          array_push($already_saved_tags, $old_tag['hashtag_name']);
+          $already_saved_tags[] = $old_tag['hashtag_name'];
       }
       // Получает хештеги, которых нет в БД;
       $new_tags = "('" . implode ( "'), ('", array_diff($incoming_tags, $already_saved_tags) ) . "')";
@@ -160,15 +161,15 @@ function get_hashtags($tags_line, $posts_count, $con) {
       mysqli_query($con, "INSERT IGNORE INTO hashtags (hashtag_name) VALUES $new_tags");
       // Получает id хештегов записанных в таблицу;
       $new_tags_ids = get_hashtags_ids($con, $verified_tags);
-      // Сохраняет id хештегов текущего поста в массив;
-      $new_ids = [];
+      // Формирует запрос с id хештегов и id текущего поста;
+      $tags_query = "";
       foreach ($new_tags_ids as $tags_nubmer => $tag_id) {
-        $new_ids[$tags_nubmer] = $new_tags_ids[$tags_nubmer]['id'];
+          if (!empty($tags_query))
+              $tags_query .= ",";
+          $tags_query .= "({$post_id}, {$tag_id['id']})";
       }
-      // Формирует строку с id хештегов и id поста для последующей записи таблицу post_hashtags;
-      $new_ids_list = '(' . implode ( ', '. $posts_count . '), ' . ' (', $new_ids) . ', ' . $posts_count . ')';
       // Сохраняет id хештегов и постов в таблицу post_hashtags;
-      mysqli_query($con, "INSERT INTO post_hashtags (hashtag_id, post_id) VALUES $new_ids_list");
+      mysqli_query($con, "INSERT INTO post_hashtags (post_id, hashtag_id) VALUES $tags_query");
     }
 }
 
@@ -319,7 +320,7 @@ function check_validity($con, $current_content_type_id, $fields_map) {
   }
 
   // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
-  $posts_count = $con->insert_id;
-  get_hashtags($tags_line, $posts_count, $con);
-  header('Location: post.php?id=' . $posts_count);
+  $post_id = $con->insert_id;
+  get_hashtags($tags_line, $post_id, $con);
+  header('Location: post.php?id=' . $post_id);
 }
