@@ -291,10 +291,10 @@ function check_validity($con, $current_content_type_id, $fields_map) {
 
   if ($current_content_type_id == 5) {
     $required_fields = ['link-heading', 'link-content',];
-    $link = $_POST['link-content'];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
     if (empty($errors)) {
+      $link = $_POST['link-content'];
       // Доп. проверка на формат ссылки;
       $check_link_format = filter_var($link, FILTER_VALIDATE_URL);
       if (!$check_link_format) {
