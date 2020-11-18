@@ -33,6 +33,7 @@ CREATE TABLE posts (
   views INT UNSIGNED NOT NULL DEFAULT 0,
   post_author_id INT UNSIGNED NOT NULL,
   content_type_id INT UNSIGNED NOT NULL,
+  likes_count INT UNSIGNED NOT NULL DEFAULT 0,
   FOREIGN KEY (post_author_id) REFERENCES users(id),
   FOREIGN KEY (content_type_id) REFERENCES content_types(id)
 );
@@ -75,7 +76,7 @@ CREATE TABLE messages (
 CREATE TABLE hashtags (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
   hashtag_name VARCHAR(128),
-  INDEX c_hashtag_name(hashtag_name)
+  UNIQUE INDEX c_hashtag_name(hashtag_name)
 );
 
 CREATE TABLE post_hashtags (
