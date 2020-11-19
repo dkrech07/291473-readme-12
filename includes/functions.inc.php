@@ -314,13 +314,51 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     }
   }
 
+/*Добавил $_POST в условие при наличии ошибок и empty($errors) в условие если ошибок нет
+чтобы при первом открытии формы создания поста, ее поля не подсвечивались красным цветом (т.к. пользователь еще не отправлял форму)
+а значит не совершал ошибок при ее отправке;*/
   // Возвращает ошибки для вывода на странице формы;
-  if (!empty($errors)) {
+  if ($_POST && !empty($errors)) {
       return $errors;
   }
 
   // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
-  $post_id = $con->insert_id;
-  get_hashtags($tags_line, $post_id, $con);
-  header('Location: post.php?id=' . $post_id);
+  if (empty($errors)) {
+      $post_id = $con->insert_id;
+      get_hashtags($tags_line, $post_id, $con);
+      header('Location: post.php?id=' . $post_id);
+  }
+}
+
+function check_registration_validity($con, $fields_map) {
+    $errors = [];
+    $required_fields = ['email', 'login', 'password', 'password-repeat'];
+    $errors = check_empty_field($required_fields, $fields_map, $errors);
+
+    $email = $_POST['email'];
+    $login = $_POST['login'];
+    $password = $_POST['password'];
+    $password_repeat = $_POST['password-repeat'];
+
+    // Проверяет валидность email-адреса;
+    $email_format = filter_var($email, FILTER_VALIDATE_EMAIL);
+    if (!$email_format) {
+        $errors['email'] = $fields_map['email'] . 'Неверный формат.';
+    }
+
+    // Проверяет соответствие пароля и подтверждения пароля;
+    if ($password != $password_repeat) {
+        $errors['password'] = $fields_map['password'] . 'Пароль и подтверждение пароля не совпадают.';
+        $errors['password-repeat'] = $fields_map['password-repeat'] . 'Пароль и подтверждение пароля не совпадают.';
+    }
+
+    // Выполняет сохранение данных, если при заполнении формы не допущено ошибок;
+    if (empty($errors)) {
+        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+    }
+
+    // Возвращает ошибки при их наличии и только после отправки формы;
+    if ($_POST && !empty($errors)) {
+        return $errors;
+    }
 }
