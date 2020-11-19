@@ -109,7 +109,7 @@ function check_loaded_video($video_link) {
   return 'Видео по такой ссылке не найдено. Проверьте ссылку на видео';
 }
 
-// Получает id хештегов по именам;;
+// Получает id хештегов по именам;
 function get_hashtags_ids($con, $post_tags_names) {
   return select_query($con, "SELECT id FROM hashtags WHERE (hashtag_name) IN ($post_tags_names)");
 }
@@ -173,7 +173,8 @@ function get_hashtags($tags_line, $post_id, $con) {
     }
 }
 
-function check_empty_field($required_fields, $fields_map, $errors) {
+function check_empty_field($required_fields, $fields_map) {
+  $errors = array();
   foreach ($required_fields as $field) {
       if (empty($_POST[$field])) {
           $errors[$field] = $fields_map[$field] . 'Поле не заполнено.';
@@ -183,52 +184,56 @@ function check_empty_field($required_fields, $fields_map, $errors) {
 }
 
 function check_validity($con, $current_content_type_id, $fields_map) {
+  if (empty($_POST))
+    return null;
+
   date_default_timezone_set('Asia/Yekaterinburg');
   $date = date("Y-m-d H:i:s");
-  $errors = [];
 
   if ($current_content_type_id == 1) {
     $required_fields = ['text-heading', 'text-content',];
-    $errors = check_empty_field($required_fields, $fields_map, $errors);
+    $errors = check_empty_field($required_fields, $fields_map);
+    if (!empty($errors))
+      return $errors;
 
-    if (empty($errors)) {
-      $title = $_POST['text-heading'];
-      $content = $_POST['text-content'];
-      $tags_line = $_POST['text-tags'];
-      $views = 0;
-      $post_author_id = 1;
-      $content_type_id = 1;
+    $title = $_POST['text-heading'];
+    $content = $_POST['text-content'];
+    $tags_line = $_POST['text-tags'];
+    $views = 0;
+    $post_author_id = 1;
+    $content_type_id = 1;
 
-      $post_query = "INSERT INTO posts (date_add, title, content, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'sssiii', $date, $title, $content, $views, $post_author_id, $content_type_id);
-      mysqli_stmt_execute($stmt);
-    }
+    $post_query = "INSERT INTO posts (date_add, title, content, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($con, $post_query);
+    mysqli_stmt_bind_param($stmt, 'sssiii', $date, $title, $content, $views, $post_author_id, $content_type_id);
+    mysqli_stmt_execute($stmt);
   }
 
   if ($current_content_type_id == 2) {
     $required_fields = ['quote-heading', 'quote-content', 'quote-author',];
-    $errors = check_empty_field($required_fields, $fields_map, $errors);
+    $errors = check_empty_field($required_fields, $fields_map);
+    if (!empty($errors))
+      return $errors;
 
-    if (empty($errors)) {
-      $title = $_POST['quote-heading'];
-      $content = $_POST['quote-content'];
-      $author = $_POST['quote-author'];
-      $tags_line = $_POST['quote-tags'];
-      $views = 0;
-      $post_author_id = 1;
-      $content_type_id = 2;
+    $title = $_POST['quote-heading'];
+    $content = $_POST['quote-content'];
+    $author = $_POST['quote-author'];
+    $tags_line = $_POST['quote-tags'];
+    $views = 0;
+    $post_author_id = 1;
+    $content_type_id = 2;
 
-      $post_query = "INSERT INTO posts (date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $content, $author, $views, $post_author_id, $content_type_id);
-      mysqli_stmt_execute($stmt);
-    }
+    $post_query = "INSERT INTO posts (date_add, title, content, quote_author, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($con, $post_query);
+    mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $content, $author, $views, $post_author_id, $content_type_id);
+    mysqli_stmt_execute($stmt);
   }
 
   if ($current_content_type_id == 3) {
     $required_fields = ['photo-heading',];
-    $errors = check_empty_field($required_fields, $fields_map, $errors);
+    $errors = check_empty_field($required_fields, $fields_map);
+    if (!empty($errors))
+      return $errors;
 
     // Доп. проверка на случай, если поле для ссылки и дропзона пустые;
     // Временно закомментировал проверку;
@@ -236,91 +241,89 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     //   $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
     // }
     print_r($_FILES);
-    if (empty($errors)) {
-      $file_name = check_loaded_image($_POST['photo-link']);
-      // Доп. проверка на формат ссылки / формата изображения;
-      $check_photo_link_format = filter_var($_POST['photo-link'], FILTER_VALIDATE_URL);
-      if (!$check_photo_link_format || !$file_name) {
-          $errors['photo-link'] = $fields_map['photo-link'] . 'Неверный формат ссылки.';
-      }
 
-      $title = $_POST['photo-heading'];
-      $tags_line = $_POST['photo-tags'];
-      $file_url = 'uploads/' . $file_name;
-      $views = 0;
-      $post_author_id = 1;
-      $content_type_id = 3;
-
-      $post_query = "INSERT INTO posts (date_add, title, content, image, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $file_name, $file_url, $views, $post_author_id, $content_type_id);
-      mysqli_stmt_execute($stmt);
-
-      // Загрузка фотографии из дропзоны;
-      // $file_name = $_FILES['userpic-file-photo']['name'];
-      // $file_path = 'uploads/';
-      // $file_url = 'uploads/' . $file_name;
-      // move_uploaded_file($_FILES['userpic-file-photo']['tmp_name'], $file_path . $file_name);
+    $file_name = check_loaded_image($_POST['photo-link']);
+    // Доп. проверка на формат ссылки / формата изображения;
+    $check_photo_link_format = filter_var($_POST['photo-link'], FILTER_VALIDATE_URL);
+    if (!$check_photo_link_format || !$file_name) {
+	$errors['photo-link'] = $fields_map['photo-link'] . 'Неверный формат ссылки.';
+	return $errors;
     }
+
+    $title = $_POST['photo-heading'];
+    $tags_line = $_POST['photo-tags'];
+    $file_url = 'uploads/' . $file_name;
+    $views = 0;
+    $post_author_id = 1;
+    $content_type_id = 3;
+
+    $post_query = "INSERT INTO posts (date_add, title, content, image, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($con, $post_query);
+    mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $file_name, $file_url, $views, $post_author_id, $content_type_id);
+    mysqli_stmt_execute($stmt);
+
+    // Загрузка фотографии из дропзоны;
+    // $file_name = $_FILES['userpic-file-photo']['name'];
+    // $file_path = 'uploads/';
+    // $file_url = 'uploads/' . $file_name;
+    // move_uploaded_file($_FILES['userpic-file-photo']['tmp_name'], $file_path . $file_name);
   }
 
   if ($current_content_type_id == 4) {
     $required_fields = ['video-heading', 'video-link',];
-    $errors = check_empty_field($required_fields, $fields_map, $errors);
+    $errors = check_empty_field($required_fields, $fields_map);
+    if (!empty($errors))
+      return $errors;
 
-    if (empty($errors)) {
-      // Доп. проверка на формат ссылки;
-      $video_link = $_POST['video-link'];
-      $check_video_link = check_loaded_video($video_link);
-      if (check_loaded_video($video_link) != 1) {
-        $errors['video-link'] = $fields_map['video-link']  . $check_video_link . '.';
-      }
-
-      $title = $_POST['video-heading'];
-      $tags_line = $_POST['video-tags'];
-      $views = 0;
-      $post_author_id = 1;
-      $content_type_id = 4;
-
-      $post_query = "INSERT INTO posts (date_add, title, content, video, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $video_link, $video_link, $views, $post_author_id, $content_type_id);
-      mysqli_stmt_execute($stmt);
+    // Доп. проверка на формат ссылки;
+    $video_link = $_POST['video-link'];
+    $check_video_link = check_loaded_video($video_link);
+    if (check_loaded_video($video_link) != 1) {
+      $errors['video-link'] = $fields_map['video-link']  . $check_video_link . '.';
+      return $errors;
     }
+
+    $title = $_POST['video-heading'];
+    $tags_line = $_POST['video-tags'];
+    $views = 0;
+    $post_author_id = 1;
+    $content_type_id = 4;
+
+    $post_query = "INSERT INTO posts (date_add, title, content, video, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($con, $post_query);
+    mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $video_link, $video_link, $views, $post_author_id, $content_type_id);
+    mysqli_stmt_execute($stmt);
   }
 
   if ($current_content_type_id == 5) {
     $required_fields = ['link-heading', 'link-content',];
-    $errors = check_empty_field($required_fields, $fields_map, $errors);
-
-    if (empty($errors)) {
-      $link = $_POST['link-content'];
-      // Доп. проверка на формат ссылки;
-      $check_link_format = filter_var($link, FILTER_VALIDATE_URL);
-      if (!$check_link_format) {
-        $errors['link-content'] = $fields_map['link-content'] . 'Неверный формат ссылки.';;
-      }
-
-      $title = $_POST['link-heading'];
-      $tags_line = $_POST['link-tags'];
-      $views = 0;
-      $post_author_id = 1;
-      $content_type_id = 5;
-
-      $post_query = "INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $link, $link, $views, $post_author_id, $content_type_id);
-      mysqli_stmt_execute($stmt);
-    }
-  }
-
-  // Возвращает ошибки для вывода на странице формы;
-  if (!empty($errors)) {
+    $errors = check_empty_field($required_fields, $fields_map);
+    if (!empty($errors))
       return $errors;
+
+    $link = $_POST['link-content'];
+    // Доп. проверка на формат ссылки;
+    $check_link_format = filter_var($link, FILTER_VALIDATE_URL);
+    if (!$check_link_format) {
+      $errors['link-content'] = $fields_map['link-content'] . 'Неверный формат ссылки.';
+      return $errors;
+    }
+
+    $title = $_POST['link-heading'];
+    $tags_line = $_POST['link-tags'];
+    $views = 0;
+    $post_author_id = 1;
+    $content_type_id = 5;
+
+    $post_query = "INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($con, $post_query);
+    mysqli_stmt_bind_param($stmt, 'ssssiii', $date, $title, $link, $link, $views, $post_author_id, $content_type_id);
+    mysqli_stmt_execute($stmt);
   }
 
   // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
   $post_id = $con->insert_id;
   get_hashtags($tags_line, $post_id, $con);
   header('Location: post.php?id=' . $post_id);
+  return null;
 }
