@@ -235,7 +235,10 @@ function check_validity($con, $current_content_type_id, $fields_map) {
     // if (empty($_POST['photo-link']) && $_FILES['userpic-file-photo']['error'] != 0) {
     //   $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
     // }
-    print_r($_FILES);
+    // print_r($_FILES['userpic-file-photo']);
+
+
+
     if (empty($errors)) {
       $file_name = check_loaded_image($_POST['photo-link']);
       // Доп. проверка на формат ссылки / формата изображения;
@@ -335,25 +338,25 @@ function check_registration_validity($con, $fields_map) {
     $required_fields = ['email', 'login', 'password', 'password-repeat'];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
-    $email = $_POST['email'];
-    $login = $_POST['login'];
-    $password = $_POST['password'];
-    $password_repeat = $_POST['password-repeat'];
-
-    // Проверяет валидность email-адреса;
-    $email_format = filter_var($email, FILTER_VALIDATE_EMAIL);
-    if (!$email_format) {
-        $errors['email'] = $fields_map['email'] . 'Неверный формат.';
-    }
-
-    // Проверяет соответствие пароля и подтверждения пароля;
-    if ($password != $password_repeat) {
-        $errors['password'] = $fields_map['password'] . 'Пароль и подтверждение пароля не совпадают.';
-        $errors['password-repeat'] = $fields_map['password-repeat'] . 'Пароль и подтверждение пароля не совпадают.';
-    }
-
     // Выполняет сохранение данных, если при заполнении формы не допущено ошибок;
     if (empty($errors)) {
+      $email = $_POST['email'];
+      $login = $_POST['login'];
+      $password = $_POST['password'];
+      $password_repeat = $_POST['password-repeat'];
+
+      // Проверяет валидность email-адреса;
+      $email_format = filter_var($email, FILTER_VALIDATE_EMAIL);
+      if (!$email_format) {
+          $errors['email'] = $fields_map['email'] . 'Неверный формат.';
+      }
+
+      // Проверяет соответствие пароля и подтверждения пароля;
+      if ($password != $password_repeat) {
+          $errors['password'] = $fields_map['password'] . 'Пароль и подтверждение пароля не совпадают.';
+          $errors['password-repeat'] = $fields_map['password-repeat'] . 'Пароль и подтверждение пароля не совпадают.';
+      }
+
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
     }
 
