@@ -334,6 +334,8 @@ function check_validity($con, $current_content_type_id, $fields_map) {
 }
 
 function check_registration_validity($con, $fields_map) {
+    date_default_timezone_set('Asia/Yekaterinburg');
+    $date = date("Y-m-d H:i:s");
     $errors = [];
     $required_fields = ['email', 'login', 'password', 'password-repeat'];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
@@ -344,6 +346,7 @@ function check_registration_validity($con, $fields_map) {
       $login = $_POST['login'];
       $password = $_POST['password'];
       $password_repeat = $_POST['password-repeat'];
+      $avatar = 'img/cat.jpg';
 
       // Проверяет валидность email-адреса;
       $email_format = filter_var($email, FILTER_VALIDATE_EMAIL);
@@ -357,11 +360,34 @@ function check_registration_validity($con, $fields_map) {
           $errors['password-repeat'] = $fields_map['password-repeat'] . 'Пароль и подтверждение пароля не совпадают.';
       }
 
-        $password_hash = password_hash($password, PASSWORD_DEFAULT);
+      // Проверяет не занят ли логин или пароль;
+      $already_saved_email_and_login = select_query($con, "SELECT email, login FROM users WHERE email = '$email' OR login = '$login'");
+
+      if (isset($already_saved_email_and_login)) {
+          if ($email == $already_saved_email_and_login[0]['email']) {
+              $errors['email'] = $fields_map['email'] . 'Уже есть в системе.';
+          }
+          if ($login == $already_saved_email_and_login[0]['login']) {
+              $errors['login'] = $fields_map['login'] . 'Уже есть в системе.';
+          }
+      }
+
+      // Сохраняет данные пользователя в таблицу паролей;
+      $password_hash = password_hash($password, PASSWORD_DEFAULT);
+      $post_query = "INSERT INTO users (date_add, email, login, password, avatar) VALUES (?, ?, ?, ?, ?)";
+      $stmt = mysqli_prepare($con, $post_query);
+      mysqli_stmt_bind_param($stmt, 'sssss', $date, $email, $login, $password_hash, $avatar);
+      mysqli_stmt_execute($stmt);
     }
 
     // Возвращает ошибки при их наличии и только после отправки формы;
     if ($_POST && !empty($errors)) {
         return $errors;
     }
+
+    // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
+    if (empty($errors)) {
+        header('Location: main.html');
+    }
+
 }
