@@ -114,15 +114,19 @@
                         <a class="header__post-button button button--transparent" href="add.php">Пост</a>
                     </li>
                     <?php endif; ?>
-                    <?php if($current_url == $registration_url): ?>
+                </ul>
+
+                <?php if($current_url == $registration_url): ?>
+                <ul class="header__user-nav">
                     <li class="header__authorization">
                         <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
                     </li>
                     <li>
                         <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
                     </li>
-                    <?php endif; ?>
                 </ul>
+                <?php endif; ?>
+
             </nav>
             <?php endif; ?>
         </div>
