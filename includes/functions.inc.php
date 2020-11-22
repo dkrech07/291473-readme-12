@@ -386,6 +386,15 @@ function check_registration_validity($con, $fields_map)
                 $errors['login'] = $fields_map['login'] . 'Уже есть в системе.';
             }
         }
+
+        // Дополнительное условия;
+        if (preg_match("/\\s/", $password)) {
+            $errors['password'] = $fields_map['password'] . 'Не должен содержать пробелы.';
+        }
+
+        if (strlen($password) < 8) {
+            $errors['password'] = $fields_map['password'] . 'Должен быть не меньше 8 символов.';
+        }
     }
 
     // Возвращает ошибки при их наличии и только после отправки формы;
