@@ -1,7 +1,7 @@
 <?php
-    $current_url = $_SERVER['REQUEST_URI'];
-    $registration_url = '/readme/registration.php';
-    print $url;
+    $url = $_SERVER['REQUEST_URI'];
+    $current_url = substr($url,strrpos($url,'/'));
+    $registration_url = '/registration.php';
  ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -115,18 +115,16 @@
                     </li>
                     <?php endif; ?>
                 </ul>
-
                 <?php if($current_url == $registration_url): ?>
                 <ul class="header__user-nav">
                     <li class="header__authorization">
-                        <a class="header__user-button header__authorization-button button" href="login.html">Вход</a>
+                        <a class="header__user-button header__authorization-button button" href="http://readme/main.html">Вход</a>
                     </li>
                     <li>
                         <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
                     </li>
                 </ul>
                 <?php endif; ?>
-
             </nav>
             <?php endif; ?>
         </div>

@@ -356,14 +356,13 @@ function check_registration_validity($con, $fields_map) {
 
       // Проверяет соответствие пароля и подтверждения пароля;
       if ($password != $password_repeat) {
-          $errors['password'] = $fields_map['password'] . 'Пароль и подтверждение пароля не совпадают.';
-          $errors['password-repeat'] = $fields_map['password-repeat'] . 'Пароль и подтверждение пароля не совпадают.';
+          $errors['password'] = $fields_map['password'] . 'Пароль и повтор пароля не совпадают.';
+          $errors['password-repeat'] = $fields_map['password-repeat'] . 'Пароль и повтор пароля не совпадают.';
       }
 
       // Проверяет не занят ли логин или пароль;
       $already_saved_email_and_login = select_query($con, "SELECT email, login FROM users WHERE email = '$email' OR login = '$login'");
-
-      if (isset($already_saved_email_and_login)) {
+      if ($already_saved_email_and_login) {
           if ($email == $already_saved_email_and_login[0]['email']) {
               $errors['email'] = $fields_map['email'] . 'Уже есть в системе.';
           }
@@ -371,13 +370,6 @@ function check_registration_validity($con, $fields_map) {
               $errors['login'] = $fields_map['login'] . 'Уже есть в системе.';
           }
       }
-
-      // Сохраняет данные пользователя в таблицу паролей;
-      $password_hash = password_hash($password, PASSWORD_DEFAULT);
-      $post_query = "INSERT INTO users (date_add, email, login, password, avatar) VALUES (?, ?, ?, ?, ?)";
-      $stmt = mysqli_prepare($con, $post_query);
-      mysqli_stmt_bind_param($stmt, 'sssss', $date, $email, $login, $password_hash, $avatar);
-      mysqli_stmt_execute($stmt);
     }
 
     // Возвращает ошибки при их наличии и только после отправки формы;
@@ -387,6 +379,12 @@ function check_registration_validity($con, $fields_map) {
 
     // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
     if (empty($errors)) {
+      // Сохраняет данные пользователя в таблицу паролей;
+      $password_hash = password_hash($password, PASSWORD_DEFAULT);
+      $post_query = "INSERT INTO users (date_add, email, login, password, avatar) VALUES (?, ?, ?, ?, ?)";
+      $stmt = mysqli_prepare($con, $post_query);
+      mysqli_stmt_bind_param($stmt, 'sssss', $date, $email, $login, $password_hash, $avatar);
+      mysqli_stmt_execute($stmt);
         header('Location: main.html');
     }
 

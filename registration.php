@@ -13,7 +13,7 @@ $fields_map = [
     'email' => 'Email. ',
     'login' => 'Логин. ',
     'password' => 'Пароль. ',
-    'password-repeat' => 'Подтверждение пароля. ',
+    'password-repeat' => 'Повтор пароля. ',
 ];
 
 $errors = check_registration_validity($con, $fields_map);
