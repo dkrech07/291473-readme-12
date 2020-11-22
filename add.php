@@ -6,7 +6,7 @@ $is_auth = rand(0, 1);
 $user_name = 'Дмитрий';
 
 // Подключается к БД;
-$con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
+$con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
@@ -18,9 +18,9 @@ $current_content_type_id = filter_input(INPUT_GET, 'post_type', FILTER_VALIDATE_
 // при первом открытии add.php, после отправки формы и перехода на add.php;
 if (!$current_content_type_id) {
     if (isset($_POST['content-type'])) {
-      $current_content_type_id = intval($_POST['content-type']);
+        $current_content_type_id = intval($_POST['content-type']);
     } else {
-      $current_content_type_id = 1;
+        $current_content_type_id = 1;
     }
 }
 
@@ -46,7 +46,7 @@ $errors = check_validity($con, $current_content_type_id, $fields_map);
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');
 
 if (!$content_type) {
-  open_404_page($is_auth, $user_name);
+    open_404_page($is_auth, $user_name);
 }
 
 // Передает данные из БД в шаблоны;

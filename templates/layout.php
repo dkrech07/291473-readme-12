@@ -1,6 +1,6 @@
 <?php
     $url = $_SERVER['REQUEST_URI'];
-    $current_url = substr($url,strrpos($url,'/'));
+    $current_url = substr($url, strrpos($url, '/'));
     $registration_url = '/registration.php';
  ?>
 <!DOCTYPE html>
@@ -27,7 +27,7 @@
                 micro blogging
             </p>
         </div>
-        <?php if($current_url != $registration_url): ?>
+        <?php if ($current_url != $registration_url): ?>
         <form class="header__search-form form" action="#" method="get">
             <div class="header__search">
                 <label class="visually-hidden">Поиск</label>
@@ -44,7 +44,7 @@
         <div class="header__nav-wrapper">
             <?php if ($is_auth): ?>
             <nav class="header__nav">
-                <?php if($current_url != $registration_url): ?>
+                <?php if ($current_url != $registration_url): ?>
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
                         <a class="header__page-link header__page-link--active" title="Популярный контент">
@@ -65,7 +65,7 @@
                 <?php endif; ?>
                 <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
                 <ul class="header__user-nav">
-                    <?php if($current_url != $registration_url): ?>
+                    <?php if ($current_url != $registration_url): ?>
                     <li class="header__profile">
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
@@ -115,7 +115,7 @@
                     </li>
                     <?php endif; ?>
                 </ul>
-                <?php if($current_url == $registration_url): ?>
+                <?php if ($current_url == $registration_url): ?>
                 <ul class="header__user-nav">
                     <li class="header__authorization">
                         <a class="header__user-button header__authorization-button button" href="http://readme/main.html">Вход</a>

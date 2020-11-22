@@ -62,7 +62,7 @@ $password_repeat = $_POST['password-repeat'] ?? '';
         <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
         <ul class="form__invalid-list">
             <?php if ($errors): ?>
-              <?php foreach($errors as $error): ?>
+              <?php foreach ($errors as $error): ?>
                   <li class="form__invalid-item"><?= $error ?></li>
               <?php endforeach; ?>
             <?php endif; ?>
