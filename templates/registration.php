@@ -58,16 +58,16 @@ $password_repeat = $_POST['password-repeat'] ?? '';
           </div>
         </div>
       </div>
+      <?php if ($errors): ?>
       <div class="form__invalid-block">
         <b class="form__invalid-slogan">Пожалуйста, исправьте следующие ошибки:</b>
         <ul class="form__invalid-list">
-            <?php if ($errors): ?>
               <?php foreach ($errors as $error): ?>
                   <li class="form__invalid-item"><?= $error ?></li>
               <?php endforeach; ?>
-            <?php endif; ?>
         </ul>
       </div>
+      <?php endif; ?>
     </div>
     <div class="registration__input-file-container form__input-container form__input-container--file">
       <div class="registration__input-file-wrapper form__input-file-wrapper">
