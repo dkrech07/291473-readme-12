@@ -1,112 +1,119 @@
 <?php
-function select_query($con, $sql, $type = 'all') {
-  mysqli_set_charset($con, "utf8");
-  $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);
+function select_query($con, $sql, $type = 'all')
+{
+    mysqli_set_charset($con, "utf8");
+    $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);
 
-  if ($type == 'assoc') {
-    return mysqli_fetch_assoc($result);
-  }
-
-  if ($type == 'row') {
-    return mysqli_fetch_row($result)[0];
-  }
-
-  return mysqli_fetch_all($result, MYSQLI_ASSOC);
-}
-
-function crop_text($text, $characters_count = 300) {
-  if (mb_strlen($text) <= $characters_count) {
-    return '<p>' . $text . '</p>';
-  }
-
-  $words = explode(' ', $text);
-  $cropped_text_length = -1;
-
-  foreach ($words as $word_number => $word) {
-    $cropped_text_length += mb_strlen($word) + 1;
-
-    if ($cropped_text_length > $characters_count) {
-      $cropped_text = implode(' ', array_slice($words, 0, $word_number));
-      return '<p>' . $cropped_text . '...</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+    if ($type == 'assoc') {
+        return mysqli_fetch_assoc($result);
     }
-  }
+
+    if ($type == 'row') {
+        return mysqli_fetch_row($result)[0];
+    }
+
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-function get_post_interval($post_time, $caption) {
-  $current_time = date_create();
-  $interval = date_diff(date_create($post_time), $current_time);
+function crop_text($text, $characters_count = 300)
+{
+    if (mb_strlen($text) <= $characters_count) {
+        return '<p>' . $text . '</p>';
+    }
 
-  $years = floor($interval->y);
-  $months = floor($interval->m);
-  $days = floor($interval->d);
-  $weeks = floor($days / 7);
-  $hours = floor($interval->h);
-  $minutes = floor($interval->i);
+    $words = explode(' ', $text);
+    $cropped_text_length = -1;
 
-  if ($years) {
-    $time = $years . ' ' . get_noun_plural_form($years, 'год', 'года', 'лет') . ' ' . $caption;
-  } else if ($months) {
-    $time = $months . ' ' . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . ' ' . $caption;
-  } else if ($days > 7) {
-    $time = $weeks . ' ' . get_noun_plural_form($weeks, 'неделя', 'недели', 'недель') . ' ' . $caption;
-  } else if ($days) {
-    $time = $days . ' ' . get_noun_plural_form($days, 'день', 'дня', 'дней') . ' ' . $caption;
-  } else if ($hours) {
-    $time = $hours . ' ' . get_noun_plural_form($hours, 'час', 'часа', 'часов') . ' ' . $caption;
-  } else if ($minutes) {
-    $time = $minutes . ' ' . get_noun_plural_form($minutes, 'минута', 'минуты', 'минут') . ' ' . $caption;
-  } else {
-    $time = 'Только что';
-  }
+    foreach ($words as $word_number => $word) {
+        $cropped_text_length += mb_strlen($word) + 1;
 
-  return $time;
+        if ($cropped_text_length > $characters_count) {
+            $cropped_text = implode(' ', array_slice($words, 0, $word_number));
+            return '<p>' . $cropped_text . '...</p>' . '<a class="post-text__more-link" href="#">Читать далее</a>';
+        }
+    }
 }
 
-function open_404_page($is_auth, $user_name) {
-  $page_content = include_template('page_404.php');
-  $layout_content = include_template('layout.php', [
+function get_post_interval($post_time, $caption)
+{
+    $current_time = date_create();
+    $interval = date_diff(date_create($post_time), $current_time);
+
+    $years = floor($interval->y);
+    $months = floor($interval->m);
+    $days = floor($interval->d);
+    $weeks = floor($days / 7);
+    $hours = floor($interval->h);
+    $minutes = floor($interval->i);
+
+    if ($years) {
+        $time = $years . ' ' . get_noun_plural_form($years, 'год', 'года', 'лет') . ' ' . $caption;
+    } elseif ($months) {
+        $time = $months . ' ' . get_noun_plural_form($months, 'месяц', 'месяца', 'месяцев') . ' ' . $caption;
+    } elseif ($days > 7) {
+        $time = $weeks . ' ' . get_noun_plural_form($weeks, 'неделя', 'недели', 'недель') . ' ' . $caption;
+    } elseif ($days) {
+        $time = $days . ' ' . get_noun_plural_form($days, 'день', 'дня', 'дней') . ' ' . $caption;
+    } elseif ($hours) {
+        $time = $hours . ' ' . get_noun_plural_form($hours, 'час', 'часа', 'часов') . ' ' . $caption;
+    } elseif ($minutes) {
+        $time = $minutes . ' ' . get_noun_plural_form($minutes, 'минута', 'минуты', 'минут') . ' ' . $caption;
+    } else {
+        $time = 'Только что';
+    }
+
+    return $time;
+}
+
+function open_404_page($is_auth, $user_name)
+{
+    $page_content = include_template('page_404.php');
+    $layout_content = include_template('layout.php', [
     'is_auth' => $is_auth,
     'user_name' => $user_name,
     'title' => 'readme: страница не найдена',
     'content' => $page_content,
   ]);
 
-  echo($layout_content);
-  http_response_code(404);
-  exit();
+    echo($layout_content);
+    http_response_code(404);
+    exit();
 }
 
-function get_filter_active($current_content_type_id, $content_type) {
-  if ($current_content_type_id == $content_type['id']) {
-    return 'filters__button--active';
-  }
+function get_filter_active($current_content_type_id, $content_type)
+{
+    if ($current_content_type_id == $content_type['id']) {
+        return 'filters__button--active';
+    }
 }
 
 // Проверяет загружаемое по ссылке изображение;
-function check_loaded_image($photo_link) {
-  $check_photo_link_format = filter_var($photo_link, FILTER_VALIDATE_URL);
+function check_loaded_image($photo_link)
+{
+    $check_photo_link_format = filter_var($photo_link, FILTER_VALIDATE_URL);
 
-  if ($check_photo_link_format) {
-    $img_format = exif_imagetype($check_photo_link_format);
+    if ($check_photo_link_format) {
+        $img_format = exif_imagetype($check_photo_link_format);
 
-    if ($img_format == IMAGETYPE_PNG || $img_format == IMAGETYPE_JPEG || $img_format == IMAGETYPE_GIF) {
-      $file_name = htmlspecialchars(basename($photo_link));
-      $file_url = 'uploads/' . $file_name;
-      file_put_contents($file_url, file_get_contents($photo_link));
-      return $file_name;
+        if ($img_format == IMAGETYPE_PNG || $img_format == IMAGETYPE_JPEG || $img_format == IMAGETYPE_GIF) {
+            $file_name = htmlspecialchars(basename($photo_link));
+            $file_url = 'uploads/' . $file_name;
+            file_put_contents($file_url, file_get_contents($photo_link));
+            return $file_name;
+        }
     }
-  }
 
-  return false;
+    return false;
 }
 
 // Проверяет ссылку на youtube-видео;
-function check_loaded_video($video_link) {
-  $check_video_format = filter_var($video_link, FILTER_VALIDATE_URL);
-  if ($check_video_format) {
-    return check_youtube_url($video_link);
-  }
-  return 'Видео по такой ссылке не найдено. Проверьте ссылку на видео';
+function check_loaded_video($video_link)
+{
+    $check_video_format = filter_var($video_link, FILTER_VALIDATE_URL);
+    if ($check_video_format) {
+        return check_youtube_url($video_link);
+    }
+    return 'Видео по такой ссылке не найдено. Проверьте ссылку на видео';
 }
 
 // Получает id хештегов по именам;
@@ -115,61 +122,65 @@ function get_hashtags_ids($con, $post_tags_names) {
 }
 
 // Получает названия хештегов по id;
-function get_hashtags_names($con, $post_tags_ids){
-  return select_query($con, "SELECT hashtag_name FROM hashtags WHERE (id) IN ($post_tags_ids)");
+function get_hashtags_names($con, $post_tags_ids)
+{
+    return select_query($con, "SELECT hashtag_name FROM hashtags WHERE (id) IN ($post_tags_ids)");
 }
 
 // Получает хештеги для вывода в посте;
-function get_hashtag_name($con, $hashtags_id) {
-  $hashtags_ids = [];
-  foreach ($hashtags_id as $hashtag_index => $hashtag_id) {
-    $hashtags_ids[] = $hashtags_id[$hashtag_index]['hashtag_id'];
-  }
-
-  if (!empty($hashtags_ids)) {
-    $ids_list = implode(",", $hashtags_ids);
-    $hashtags_names = get_hashtags_names($con, $ids_list);
-
-    $hashtags_list = [];
-    foreach ($hashtags_names as $name_number => $name) {
-      $hashtags_list[] = $name['hashtag_name'];
+function get_hashtag_name($con, $hashtags_id)
+{
+    $hashtags_ids = [];
+    foreach ($hashtags_id as $hashtag_index => $hashtag_id) {
+        $hashtags_ids[] = $hashtags_id[$hashtag_index]['hashtag_id'];
     }
-    return array_combine($hashtags_ids, $hashtags_list);
-  }
+
+    if (!empty($hashtags_ids)) {
+        $ids_list = implode(",", $hashtags_ids);
+        $hashtags_names = get_hashtags_names($con, $ids_list);
+
+        $hashtags_list = [];
+        foreach ($hashtags_names as $name_number => $name) {
+            $hashtags_list[] = $name['hashtag_name'];
+        }
+        return array_combine($hashtags_ids, $hashtags_list);
+    }
 }
 
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
-function get_hashtags($tags_line, $post_id, $con) {
+function get_hashtags($tags_line, $post_id, $con)
+{
     $incoming_tags = explode(' ', $tags_line);
     // Проверяет хештеги на наличие символов/заполнение;
     $verification_result = true;
     foreach ($incoming_tags as $incoming_tags_number => $incoming_tag) {
-      $verification_result = $verification_result && preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
+        $verification_result = $verification_result && preg_match("/^[a-zA-Z0-9а-яА-ЯёЁ]+$/", $incoming_tag);
     }
     if ($verification_result) {
-      $verified_tags = "'" . implode ( "', '", $incoming_tags ) . "'";
-      // Получает список совпадающих хештегов из БД;
-      $old_tags = select_query($con, "SELECT * FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
-      // Сохраняет совпадающие (уже сохраненные в БД) хештеги в массив;
-      $already_saved_tags = [];
-      foreach ($old_tags as $old_tag_number => $old_tag) {
-          $already_saved_tags[] = $old_tag['hashtag_name'];
-      }
-      // Получает хештеги, которых нет в БД;
-      $new_tags = "('" . implode ( "'), ('", array_diff($incoming_tags, $already_saved_tags) ) . "')";
-      // И записывает их в таблицу hashtags;
-      mysqli_query($con, "INSERT IGNORE INTO hashtags (hashtag_name) VALUES $new_tags");
-      // Получает id хештегов записанных в таблицу;
-      $new_tags_ids = get_hashtags_ids($con, $verified_tags);
-      // Формирует запрос с id хештегов и id текущего поста;
-      $tags_query = "";
-      foreach ($new_tags_ids as $tags_nubmer => $tag_id) {
-          if (!empty($tags_query))
-              $tags_query .= ",";
-          $tags_query .= "({$post_id}, {$tag_id['id']})";
-      }
-      // Сохраняет id хештегов и постов в таблицу post_hashtags;
-      mysqli_query($con, "INSERT INTO post_hashtags (post_id, hashtag_id) VALUES $tags_query");
+        $verified_tags = "'" . implode("', '", $incoming_tags) . "'";
+        // Получает список совпадающих хештегов из БД;
+        $old_tags = select_query($con, "SELECT * FROM hashtags WHERE (hashtag_name) IN ($verified_tags)");
+        // Сохраняет совпадающие (уже сохраненные в БД) хештеги в массив;
+        $already_saved_tags = [];
+        foreach ($old_tags as $old_tag_number => $old_tag) {
+            $already_saved_tags[] = $old_tag['hashtag_name'];
+        }
+        // Получает хештеги, которых нет в БД;
+        $new_tags = "('" . implode("'), ('", array_diff($incoming_tags, $already_saved_tags)) . "')";
+        // И записывает их в таблицу hashtags;
+        mysqli_query($con, "INSERT IGNORE INTO hashtags (hashtag_name) VALUES $new_tags");
+        // Получает id хештегов записанных в таблицу;
+        $new_tags_ids = get_hashtags_ids($con, $verified_tags);
+        // Формирует запрос с id хештегов и id текущего поста;
+        $tags_query = "";
+        foreach ($new_tags_ids as $tags_nubmer => $tag_id) {
+            if (!empty($tags_query)) {
+                $tags_query .= ",";
+            }
+            $tags_query .= "({$post_id}, {$tag_id['id']})";
+        }
+        // Сохраняет id хештегов и постов в таблицу post_hashtags;
+        mysqli_query($con, "INSERT INTO post_hashtags (post_id, hashtag_id) VALUES $tags_query");
     }
 }
 
