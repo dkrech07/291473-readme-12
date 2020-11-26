@@ -9,15 +9,15 @@ $user_name = 'Дмитрий';
 $current_post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 // Проверяет наличие параметра запроса;
 if (!$current_post_id) {
-  open_404_page($is_auth, $user_name);
+    open_404_page($is_auth, $user_name);
 }
 // Подключается к БД;
-$con = mysqli_connect('localhost', 'root', 'root','readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
+$con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 // Плучает пост за БД по ID запроса;
 $post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id, 'assoc');
 // Проверяет наличие запрошенных данных в ответе от БД;
 if (!$post) {
-  open_404_page($is_auth, $user_name);
+    open_404_page($is_auth, $user_name);
 }
 
 // Получает id хештегов по id поста;
@@ -29,7 +29,7 @@ $registration_time = get_post_interval($post['date_add'], 'на сайте');
 // Получает id автора поста;
 $post_author_id = select_query($con, 'SELECT post_author_id FROM posts WHERE posts.id = ' . $current_post_id, 'row');
 // Получает общее количества постов автора открытого поста;
-$author_posts_count = select_query($con, 'SELECT COUNT(*) FROM posts WHERE post_author_id = ' . $post_author_id , 'row');
+$author_posts_count = select_query($con, 'SELECT COUNT(*) FROM posts WHERE post_author_id = ' . $post_author_id, 'row');
 // Получает общее количество подписчиков автора открытого поста;
 $subscribers_count = select_query($con, 'SELECT COUNT(*) FROM subscriptions WHERE author_id = ' . $post_author_id, 'row');
 // Передает данные из БД в шаблоны;

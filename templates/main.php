@@ -56,9 +56,9 @@
     <div class="popular__posts">
         <?php foreach ($posts as $post_number => &$post):
           foreach ($post as &$note) {
-            if (is_string($note)) {
-              $note = htmlspecialchars($note);
-            }
+              if (is_string($note)) {
+                  $note = htmlspecialchars($note);
+              }
           }
         ?>
         <article class="popular__post post post-<?= $post['class_name'] ?>">
