@@ -350,14 +350,14 @@ function check_validity($con, $current_content_type_id, $fields_map)
 
 function check_registration_validity($con, $fields_map)
 {
+    if (empty($_POST)) {
+        return null;
+    }
+
     date_default_timezone_set('Asia/Yekaterinburg');
     $date = date("Y-m-d H:i:s");
     $required_fields = ['email', 'login', 'password', 'password-repeat'];
-    $errors = check_empty_field($required_fields, $fields_map, $errors);
-    // Возвращает ошибки при их наличии и только после отправки формы;
-    if (!empty($errors)) {
-        return $errors;
-    }
+    $errors = check_empty_field($required_fields, $fields_map);
 
     // Выполняет сохранение данных, если при заполнении формы не допущено ошибок;
     if (empty($errors)) {
@@ -399,6 +399,11 @@ function check_registration_validity($con, $fields_map)
         if (mb_strlen($password) < 8) {
             $errors['password'] = $fields_map['password'] . 'Должен быть не меньше 8 символов.';
         }
+    }
+
+    // Возвращает ошибки при их наличии и только после отправки формы;
+    if (!empty($errors)) {
+        return $errors;
     }
 
     // Сохраняет данные пользователя в таблицу пользователей;
