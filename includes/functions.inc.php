@@ -415,3 +415,25 @@ function check_registration_validity($con, $fields_map)
     header('Location: main.html');
     return null;
 }
+
+function checkAutorization($con, $fields_map)
+{
+    $errors = [];
+    $required_fields = ['login', 'password',];
+    $errors = check_empty_field($required_fields, $fields_map, $errors);
+
+    if (empty($errors)) {
+        $login = $_POST['login'];
+        $password = $_POST['password'];
+
+        $user_query = select_query($con, "SELECT login, password FROM users WHERE login = '$login'");
+
+        // if (isset($user_query[0]['login']) && $login == $user_query[0]['login'] && password_verify($password, $user_query[0]['password'])) {
+        //     print('ok');
+        // } else {
+        //     print_r($errors);
+        //     return $errors;
+        // }
+    }
+    return $errors;
+}
