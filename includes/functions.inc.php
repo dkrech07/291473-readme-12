@@ -418,7 +418,10 @@ function check_registration_validity($con, $fields_map)
 
 function checkAutorization($con, $fields_map)
 {
-    $errors = [];
+    if (empty($_POST)) {
+        return null;
+    }
+
     $required_fields = ['login', 'password',];
     $errors = check_empty_field($required_fields, $fields_map, $errors);
 
