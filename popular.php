@@ -2,12 +2,17 @@
 date_default_timezone_set('Asia/Yekaterinburg');
 require_once('helpers.php');
 require_once('includes/functions.inc.php');
+require_once('includes/db_connect.inc.php');
 
-$is_auth = 1;
-$user_name = 'Дмитрий';
+session_start();
+check_authentication();
+print_r($_SESSION);
+$is_auth = isset($_SESSION);
+$user_name = $_SESSION['user']['login'];
+$avatar = $_SESSION['user']['avatar'];
 
 // Подключается к БД;
-$con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
+// $con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;
@@ -62,6 +67,7 @@ $page_content = include_template('main.php', [
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
   'user_name' => $user_name,
+  'avatar' => $avatar,
   'title' => 'readme: популярное',
   'content' => $page_content,
 ]);

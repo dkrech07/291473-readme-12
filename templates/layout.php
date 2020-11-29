@@ -69,7 +69,7 @@
                     <li class="header__profile">
                         <a class="header__profile-link" href="#">
                             <div class="header__avatar-wrapper">
-                                <img class="header__profile-avatar" src="img/userpic-medium.jpg" alt="Аватар профиля">
+                                <img class="header__profile-avatar" src="<?= $avatar ?>" alt="Аватар профиля">
                             </div>
                             <div class="header__profile-name">
                                 <span>
@@ -100,7 +100,7 @@
                                     </li>
 
                                     <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="#">
+                                        <a class="header__profile-nav-link" href="logout.php">
                           <span class="header__profile-nav-text">
                             Выход
                           </span>

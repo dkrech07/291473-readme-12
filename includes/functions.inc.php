@@ -4,6 +4,10 @@ function select_query($con, $sql, $type = 'all')
     mysqli_set_charset($con, "utf8");
     $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);
 
+    if ($type == 'array') {
+        return mysqli_fetch_array($result, MYSQLI_ASSOC);
+    }
+
     if ($type == 'assoc') {
         return mysqli_fetch_assoc($result);
     }
@@ -416,27 +420,90 @@ function check_registration_validity($con, $fields_map)
     return null;
 }
 
-function checkAutorization($con, $fields_map)
+function authenticate($con)
 {
     if (empty($_POST)) {
         return null;
     }
 
-    $required_fields = ['login', 'password',];
-    $errors = check_empty_field($required_fields, $fields_map, $errors);
+    session_start();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $required = ['login', 'password'];
+        $errors = [];
+        foreach ($required as $field) {
+            if (empty($_POST[$field])) {
+                $errors[$field] = 'Это поле надо заполнить';
+            }
+        }
+
+        $login = mysqli_real_escape_string($con, $_POST['login']);
+        $user_query = select_query($con, "SELECT id, login, password, avatar FROM users WHERE login = '$login'", 'array');
+        $user = $user_query ? $user_query : null;
+
+        if (empty($errors) and isset($user)) {
+            if (password_verify($_POST['password'], $user['password'])) {
+                $_SESSION['user'] = $user;
+            } else {
+                $errors['password'] = 'Неверный пароль';
+            }
+        } elseif (!isset($user)) {
+            $errors['login'] = 'Такой пользователь не найден';
+        }
+    } else {
+        $page_content = include_template('/feed.php', []);
+
+        if (isset($_SESSION['user'])) {
+            header("Location: /index.php");
+            exit();
+        }
+    }
 
     if (empty($errors)) {
-        $login = $_POST['login'];
-        $password = $_POST['password'];
-
-        $user_query = select_query($con, "SELECT login, password FROM users WHERE login = '$login'");
-
-        // if (isset($user_query[0]['login']) && $login == $user_query[0]['login'] && password_verify($password, $user_query[0]['password'])) {
-        //     print('ok');
-        // } else {
-        //     print_r($errors);
-        //     return $errors;
-        // }
+        header("Location: /feed.php");
+        exit();
     }
+
     return $errors;
 }
+
+function check_authentication()
+{
+    if (!isset($_SESSION['user'])) {
+        header("Location: /index.php");
+        exit();
+    }
+}
+
+
+
+
+
+
+
+
+    // $errors = check_empty_field($required_fields, $fields_map);
+    //
+    // if (empty($errors)) {
+    //     $login = $_POST['login'];
+    //     $password = $_POST['password'];
+    //
+    //     $user_query = select_query($con, "SELECT login, password FROM users WHERE login = '$login'");
+    //
+    //     if (isset($user_query[0]['login']) && $login == $user_query[0]['login'] && password_verify($password, $user_query[0]['password'])) {
+    //         session_start();
+    //         if (isset($SESSION['login'])) {
+    //             print($SESSION['login']);
+    //         }
+    //         $SESSION['login'] = $user_query[0]['login'];
+    //
+    //         header('Location: feed.php');
+    //         return null;
+    //     } else {
+    //         print_r($errors);
+    //
+    //         // return null;
+    //     }
+    // }
+    // // print_r($errors) . '<br>';
+    // return $errors;
+    // }
