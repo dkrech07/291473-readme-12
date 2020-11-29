@@ -11,8 +11,6 @@ $is_auth = isset($_SESSION);
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
-// Подключается к БД;
-// $con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;

@@ -53,3 +53,5 @@ INSERT INTO likes (like_author_id, post_id) VALUES (5, 1);
 
 -- Подписывается на пользователя;
 INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 2);
+INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 3);
+INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 5);
