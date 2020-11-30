@@ -17,8 +17,10 @@ foreach ($subscriptions_query as $subscription_number => $subscription_id) {
 }
 
 // Получать список постов пользователей на которых оформлена подписка;
-$subscription_ids_list = implode(" AND ", $subscriptions_ids);
-$subscription_posts = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.post_author_id = ' . $subscription_ids_list);
+$subscription_ids_list = "'" . implode("', '", $subscriptions_ids) . "'";
+$subscription_posts = select_query($con, "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE (post_author_id) IN ($subscription_ids_list) ");
+
+// Реализует фильтрацию постов в ленте;
 
 $page_content = include_template('feed.php', ['subscription_posts' => $subscription_posts]);
 
