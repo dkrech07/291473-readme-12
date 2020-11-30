@@ -473,37 +473,3 @@ function check_authentication()
         exit();
     }
 }
-
-
-
-
-
-
-
-
-    // $errors = check_empty_field($required_fields, $fields_map);
-    //
-    // if (empty($errors)) {
-    //     $login = $_POST['login'];
-    //     $password = $_POST['password'];
-    //
-    //     $user_query = select_query($con, "SELECT login, password FROM users WHERE login = '$login'");
-    //
-    //     if (isset($user_query[0]['login']) && $login == $user_query[0]['login'] && password_verify($password, $user_query[0]['password'])) {
-    //         session_start();
-    //         if (isset($SESSION['login'])) {
-    //             print($SESSION['login']);
-    //         }
-    //         $SESSION['login'] = $user_query[0]['login'];
-    //
-    //         header('Location: feed.php');
-    //         return null;
-    //     } else {
-    //         print_r($errors);
-    //
-    //         // return null;
-    //     }
-    // }
-    // // print_r($errors) . '<br>';
-    // return $errors;
-    // }

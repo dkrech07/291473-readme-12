@@ -6,7 +6,6 @@ require_once('includes/db_connect.inc.php');
 
 session_start();
 check_authentication();
-print_r($_SESSION);
 $is_auth = isset($_SESSION);
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];

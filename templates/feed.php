@@ -54,19 +54,21 @@
     </div>
     <ul class="feed__filters filters">
       <li class="feed__filters-item filters__item">
-        <a class="filters__button filters__button--active" href="#">
+        <a class="filters__button <?= !$post_type ? 'filters__button--active' : '' ?>" href="feed.php">
           <span>Все</span>
         </a>
       </li>
-      <li class="feed__filters-item filters__item">
-        <a class="filters__button filters__button--photo button" href="#">
-          <span class="visually-hidden">Фото</span>
-          <svg class="filters__icon" width="22" height="18">
-            <use xlink:href="#icon-filter-photo"></use>
-          </svg>
-        </a>
-      </li>
-      <li class="feed__filters-item filters__item">
+      <?php foreach ($content_types as $content_type): ?>
+          <li class="feed__filters-item filters__item">
+            <a class="filters__button filters__button--<?= $content_type['class_name'] ?> button <?= $post_type == $content_type[id] ? 'filters__button--active' : '' ?>" href="?post-type=<?= $content_type['id'] ?>">
+              <span class="visually-hidden"><?= $content_type['type_name'] ?></span>
+              <svg class="filters__icon" width="22" height="18">
+                <use xlink:href="#icon-filter-<?= $content_type['class_name'] ?>"></use>
+              </svg>
+            </a>
+          </li>
+      <?php endforeach; ?>
+      <!-- <li class="feed__filters-item filters__item">
         <a class="filters__button filters__button--video button" href="#">
           <span class="visually-hidden">Видео</span>
           <svg class="filters__icon" width="24" height="16">
@@ -97,7 +99,7 @@
             <use xlink:href="#icon-filter-link"></use>
           </svg>
         </a>
-      </li>
+      </li> -->
     </ul>
   </section>
   <aside class="promo">
