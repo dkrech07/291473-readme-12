@@ -16,23 +16,21 @@ foreach ($subscriptions_query as $subscription_number => $subscription_id) {
     $subscriptions_ids[] = $subscription_id['author_id'];
 }
 
-// Получать список постов пользователей на которых оформлена подписка;
-$subscription_ids_list = "'" . implode("', '", $subscriptions_ids) . "'";
-$subscription_posts = select_query($con, "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE (post_author_id) IN ($subscription_ids_list) ");
-
 // Реализует фильтрацию постов в ленте;
-// Получает спиок типов контента для дальнейшего вывода на странице;
-
 // ОБЪЕДИНИТЬ С КОДОМ ИЗ popular.php, вынести в функцию;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;
 $post_type = filter_input(INPUT_GET, 'post-type', FILTER_VALIDATE_INT);
 if ($post_type) {
-    $post_type_query = 'WHERE p.content_type_id = ' . $post_type;
+    $post_type_query = 'AND p.content_type_id = ' . $post_type;
 } else {
     $post_type = null;
     $post_type_query = null;
 }
+
+// Получать список постов пользователей на которых оформлена подписка;
+$subscription_ids_list = "'" . implode("', '", $subscriptions_ids) . "'";
+$subscription_posts = select_query($con, "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE (post_author_id) IN ($subscription_ids_list) " . $post_type_query);
 
 $page_content = include_template('feed.php', [
     'subscription_posts' => $subscription_posts,
