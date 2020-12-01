@@ -1,9 +1,13 @@
 <?php
 require_once('helpers.php');
 require_once('includes/functions.inc.php');
+require_once('includes/db_connect.inc.php');
 
-$is_auth = rand(0, 1);
-$user_name = 'Дмитрий';
+session_start();
+check_authentication();
+$is_auth = isset($_SESSION);
+$user_name = $_SESSION['user']['login'];
+$avatar = $_SESSION['user']['avatar'];
 
 // Получает ID поста из параметра запроса;
 $current_post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
@@ -11,8 +15,7 @@ $current_post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 if (!$current_post_id) {
     open_404_page($is_auth, $user_name);
 }
-// Подключается к БД;
-$con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
+
 // Плучает пост за БД по ID запроса;
 $post = select_query($con, 'SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.id = ' . $current_post_id, 'assoc');
 // Проверяет наличие запрошенных данных в ответе от БД;
@@ -47,6 +50,7 @@ $page_content = include_template('post.php', [
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
   'user_name' => $user_name,
+  'avatar' => $avatar,
   'title' => 'readme: публикация',
   'content' => $page_content,
 ]);

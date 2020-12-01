@@ -17,7 +17,6 @@ foreach ($subscriptions_query as $subscription_number => $subscription_id) {
 }
 
 // Реализует фильтрацию постов в ленте;
-// ОБЪЕДИНИТЬ С КОДОМ ИЗ popular.php, вынести в функцию;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;
 $post_type = filter_input(INPUT_GET, 'post-type', FILTER_VALIDATE_INT);

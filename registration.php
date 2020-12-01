@@ -2,12 +2,10 @@
 date_default_timezone_set('Asia/Yekaterinburg');
 require_once('helpers.php');
 require_once('includes/functions.inc.php');
+require_once('includes/db_connect.inc.php');
 
 $is_auth = 1;
 $user_name = 'Дмитрий';
-
-// Подключается к БД;
-$con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
 
 $fields_map = [
     'email' => 'Email. ',

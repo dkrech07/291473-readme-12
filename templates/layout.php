@@ -2,6 +2,8 @@
     $url = $_SERVER['REQUEST_URI'];
     $current_url = substr($url, strrpos($url, '/'));
     $registration_url = '/registration.php';
+    $feed_url = '/feed.php';
+    $popular_url = '/popular.php';
  ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -47,12 +49,12 @@
                 <?php if ($current_url != $registration_url): ?>
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link header__page-link--active" title="Популярный контент">
+                        <a class="header__page-link <?= $current_url == $popular_url ? 'header__page-link--active' : ' ' ?>" href="popular.php" title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link" href="feed.html" title="Моя лента">
+                        <a class="header__page-link <?= $current_url == $feed_url ? 'header__page-link--active' : ' ' ?>" href="feed.php" title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>

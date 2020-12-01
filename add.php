@@ -1,12 +1,13 @@
 <?php
 require_once('helpers.php');
 require_once('includes/functions.inc.php');
+require_once('includes/db_connect.inc.php');
 
-$is_auth = rand(0, 1);
-$user_name = 'Дмитрий';
-
-// Подключается к БД;
-$con = mysqli_connect('localhost', 'root', 'root', 'readme') or trigger_error('Ошибка подключения: '.mysqli_connect_error(), E_USER_ERROR);
+session_start();
+check_authentication();
+$is_auth = isset($_SESSION);
+$user_name = $_SESSION['user']['login'];
+$avatar = $_SESSION['user']['avatar'];
 
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
@@ -65,6 +66,7 @@ $page_content = include_template('add.php', [
 $layout_content = include_template('layout.php', [
   'is_auth' => $is_auth,
   'user_name' => $user_name,
+  'avatar' => $avatar,
   'title' => 'readme: добавить публикацию',
   'content' => $page_content,
 ]);
