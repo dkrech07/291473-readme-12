@@ -91,19 +91,6 @@ function get_filter_active($current_content_type_id, $content_type)
     }
 }
 
-// function get_filter_posts($con) {
-//     $content_types = select_query($con, 'SELECT * FROM content_types');
-//     // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;
-//     $post_type = filter_input(INPUT_GET, 'post-type', FILTER_VALIDATE_INT);
-//     if ($post_type) {
-//         $post_type_query = 'AND p.content_type_id = ' . $post_type;
-//     } else {
-//         $post_type_query = null;
-//     }
-//
-//     return $post_type_query;
-// }
-
 // Проверяет загружаемое по ссылке изображение;
 function check_loaded_image($photo_link)
 {

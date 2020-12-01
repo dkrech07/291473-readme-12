@@ -71,7 +71,6 @@ $login = $_POST['login'] ?? '';
                 <use xlink:href="#icon-input-user"></use>
               </svg>
               <label class="visually-hidden">Логин</label>
-              <!-- <span class="form__error-label form__error-label--login"></span> -->
               <span class="form__error-label form__error-label--login"><?= isset($errors['login']) ? $errors['login'] : '' ?></span>
             </div>
             <div class="authorization__input-wrapper form__input-wrapper <?= isset($errors['password']) ? 'form__input-section--error' : '' ?>">
@@ -80,7 +79,6 @@ $login = $_POST['login'] ?? '';
                 <use xlink:href="#icon-input-password"></use>
               </svg>
               <label class="visually-hidden">Пароль</label>
-              <!-- <span class="form__error-label"></span> -->
               <span class="form__error-label"><?= isset($errors['password']) ? $errors['password'] : '' ?></span>
             </div>
             <a class="authorization__recovery" href="#">Восстановить пароль</a>
