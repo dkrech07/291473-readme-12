@@ -5,7 +5,7 @@ function select_query($con, $sql, $type = 'all')
     $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);
 
     if ($type == 'array') {
-        return mysqli_fetch_array($result, MYSQLI_ASSOC);
+        return mysql_fetch_assoc($result);
     }
 
     if ($type == 'assoc') {
@@ -348,7 +348,7 @@ function check_validity($con, $current_content_type_id, $fields_map)
     // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
     $post_id = $con->insert_id;
     get_hashtags($tags_line, $post_id, $con);
-    header('Location: post.php?id=' . $post_id);
+    header('Location: /post.php?id=' . $post_id);
     return null;
 }
 
@@ -416,7 +416,7 @@ function check_registration_validity($con, $fields_map)
     $stmt = mysqli_prepare($con, $post_query);
     mysqli_stmt_bind_param($stmt, 'sssss', $date, $email, $login, $password_hash, $avatar);
     mysqli_stmt_execute($stmt);
-    header('Location: main.html');
+    header('Location: /main.html');
     return null;
 }
 
@@ -436,12 +436,11 @@ function authenticate($con)
             }
         }
 
-        $login = mysqli_real_escape_string($con, $_POST['login']);
-        $user_query = select_query($con, "SELECT id, login, password, avatar FROM users WHERE login = '$login'", 'array');
-        $user = $user_query ? $user_query : null;
-
         if (empty($errors) and isset($user)) {
             if (password_verify($_POST['password'], $user['password'])) {
+                $login = mysqli_real_escape_string($con, $_POST['login']);
+                $user_query = select_query($con, "SELECT id, login, password, avatar FROM users WHERE login = '$login'", 'array');
+                $user = $user_query ? $user_query : null;
                 $_SESSION['user'] = $user;
             } else {
                 $errors['password'] = 'Неверный пароль';
@@ -453,13 +452,13 @@ function authenticate($con)
         $page_content = include_template('feed.php', []);
 
         if (isset($_SESSION['user'])) {
-            header("Location: index.php");
+            header("Location: /index.php");
             exit();
         }
     }
 
     if (empty($errors)) {
-        header("Location: feed.php");
+        header("Location: /feed.php");
         exit();
     }
 
@@ -469,7 +468,7 @@ function authenticate($con)
 function check_authentication()
 {
     if (!isset($_SESSION['user'])) {
-        header("Location: index.php");
+        header("Location: /index.php");
         exit();
     }
 }

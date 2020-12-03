@@ -22,7 +22,7 @@
 <header class="header">
     <div class="header__wrapper container">
         <div class="header__logo-wrapper">
-            <a class="header__logo-link" href="index.php">
+            <a class="header__logo-link" href="/index.php">
                 <img class="header__logo" src="img/logo.svg" alt="Логотип readme" width="128" height="24">
             </a>
             <p class="header__topic">
@@ -44,17 +44,16 @@
         </form>
         <?php endif; ?>
         <div class="header__nav-wrapper">
-            <?php if ($is_auth): ?>
             <nav class="header__nav">
                 <?php if ($current_url != $registration_url): ?>
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
-                        <a class="header__page-link <?= $current_url == $popular_url ? 'header__page-link--active' : ' ' ?>" href="popular.php" title="Популярный контент">
+                        <a class="header__page-link <?= $current_url == $popular_url ? 'header__page-link--active' : ' ' ?>" href="/popular.php" title="Популярный контент">
                             <span class="visually-hidden">Популярный контент</span>
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--feed">
-                        <a class="header__page-link <?= $current_url == $feed_url ? 'header__page-link--active' : ' ' ?>" href="feed.php" title="Моя лента">
+                        <a class="header__page-link <?= $current_url == $feed_url ? 'header__page-link--active' : ' ' ?>" href="/feed.php" title="Моя лента">
                             <span class="visually-hidden">Моя лента</span>
                         </a>
                     </li>
@@ -102,7 +101,7 @@
                                     </li>
 
                                     <li class="header__profile-nav-item">
-                                        <a class="header__profile-nav-link" href="logout.php">
+                                        <a class="header__profile-nav-link" href="/logout.php">
                           <span class="header__profile-nav-text">
                             Выход
                           </span>
@@ -113,7 +112,7 @@
                         </div>
                     </li>
                     <li>
-                        <a class="header__post-button button button--transparent" href="add.php">Пост</a>
+                        <a class="header__post-button button button--transparent" href="/add.php">Пост</a>
                     </li>
                     <?php endif; ?>
                 </ul>
@@ -128,7 +127,6 @@
                 </ul>
                 <?php endif; ?>
             </nav>
-            <?php endif; ?>
         </div>
     </div>
 </header>
