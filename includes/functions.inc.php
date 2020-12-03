@@ -4,10 +4,6 @@ function select_query($con, $sql, $type = 'all')
     mysqli_set_charset($con, "utf8");
     $result = mysqli_query($con, $sql) or trigger_error("Ошибка в запросе к базе данных: ".mysqli_error($con), E_USER_ERROR);
 
-    if ($type == 'array') {
-        return mysql_fetch_assoc($result);
-    }
-
     if ($type == 'assoc') {
         return mysqli_fetch_assoc($result);
     }
@@ -69,12 +65,12 @@ function get_post_interval($post_time, $caption)
     return $time;
 }
 
-function open_404_page($is_auth, $user_name)
+function open_404_page($user_name, $avatar)
 {
     $page_content = include_template('page_404.php');
     $layout_content = include_template('layout.php', [
-    'is_auth' => $is_auth,
     'user_name' => $user_name,
+    'avatar' => $avatar,
     'title' => 'readme: страница не найдена',
     'content' => $page_content,
   ]);
@@ -436,17 +432,20 @@ function authenticate($con)
             }
         }
 
-        if (empty($errors) and isset($user)) {
-            if (password_verify($_POST['password'], $user['password'])) {
-                $login = mysqli_real_escape_string($con, $_POST['login']);
-                $user_query = select_query($con, "SELECT id, login, password, avatar FROM users WHERE login = '$login'", 'array');
-                $user = $user_query ? $user_query : null;
-                $_SESSION['user'] = $user;
-            } else {
-                $errors['password'] = 'Неверный пароль';
+        if (empty($errors)) {
+            $login = mysqli_real_escape_string($con, $_POST['login']);
+            $user_query = select_query($con, "SELECT id, login, password, avatar FROM users WHERE login = '$login'", 'assoc');
+            $user = $user_query ? $user_query : null;
+
+            if (isset($user)) {
+                if (password_verify($_POST['password'], $user['password'])) {
+                    $_SESSION['user'] = $user;
+                } else {
+                    $errors['password'] = 'Неверный пароль';
+                }
+            } elseif (!isset($user)) {
+                $errors['login'] = 'Такой пользователь не найден';
             }
-        } elseif (!isset($user)) {
-            $errors['login'] = 'Такой пользователь не найден';
         }
     } else {
         $page_content = include_template('feed.php', []);

@@ -5,13 +5,14 @@ require_once('includes/db_connect.inc.php');
 
 session_start();
 check_authentication();
-$is_auth = isset($_SESSION['user']);
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
 // Получает список подписок авторизованного пользователя;
 $subscriber_id = $_SESSION['user']['id'];
 $subscriptions_query = select_query($con, "SELECT author_id FROM subscriptions WHERE subscriber_id = '$subscriber_id'");
+
+$subscriptions_ids = array();
 foreach ($subscriptions_query as $subscription_number => $subscription_id) {
     $subscriptions_ids[] = $subscription_id['author_id'];
 }
@@ -38,7 +39,6 @@ $page_content = include_template('feed.php', [
 ]);
 
 $layout_content = include_template('layout.php', [
-  'is_auth' => $is_auth,
   'user_name' => $user_name,
   'avatar' => $avatar,
   'title' => 'readme: моя лента',

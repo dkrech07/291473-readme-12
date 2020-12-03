@@ -6,7 +6,6 @@ require_once('includes/db_connect.inc.php');
 
 session_start();
 check_authentication();
-$is_auth = isset($_SESSION['user']);
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
@@ -49,7 +48,7 @@ if ($sorting_type == 'popular') {
 $posts = select_query($con, 'SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
 
 if (!$posts) {
-    open_404_page($is_auth, $user_name);
+    open_404_page($user_name, $avatar);
 }
 
 // Передает данные из БД в шаблоны;
@@ -62,7 +61,6 @@ $page_content = include_template('main.php', [
 ]);
 
 $layout_content = include_template('layout.php', [
-  'is_auth' => $is_auth,
   'user_name' => $user_name,
   'avatar' => $avatar,
   'title' => 'readme: популярное',

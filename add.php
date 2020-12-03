@@ -5,7 +5,6 @@ require_once('includes/db_connect.inc.php');
 
 session_start();
 check_authentication();
-$is_auth = isset($_SESSION['user']);
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
@@ -47,7 +46,7 @@ $errors = check_validity($con, $current_content_type_id, $fields_map);
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');
 
 if (!$content_type) {
-    open_404_page($is_auth, $user_name);
+    open_404_page($user_name, $avatar);
 }
 
 // Передает данные из БД в шаблоны;
@@ -64,7 +63,6 @@ $page_content = include_template('add.php', [
 ]);
 
 $layout_content = include_template('layout.php', [
-  'is_auth' => $is_auth,
   'user_name' => $user_name,
   'avatar' => $avatar,
   'title' => 'readme: добавить публикацию',
