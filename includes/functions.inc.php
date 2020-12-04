@@ -65,12 +65,12 @@ function get_post_interval($post_time, $caption)
     return $time;
 }
 
-function open_404_page($is_auth, $user_name)
+function open_404_page($user_name, $avatar)
 {
     $page_content = include_template('page_404.php');
     $layout_content = include_template('layout.php', [
-    'is_auth' => $is_auth,
     'user_name' => $user_name,
+    'avatar' => $avatar,
     'title' => 'readme: страница не найдена',
     'content' => $page_content,
   ]);
@@ -344,7 +344,7 @@ function check_validity($con, $current_content_type_id, $fields_map)
     // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
     $post_id = $con->insert_id;
     get_hashtags($tags_line, $post_id, $con);
-    header('Location: post.php?id=' . $post_id);
+    header('Location: /post.php?id=' . $post_id);
     return null;
 }
 
@@ -412,6 +412,62 @@ function check_registration_validity($con, $fields_map)
     $stmt = mysqli_prepare($con, $post_query);
     mysqli_stmt_bind_param($stmt, 'sssss', $date, $email, $login, $password_hash, $avatar);
     mysqli_stmt_execute($stmt);
-    header('Location: main.html');
+    header('Location: /main.html');
     return null;
+}
+
+function authenticate($con)
+{
+    if (empty($_POST)) {
+        return null;
+    }
+
+    session_start();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $required = ['login', 'password'];
+        $errors = [];
+        foreach ($required as $field) {
+            if (empty($_POST[$field])) {
+                $errors[$field] = 'Это поле надо заполнить';
+            }
+        }
+
+        if (empty($errors)) {
+            $login = mysqli_real_escape_string($con, $_POST['login']);
+            $user_query = select_query($con, "SELECT id, login, password, avatar FROM users WHERE login = '$login'", 'assoc');
+            $user = $user_query ? $user_query : null;
+
+            if (isset($user)) {
+                if (password_verify($_POST['password'], $user['password'])) {
+                    $_SESSION['user'] = $user;
+                } else {
+                    $errors['password'] = 'Неверный пароль';
+                }
+            } elseif (!isset($user)) {
+                $errors['login'] = 'Такой пользователь не найден';
+            }
+        }
+    } else {
+        $page_content = include_template('feed.php', []);
+
+        if (isset($_SESSION['user'])) {
+            header("Location: /index.php");
+            exit();
+        }
+    }
+
+    if (empty($errors)) {
+        header("Location: /feed.php");
+        exit();
+    }
+
+    return $errors;
+}
+
+function check_authentication()
+{
+    if (!isset($_SESSION['user'])) {
+        header("Location: /index.php");
+        exit();
+    }
 }
