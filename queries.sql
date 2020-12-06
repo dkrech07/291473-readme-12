@@ -56,3 +56,6 @@ INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 2);
 INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 3);
 INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 4);
 INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 5);
+
+-- Создает полнотекстовый индекс в таблице posts для полей "название" и "текстовое содержимое";
+CREATE FULLTEXT INDEX posts_search ON posts(title, content);
