@@ -1,3 +1,7 @@
+<?php
+  print_r($search_posts);
+?>
+
 <h1 class="visually-hidden">Страница результатов поиска</h1>
       <section class="search">
         <h2 class="visually-hidden">Результаты поиска</h2>
@@ -10,7 +14,8 @@
         <div class="search__results-wrapper">
           <div class="container">
             <div class="search__content">
-              <!-- <article class="search__post post post-photo">
+            <?php foreach ($subscription_posts as $post_number => $post): ?>
+              <article class="search__post post post-photo">
                 <header class="post__header post__author">
                   <a class="post__author-link" href="#" title="Автор">
                     <div class="post__avatar-wrapper">
@@ -50,8 +55,10 @@
                   </div>
                 </footer>
               </article>
+              <?php endforeach; ?>
 
-              <article class="search__post post post-text">
+       
+           <!--<article class="search__post post post-text">
                 <header class="post__header post__author">
                   <a class="post__author-link" href="#" title="Автор">
                     <div class="post__avatar-wrapper">
