@@ -8,10 +8,19 @@ check_authentication();
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
-$search = filter_input(INPUT_GET, 'q');
+$search_posts = [];
+mysqli_query($con, "CREATE FULLTEXT INDEX posts_search ON posts(title, content)");
+$search = filter_input(INPUT_GET, 'q') ?? '';
+print($search);
 
-$search_query = "SELECT * FROM posts WHERE MATCH(title, content) AGAINGS ('любим')";
-$search_posts = select_query($con, $search_query);
+if ($search) {
+  $search_query = "SELECT * FROM posts WHERE MATCH(title, content) AGAINGS(?)";
+  $stmt = mysqli_prepare($con, $search_query);
+  mysqli_stmt_bind_param($stmt, 's', $search);
+  mysqli_stmt_execute($stmt);
+  $search_result = mysqli_stmt_get_result($stmt);
+  $search_posts = mysqli_fetch_all($search_result, MYSQL_ASSOC);
+}
 
 $page_content = include_template('search.php', [
   'search_posts' => $search_posts,
