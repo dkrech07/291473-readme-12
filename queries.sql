@@ -14,11 +14,11 @@ INSERT INTO users (date_add, email, login, password, avatar) VALUES ('2020-01-16
                                                                     ('2020-08-16 05:55:30', 'petro@mail.ru', 'petro', '$2y$10$Ai.9TbowPmD04wF.W5KxOeeeos1w4T3TiJZCoh3tn5ilnLt1VrgB', 'img/userpic-petro.jpg');
 
 -- Добавляет список постов;
-INSERT INTO posts (date_add, title, content, views, post_author_id, content_type_id, likes_count) VALUES ('2020-10-16 11:31:26', 'Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 2, 2, 2, 1),
-                                                                                            ('2020-10-10 16:31:26', 'Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 5, 3, 1, 2);
-INSERT INTO posts (date_add, title, content, image, views, post_author_id, content_type_id, likes_count) VALUES ('2020-10-09 16:31:26', 'Наконец, обработал фотки!', 'rock-medium.jpg', 'img/rock-medium.jpg', 99, 4, 3, 5),
-                                                                                                   ('2020-02-16 16:31:26', 'Моя мечта', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 1, 3, 5);
-INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id, likes_count) VALUES ('2020-06-16 16:31:26', 'Лучшие курсы', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 5, 5, 15);
+INSERT INTO posts (date_add, title, content, views, post_author_id, content_type_id, likes_count, comments_count) VALUES ('2020-10-16 11:31:26', 'Цитата', 'Мы в жизни любим только раз, а после ищем лишь похожих', 2, 2, 2, 1, 5),
+                                                                                            ('2020-10-10 16:31:26', 'Игра престолов', 'Не могу дождаться начала финального сезона своего любимого сериала!', 5, 3, 1, 2, 25);
+INSERT INTO posts (date_add, title, content, image, views, post_author_id, content_type_id, likes_count, comments_count) VALUES ('2020-10-09 16:31:26', 'Наконец, обработал фотки!', 'rock-medium.jpg', 'img/rock-medium.jpg', 99, 4, 3, 5, 7),
+                                                                                                   ('2020-02-16 16:31:26', 'Моя мечта', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 1, 3, 5, 75);
+INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id, likes_count, comments_count) VALUES ('2020-06-16 16:31:26', 'Лучшие курсы', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 5, 5, 15, 14);
 
 -- Добавляет комментарии к постам;
 INSERT INTO comments (date_add, content, comment_author_id, post_id) VALUES ('2020-10-16 11:35:26', 'Красивые стихи... Это Есенин?', 2, 1),

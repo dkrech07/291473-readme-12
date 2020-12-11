@@ -12,7 +12,9 @@ $search_posts = [];
 mysqli_query($con, "CREATE FULLTEXT INDEX posts_search ON posts(title, content)");
 $search = filter_input(INPUT_GET, 'q') ?? '';
 
-if ($search) {
+if (isset($search)) {
+  $search_line = trim($search);
+  $search_tags = '#' . str_replace(' ', " #", $search_line);
   $search_query = "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE MATCH(title, content) AGAINST(?)";
   $stmt = mysqli_prepare($con, $search_query);
   mysqli_stmt_bind_param($stmt, 's', $search);
@@ -22,7 +24,7 @@ if ($search) {
 }
 
 $page_content = include_template('search.php', [
-  'search' => $search,
+  'search_tags' => $search_tags,
   'search_posts' => $search_posts,
 ]);
 
