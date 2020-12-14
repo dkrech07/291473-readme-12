@@ -1,3 +1,7 @@
+<?php
+    print($incoming_words);
+?>
+
 <div class="container">
   <h1 class="page__title page__title--publication"><?= $post['title'] ?></h1>
   <section class="post-details">
@@ -37,7 +41,7 @@
         <ul class="post__tags">
         <?php if (!empty($post_hashtags)): ?>
           <?php foreach ($post_hashtags as $post_hashtag): ?>
-          <li><a href="#">#<?= $post_hashtag ?></a></li>
+          <li><a href="search.php?q=<?= $post_hashtag ?>"><?= $post_hashtag ?></a></li>
           <?php endforeach; ?>
         <?php endif; ?>
         </ul>

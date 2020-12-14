@@ -8,8 +8,8 @@ check_authentication();
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
-// Получает ID поста из параметра запроса;
 $current_post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
 // Проверяет наличие параметра запроса;
 if (!$current_post_id) {
     open_404_page($user_name, $avatar);

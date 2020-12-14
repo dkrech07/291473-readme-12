@@ -12,6 +12,9 @@ $search_posts = [];
 mysqli_query($con, "CREATE FULLTEXT INDEX posts_search ON posts(title, content)");
 $search = filter_input(INPUT_GET, 'q') ?? '';
 
+//print(substr($search, 1));
+
+// Ищет совпадения с запросом заголовках и текстах постов;
 if (isset($search)) {
   $search_line = trim($search);
   $search_tags = '#' . str_replace(' ', " #", $search_line);

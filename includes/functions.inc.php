@@ -151,6 +151,8 @@ function get_hashtag_name($con, $hashtags_id)
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
 function get_hashtags($tags_line, $post_id, $con)
 {
+    $incoming_words = "#" . implode(" ", $tags_line);
+
     $incoming_tags = explode(' ', $tags_line);
     // Проверяет хештеги на наличие символов/заполнение;
     $verification_result = true;
