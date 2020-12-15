@@ -1,3 +1,6 @@
+<?php
+print($search2);
+?>
 <h1 class="visually-hidden">Страница результатов поиска</h1>
       <section class="search">
         <h2 class="visually-hidden">Результаты поиска</h2>

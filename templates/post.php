@@ -1,7 +1,6 @@
 <?php
-    print($incoming_words);
+print($post_hashtags);
 ?>
-
 <div class="container">
   <h1 class="page__title page__title--publication"><?= $post['title'] ?></h1>
   <section class="post-details">

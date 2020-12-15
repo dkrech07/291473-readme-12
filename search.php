@@ -10,7 +10,7 @@ $avatar = $_SESSION['user']['avatar'];
 
 $search_posts = [];
 mysqli_query($con, "CREATE FULLTEXT INDEX posts_search ON posts(title, content)");
-$search = filter_input(INPUT_GET, 'q') ?? '';
+$search2 = filter_input(INPUT_GET, 'q') ?? '';
 
 //print(substr($search, 1));
 
@@ -29,6 +29,7 @@ if (isset($search)) {
 $page_content = include_template('search.php', [
   'search_tags' => $search_tags,
   'search_posts' => $search_posts,
+  'search2' => $search2,
 ]);
 
 $layout_content = include_template('layout.php', [
