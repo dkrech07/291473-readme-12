@@ -40,7 +40,7 @@ print($post_hashtags);
         <ul class="post__tags">
         <?php if (!empty($post_hashtags)): ?>
           <?php foreach ($post_hashtags as $post_hashtag): ?>
-          <li><a href="search.php?q=<?= $post_hashtag ?>"><?= $post_hashtag ?></a></li>
+          <li><a href=""><?= $post_hashtag ?></a></li>
           <?php endforeach; ?>
         <?php endif; ?>
         </ul>
@@ -138,3 +138,4 @@ print($post_hashtags);
     </div>
   </section>
 </div>
+<script src='js/custom-hashtag.js'></script>
