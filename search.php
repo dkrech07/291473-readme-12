@@ -10,26 +10,34 @@ $avatar = $_SESSION['user']['avatar'];
 
 $search_posts = [];
 mysqli_query($con, "CREATE FULLTEXT INDEX posts_search ON posts(title, content)");
-$search2 = filter_input(INPUT_GET, 'q') ?? '';
+mysqli_query($con, "CREATE FULLTEXT INDEX hashtags_search ON hashtags(hashtag_name)");
 
-//print(substr($search, 1));
-
-// Ищет совпадения с запросом заголовках и текстах постов;
+$search = filter_input(INPUT_GET, 'q') ?? '';
 if (isset($search)) {
-  $search_line = trim($search);
-  $search_tags = '#' . str_replace(' ', " #", $search_line);
-  $search_query = "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE MATCH(title, content) AGAINST(?)";
+  $hashtag_search = substr($search, 0, 1);
+
+  if ($hashtag_search == '#') {
+    $search_line = trim(substr($search, 1));
+    $search_query = "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id 
+    INNER JOIN content_types ct ON ct.id = p.content_type_id INNER JOIN post_hashtags ph ON ph.post_id = p.id INNER JOIN hashtags h ON h.id = ph.hashtag_id 
+    WHERE MATCH(hashtag_name) AGAINST(?)";
+  } else {
+    $search_line = trim($search);
+    $search_query = "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id 
+    INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE MATCH(title, content) AGAINST(?)";
+  }
+
   $stmt = mysqli_prepare($con, $search_query);
   mysqli_stmt_bind_param($stmt, 's', $search);
   mysqli_stmt_execute($stmt);
   $search_result = mysqli_stmt_get_result($stmt);
   $search_posts = mysqli_fetch_all($search_result, MYSQLI_ASSOC);
+  $search_tags = '#' . str_replace(' ', " #", $search_line);
 }
 
 $page_content = include_template('search.php', [
   'search_tags' => $search_tags,
   'search_posts' => $search_posts,
-  'search2' => $search2,
 ]);
 
 $layout_content = include_template('layout.php', [

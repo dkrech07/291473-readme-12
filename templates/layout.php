@@ -64,7 +64,6 @@
                     </li>
                 </ul>
                 <?php endif; ?>
-                <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
                 <ul class="header__user-nav">
                     <?php if ($current_url != $registration_url): ?>
                     <li class="header__profile">
