@@ -139,7 +139,6 @@ function get_hashtag_name($con, $hashtags_id)
     if (!empty($hashtags_ids)) {
         $ids_list = implode(",", $hashtags_ids);
         $hashtags_names = get_hashtags_names($con, $ids_list);
-
         $hashtags_list = [];
         foreach ($hashtags_names as $name_number => $name) {
             $hashtags_list[] = $name['hashtag_name'];
@@ -151,8 +150,6 @@ function get_hashtag_name($con, $hashtags_id)
 // Добаляет хештеги в БД / Не добавляет ничего, если хештегов нет;
 function get_hashtags($tags_line, $post_id, $con)
 {
-    $incoming_words = "#" . implode(" ", $tags_line);
-
     $incoming_tags = explode(' ', $tags_line);
     // Проверяет хештеги на наличие символов/заполнение;
     $verification_result = true;
@@ -260,7 +257,7 @@ function check_validity($con, $current_content_type_id, $fields_map)
         // if (empty($_POST['photo-link']) && $_FILES['userpic-file-photo']['error'] != 0) {
         //   $errors['photo-link'] = $fields_map['photo-link'] . 'Поле не заполнено.';
         // }
-        print_r($_FILES);
+        //print_r($_FILES);
 
         $file_name = check_loaded_image($_POST['photo-link']);
         // Доп. проверка на формат ссылки / формата изображения;

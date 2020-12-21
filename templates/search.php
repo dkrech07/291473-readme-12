@@ -118,3 +118,4 @@
           </div>
         </div>
       </section>
+      <script src='js/custom-search.js'></script>

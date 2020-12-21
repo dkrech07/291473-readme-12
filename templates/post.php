@@ -1,6 +1,3 @@
-<?php
-print($post_hashtag);
-?>
 <div class="container">
   <h1 class="page__title page__title--publication"><?= $post['title'] ?></h1>
   <section class="post-details">
