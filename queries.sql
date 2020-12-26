@@ -59,3 +59,7 @@ INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 5);
 
 -- Создает полнотекстовый индекс в таблице posts для полей "название" и "текстовое содержимое";
 CREATE FULLTEXT INDEX posts_search ON posts(title, content);
+
+-- Индексирует посты и хештеги;
+CREATE FULLTEXT INDEX posts_search ON posts(title, content);
+CREATE FULLTEXT INDEX hashtags_search ON hashtags(hashtag_name);

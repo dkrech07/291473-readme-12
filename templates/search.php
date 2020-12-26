@@ -99,7 +99,7 @@
               <?php endforeach; ?>
             <?php endif; ?>
 
-            <?php if(!count($search_posts)): ?>
+            <?php if(empty($search_posts)): ?>
               <div class="search__results-wrapper">
                   <div class="search__no-results container">
                     <p class="search__no-results-info">К сожалению, ничего не найдено.</p>

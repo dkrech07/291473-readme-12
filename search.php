@@ -9,14 +9,10 @@ $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
 $search_posts = [];
-mysqli_query($con, "CREATE FULLTEXT INDEX posts_search ON posts(title, content)");
-mysqli_query($con, "CREATE FULLTEXT INDEX hashtags_search ON hashtags(hashtag_name)");
-
 $search = filter_input(INPUT_GET, 'q') ?? '';
-if (isset($search)) {
-  $hashtag_search = substr($search, 0, 1);
+if (!empty($search)) {
 
-  if ($hashtag_search == '#') {
+  if ($search[0] == '#') {
     $search_line = trim(substr($search, 1));
     $search_query = "SELECT p.*, u.login, u.date_add, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id 
     INNER JOIN content_types ct ON ct.id = p.content_type_id INNER JOIN post_hashtags ph ON ph.post_id = p.id INNER JOIN hashtags h ON h.id = ph.hashtag_id 
