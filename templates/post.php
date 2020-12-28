@@ -37,7 +37,7 @@
         <ul class="post__tags">
         <?php if (!empty($post_hashtags)): ?>
           <?php foreach ($post_hashtags as $post_hashtag): ?>
-          <li><a href="#">#<?= $post_hashtag ?></a></li>
+          <li><a href=""><?= '#' . $post_hashtag ?></a></li>
           <?php endforeach; ?>
         <?php endif; ?>
         </ul>
@@ -135,3 +135,4 @@
     </div>
   </section>
 </div>
+<script src='js/custom-hashtag.js'></script>
