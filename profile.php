@@ -20,13 +20,13 @@ foreach($user_posts as $user_post) {
 // Записывает список id постов пользователя в строку;
 $user_posts_ids_list = implode(", ", $user_posts_ids);
 // Запрашивает хештеги для списка постов;
-$user_posts = select_query($con, "SELECT ph.post_id, h.hashtag_name FROM post_hashtags ph INNER JOIN hashtags h ON h.id = ph.hashtag_id WHERE (post_id) IN ($user_posts_ids_list)");
+$posts_hashtags = select_query($con, "SELECT ph.post_id, h.hashtag_name FROM post_hashtags ph INNER JOIN hashtags h ON h.id = ph.hashtag_id WHERE (post_id) IN ($user_posts_ids_list)");
 
 
 // $hashtags_ids = select_query($con, 'SELECT hashtag_id FROM post_hashtags WHERE post_id = ' . $user_posts['id']);
 // $post_hashtags = array();
 
-print_r($user_posts);
+print_r($posts_hashtags);
 
 // $post_hashtags_line = get_hashtag_name($con, $hashtags_id);
 // foreach ($post_hashtags_line as $post_hashtag_number => $post_hashtag) {
@@ -45,7 +45,7 @@ $page_content = include_template('profile.php', [
   'user' => $user,
   'user_posts_count' => $user_posts,
   'user_posts' => $user_posts,
-  // 'post_hashtags' => $post_hashtags,
+  'post_hashtags' => $posts_hashtags,
   //'user_subscribers_count' => $$user_subscribers_count,
   //'user_info' => $user_info,
 ]);

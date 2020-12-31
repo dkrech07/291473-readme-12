@@ -81,7 +81,9 @@
                     <ul class="post__tags">
                       <?php if (!empty($post_hashtags)): ?>
                         <?php foreach ($post_hashtags as $post_hashtag): ?>
-                        <li><a href=""><?= '#' . $post_hashtag ?></a></li>
+                          <?php if ($post_hashtag['post_id'] == $user_post['id']): ?>
+                            <li><a href=""><?= '#' . $post_hashtag['hashtag_name'] ?></a></li>
+                          <?php endif; ?>
                         <?php endforeach; ?>
                       <?php endif; ?>
                     </ul>
