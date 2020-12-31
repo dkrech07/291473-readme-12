@@ -1,5 +1,5 @@
 <?php
-  print_r($user_posts);
+  require_once('helpers.php');
 ?>
 <h1 class="visually-hidden">Профиль</h1>
       <div class="profile profile--default">
@@ -49,8 +49,48 @@
             <div class="profile__tab-content">
               <section class="profile__posts tabs__content tabs__content--active">
                 <h2 class="visually-hidden">Публикации</h2>
-
-
+                <?php foreach($user_posts as $user_post): ?>
+                <article class="profile__post post post-<?= $user_post['class_name'] ?>">
+                  <?php
+                    $post = include_template('post-' . $user_post['class_name'] .'.php', ['post' => $user_post,]);
+                    echo($post);
+                  ?>
+                  <footer class="post__footer">
+                    <div class="post__indicators">
+                      <div class="post__buttons">
+                        <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                          <svg class="post__indicator-icon" width="20" height="17">
+                            <use xlink:href="#icon-heart"></use>
+                          </svg>
+                          <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
+                            <use xlink:href="#icon-heart-active"></use>
+                          </svg>
+                          <span>250</span>
+                          <span class="visually-hidden">количество лайков</span>
+                        </a>
+                        <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
+                          <svg class="post__indicator-icon" width="19" height="17">
+                            <use xlink:href="#icon-repost"></use>
+                          </svg>
+                          <span>5</span>
+                          <span class="visually-hidden">количество репостов</span>
+                        </a>
+                      </div>
+                      <time class="post__time" datetime="2019-01-30T23:41">15 минут назад</time>
+                    </div>
+                    <ul class="post__tags">
+                      <?php if (!empty($post_hashtags)): ?>
+                        <?php foreach ($post_hashtags as $post_hashtag): ?>
+                        <li><a href=""><?= '#' . $post_hashtag ?></a></li>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </ul>
+                  </footer>
+                  <div class="comments">
+                    <a class="comments__button button" href="#">Показать комментарии</a>
+                  </div>
+                </article>
+                <?php endforeach; ?>
               </section>
 
               <section class="profile__likes tabs__content">
