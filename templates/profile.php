@@ -16,11 +16,11 @@
             </div>
             <div class="profile__rating user__rating">
               <p class="profile__rating-item user__rating-item user__rating-item--publications">
-                <span class="user__rating-amount">556</span>
+                <span class="user__rating-amount"><?= $user_posts_count ?></span>
                 <span class="profile__rating-text user__rating-text">публикаций</span>
               </p>
               <p class="profile__rating-item user__rating-item user__rating-item--subscribers">
-                <span class="user__rating-amount">1856</span>
+                <span class="user__rating-amount"><?= $user_subscribers_count ?></span>
                 <span class="profile__rating-text user__rating-text">подписчиков</span>
               </p>
             </div>
@@ -65,7 +65,7 @@
                           <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                             <use xlink:href="#icon-heart-active"></use>
                           </svg>
-                          <span>250</span>
+                          <span><?= $user_post['likes_count'] ?></span>
                           <span class="visually-hidden">количество лайков</span>
                         </a>
                         <a class="post__indicator post__indicator--repost button" href="#" title="Репост">
@@ -76,7 +76,7 @@
                           <span class="visually-hidden">количество репостов</span>
                         </a>
                       </div>
-                      <time class="post__time" datetime="2019-01-30T23:41">15 минут назад</time>
+                      <time class="post__time" datetime="<?= $user_post['date_add'] ?>"><?= get_post_interval($user_post['date_add'], 'назад') ?></time>
                     </div>
                     <ul class="post__tags">
                       <?php if (!empty($post_hashtags)): ?>
