@@ -25,11 +25,23 @@
               </p>
             </div>
             <div class="profile__user-buttons user__buttons">
-              <button class="profile__user-button user__button user__button--subscription button button--main" name="subscribe" type="button">Подписаться</button>
+              <a class="profile__user-button user__button user__button--subscription button button--main" href="profile.php?user=<?= $user['id'] ?>&subscribe_user=<?= $user['id'] ?>">Подписаться</a>
               <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
             </div>
           </div>
         </div>
+
+        <script>
+          (function () {
+            const subscribeButtonElement = document.querySelector(`.user__button--subscription.button.button--main`);
+            subscribeButtonElement.addEventListener('click', (evt) => {
+              evt.preventDefault();
+              location.href = subscribeButtonElement.href;
+              // console.log(subscribeButtonElement.href);
+            });
+            // console.log(subscribeButtonElement);
+          })();
+        </script>
         <div class="profile__tabs-wrapper tabs">
           <div class="container">
             <div class="profile__tabs filters">

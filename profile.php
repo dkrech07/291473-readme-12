@@ -24,8 +24,17 @@ $user_posts_ids_list = implode(", ", $user_posts_ids);
 // Запрашивает хештеги для списка постов;
 $posts_hashtags = select_query($con, "SELECT ph.post_id, h.hashtag_name FROM post_hashtags ph INNER JOIN hashtags h ON h.id = ph.hashtag_id WHERE (post_id) IN ($user_posts_ids_list)");
 
+$subscribe_user_id = filter_input(INPUT_GET, 'subscribe_user', FILTER_VALIDATE_INT);
 
-print_r($user_subscribers_count);
+if (isset($subscribe_user_id)) {
+  header('Location: /profile.php?user=' . $subscribe_user_id);
+
+}
+
+// print($user['id']);
+
+
+// print_r($subscribe_user_id);
 
 // $hashtags_ids = select_query($con, 'SELECT hashtag_id FROM post_hashtags WHERE post_id = ' . $user_posts['id']);
 // $post_hashtags = array();
@@ -40,6 +49,12 @@ print_r($user_subscribers_count);
 // print_r($hashtags_id);
 //$post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
+if (!empty($_POST['subscribe'])) {
+  print($_POST['subscribe']);
+
+}
+
+
 $page_content = include_template('profile.php', [
   'user' => $user,
   'user_posts_count' => $user_posts,
@@ -47,7 +62,6 @@ $page_content = include_template('profile.php', [
   'post_hashtags' => $posts_hashtags,
   'user_posts_count' => $user_posts_count,
   'user_subscribers_count' => $user_subscribers_count,
-  //'user_info' => $user_info,
 ]);
 
 $layout_content = include_template('layout.php', [
