@@ -49,11 +49,34 @@ if (isset($subscribe_user_id)) {
 // print_r($hashtags_id);
 //$post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
-if (!empty($_POST['subscribe'])) {
-  print($_POST['subscribe']);
+$user_id = $_SESSION['user']['id'];
+$subscribe_user_id = $user['id'];
+$check_subscribe = select_query($con, "SELECT * FROM subscriptions WHERE subscriber_id = '$user_id' AND author_id = '$subscribe_user_id'");
 
+if (!empty($check_subscribe)) {
+  $subscribe = $user_id;
+} else {
+  $subscribe = false;
 }
 
+$get_subscribe = filter_input(INPUT_GET, 'subscribe');
+$get_unsubscribe = filter_input(INPUT_GET, 'unsubscribe');
+
+if (!empty($get_subscribe)) {
+  $subscribe_user = select_query($con, "SELECT * FROM users WHERE (id) IN ($subscribe_user_id)");
+  if (isset($subscribe_user)) {
+    mysqli_query($con, "INSERT INTO subscriptions (subscriber_id, author_id) VALUES ('$user_id', '$subscribe_user_id')");
+  }
+  header("Location: /profile.php?user=$subscribe_user_id");
+}
+
+if (!empty($get_unsubscribe)) {
+  $subscribe_user = select_query($con, "SELECT * FROM users WHERE (id) IN ($subscribe_user_id)");
+  if (isset($subscribe_user)) {
+    mysqli_query($con, "DELETE FROM subscriptions WHERE subscriber_id = '$user_id' AND author_id = '$subscribe_user_id'");
+  }
+  header("Location: /profile.php?user=$subscribe_user_id");
+}
 
 $page_content = include_template('profile.php', [
   'user' => $user,
@@ -62,6 +85,7 @@ $page_content = include_template('profile.php', [
   'post_hashtags' => $posts_hashtags,
   'user_posts_count' => $user_posts_count,
   'user_subscribers_count' => $user_subscribers_count,
+  'subscribe' => $subscribe,
 ]);
 
 $layout_content = include_template('layout.php', [

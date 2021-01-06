@@ -25,7 +25,12 @@
               </p>
             </div>
             <div class="profile__user-buttons user__buttons">
-              <button class="profile__user-button user__button user__button--subscription button button--main" name="subscribe" type="button">Подписаться</button>
+            <?php if (empty($subscribe)): ?>
+              <a class="profile__user-button user__button user__button--subscription button button--main" href="profile.php?user=<?=$user['id']?>&subscribe=<?=$user['id']?>">Подписаться</a>
+            <?php endif; ?>
+            <?php if (!empty($subscribe)): ?>
+              <a class="profile__user-button user__button user__button--subscription button button--main" href="profile.php?user=<?=$user['id']?>&unsubscribe=<?=$user['id']?>"">Отписаться</a>  
+            <?php endif; ?>
               <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
             </div>
           </div>
