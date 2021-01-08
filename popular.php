@@ -39,11 +39,6 @@ if ($sorting_type == 'popular') {
     $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
 }
 
-// SELECT COUNT(*) FROM likes WHERE (post_id) IN (1, 2, 3, 4) GROUP BY post_id;
-// SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN likes l ON l.post_id = p.id INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views ASC;
-// SELECT COUNT(*) FROM likes WHERE likes.post_id = 1;
-// SELECT p.*, u.login, u.avatar, ct.type_name, ct.class_name FROM posts p INNER JOIN likes l ON l.post_id = p.id INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ORDER BY p.views ASC;
-
 // Получает список постов (в зависимости от выбранного типа контента);
 $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
 
@@ -51,6 +46,8 @@ $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_na
 if (!$posts) {
     open_404_page($user_name, $avatar);
 }
+
+get_like($con);
 
 // Передает данные из БД в шаблоны;
 $page_content = include_template('main.php', [

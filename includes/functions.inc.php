@@ -470,3 +470,21 @@ function check_authentication()
         exit();
     }
 }
+
+function get_like($con) {
+    $post_id = filter_input(INPUT_GET, 'post-id', FILTER_VALIDATE_INT);
+    if (!empty($post_id)) {
+        $user_id = $_SESSION['user']['id'];
+        $check_like = select_query($con, "SELECT * FROM likes WHERE like_author_id = '$user_id' AND post_id = '$post_id'");
+        if (!empty($check_like)) {
+            mysqli_query($con, "DELETE FROM likes WHERE like_author_id = '$user_id' AND post_id = '$post_id'");
+            $likes_count = mysqli_query($con, "UPDATE posts SET likes_count = likes_count - 1 WHERE id = $post_id");
+            print($post_id);
+        } else {
+            mysqli_query($con, "INSERT INTO likes (like_author_id, post_id) VALUES ('$user_id', '$post_id')");
+            $likes_count = mysqli_query($con, "UPDATE posts SET likes_count = likes_count + 1 WHERE id = " . $post_id);
+            print($post_id);
+        }
+       print_r($likes_count);
+    }
+}
