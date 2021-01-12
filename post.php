@@ -42,23 +42,22 @@ $subscribers_count = select_query($con, 'SELECT COUNT(*) FROM subscriptions WHER
 // Передает данные из БД в шаблоны;
 $post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
-$comment = $_POST['comment'];
+$comment = trim($_POST['comment'], ' ');
 
 if (isset($_POST['comment'])) {
-    print_r($_POST['comment']);
-
-    date_default_timezone_set('Asia/Yekaterinburg');
-    $date = date("Y-m-d H:i:s");
-    $user_id = $_SESSION['user']['id'];
     $post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+    $post_id_validity = select_query($con, "SELECT * FROM posts WHERE id = '$post_id'");
 
-    $comment_query = "INSERT INTO posts (date_add, content, comment_author_id, post_id) VALUES (?, ?, ?, ?)";
-    $stmt = mysqli_prepare($con, $comment_query);
-    mysqli_stmt_bind_param($stmt, 'isii', $date, $comment, $user_id, $post_id);
-    mysqli_stmt_execute($stmt);
+    if (isset($post_id_validity) && mb_strlen($comment) > 4) {
+        date_default_timezone_set('Asia/Yekaterinburg');
+        $date = date("Y-m-d H:i:s");
+        $user_id = $_SESSION['user']['id'];
 
-} else {
-
+        $comment_query = "INSERT INTO comments (date_add, content, comment_author_id, post_id) VALUES (?, ?, ?, ?)";
+        $stmt = mysqli_prepare($con, $comment_query);
+        mysqli_stmt_bind_param($stmt, 'ssii', $date, $comment, $user_id, $post_id);
+        mysqli_stmt_execute($stmt);
+    }
 }
 
 $page_content = include_template('post.php', [

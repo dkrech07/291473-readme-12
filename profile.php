@@ -9,6 +9,9 @@ $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
 $user_id = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
+if (empty($user_id)) {
+  $user_id = $user_id = $_SESSION['user']['id'];
+}
 $user = select_query($con, "SELECT * FROM users WHERE id = ". $user_id, 'assoc');
 $user_posts = select_query($con, "SELECT p.*, ct.type_name, ct.class_name FROM posts p INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.post_author_id = ". $user_id);
 $user_posts_count = select_query($con, "SELECT COUNT(*) FROM posts WHERE post_author_id = " . $user['id'], 'row');

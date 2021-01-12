@@ -46,13 +46,13 @@
             <div class="comments__my-avatar">
               <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
             </div>
-            <div class="form__input-section <?= $comment ? '' : 'form__input-section--error'?>">
+            <div class="form__input-section <?= $comment ? '' : 'form__input-section--error' ?>">
               <textarea class="comments__textarea form__textarea form__input" name="comment" placeholder="Ваш комментарий"></textarea>
               <label class="visually-hidden">Ваш комментарий</label>
               <button class="form__error-button button" type="button">!</button>
-                <div class="<?= $comment ? '' : 'form__error-text' ?>">
-                  <h3 class="<?= $comment ? '' : 'form__error-title' ?>">Ошибка валидации</h3>
-                  <p class="<?= $comment ? '' : 'form__error-desc' ?>">Это поле обязательно к заполнению</p>
+                <div class="<?= $comment ? 'form__error-text' : '' ?>">
+                  <h3 class="<?= $comment ? 'form__error-title' : '' ?>">Ошибка валидации</h3>
+                  <p class="<?= $comment ? 'form__error-desc' : '' ?>">Это поле обязательно к заполнению</p>
                 </div>
             </div>
             <button class="comments__submit button button--green" type="submit">Отправить</button>

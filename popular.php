@@ -43,6 +43,20 @@ if ($sorting_type == 'popular') {
 $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
 
 
+// Вычислить количество постов;
+$posts_count = select_query($con, "SELECT COUNT(*) FROM posts", 'row');
+
+if ($posts_count > 9) {
+    $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
+
+}
+
+// Если постов больше 9, вывести 9 постов и кнопки пагинации;
+// Вычислить количество кнопок пагинации;
+// Сгенерировать ссылки на кнопках пагинации;
+$posts_2 = select_query($con, "SELECT *FROM posts LIMIT 9 OFFSET 0");
+print_r($posts_count);
+
 if (!$posts) {
     open_404_page($user_name, $avatar);
 }
