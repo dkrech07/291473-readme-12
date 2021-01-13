@@ -1,3 +1,7 @@
+<?php
+print($pages_count);
+?>
+
 <div class="container">
     <h1 class="page__title page__title--popular">Популярное</h1>
 </div>
@@ -155,6 +159,16 @@
         </article>
         <?php endforeach; ?>
     </div>
+    <?php if($pages_count > 1): ?>
+    <div class="popular__page-links">
+        <?php if($current_page > 1): ?>
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="/popular.php?page=<?= $page + 1 ?>">Предыдущая страница</a>
+        <?php endif; ?>
+        <?php if($current_page < $pages_count): ?>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="/popular.php?page=<?= $page + 1 ?>">Следующая страница</a>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
 </div>
 <script src="js/custom.js"></script>
 <script src="js/custom-sort.js"></script>
