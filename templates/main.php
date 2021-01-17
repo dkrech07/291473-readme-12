@@ -36,7 +36,7 @@
             <b class="popular__filters-caption filters__caption">Тип контента:</b>
             <ul class="popular__filters-list filters__list">
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                    <a class="filters__button filters__button--ellipse filters__button--all <?= !$post_type ? 'filters__button--active' : '' ?>" href="index.php">
+                    <a class="filters__button filters__button--ellipse filters__button--all <?= !$post_type ? 'filters__button--active' : '' ?>" href="popular.php">
                         <span>Все</span>
                     </a>
                 </li>
@@ -157,10 +157,10 @@
     </div>
     <?php if($pages_count > 1): ?>
     <div class="popular__page-links">
-        <?php if($page > 1): ?>
+        <?php if($page >= 1): ?>
             <a class="popular__page-link popular__page-link--prev button button--gray" href="/popular.php?page=<?= --$page ?>">Предыдущая страница</a>
         <?php endif; ?>
-        <?php if($page <= $pages_count): ?>
+        <?php if($page < ($pages_count - 1)): ?>
             <a class="popular__page-link popular__page-link--next button button--gray" href="/popular.php?page=<?= ++$page ?>">Следующая страница</a>
         <?php endif; ?>
     </div>
