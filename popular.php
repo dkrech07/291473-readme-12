@@ -56,17 +56,10 @@ if ($posts_count > 9) {
         $page_offset = 0;
         $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order . ' LIMIT ' . $page_limit . ' OFFSET ' . $page_offset);
     }
-    print('<br>');
-    print('<br>');
-    print('<br>');
-    print('Количество постов в таблице posts - ' . $posts_count);
-    print('<br>');
-    print('<br>');
-    print('<br>');
-    print('Количество страниц для постов - ' . $pages_count);
-    print('<br>');
-    print('<br>');
-    print('<br>');
+} else {
+    $page = 0;
+    $pages_count = 1;
+    $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
 }
 
 if (!$posts) {
@@ -81,6 +74,7 @@ $page_content = include_template('main.php', [
     'content_types' => $content_types,
     'post_type' => $post_type,
     'sorting_type' => $sorting_type,
+    'sorting_direction' => $sorting_direction,
     'page' => $page,
     'pages_count' => $pages_count,
 ]);
