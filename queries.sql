@@ -61,5 +61,47 @@ INSERT INTO subscriptions (subscriber_id, author_id) VALUES (1, 5);
 CREATE FULLTEXT INDEX posts_search ON posts(title, content);
 
 -- Индексирует посты и хештеги;
-CREATE FULLTEXT INDEX posts_search ON posts(title, content);
 CREATE FULLTEXT INDEX hashtags_search ON hashtags(hashtag_name);
+
+-- Добавляет посты;
+INSERT INTO posts (date_add, title, content, views, post_author_id, content_type_id, likes_count, comments_count) VALUES ('2020-10-16 11:31:26', 'Цитата', 'Пост - 1', 2, 1, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 2', 2, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 3', 2, 3, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 4', 4, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 5', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 6', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 7', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 8', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 9', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 10', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 11', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 12', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 13', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 14', 5, 2, 2, 1, 5),
+                                                                                                                        ('2020-10-16 11:31:26', 'Цитата', 'Пост - 15', 5, 2, 2, 1, 5);
+INSERT INTO posts (date_add, title, content, image, views, post_author_id, content_type_id, likes_count, comments_count) VALUES ('2020-10-09 16:31:26', 'Пост - 16', 'rock-medium.jpg', 'img/rock-medium.jpg', 99, 1, 3, 5, 7),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 17', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 2, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 18', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 3, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 19', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 20', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 5, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 21', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 22', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 23', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 24', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 25', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 26', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 27', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 28', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 29', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75),
+                                                                                                   ('2020-02-16 16:31:26', 'Пост - 30', 'coast-medium.jpg', 'img/coast-medium.jpg', 3, 4, 3, 5, 75);
+INSERT INTO posts (date_add, title, content, link, views, post_author_id, content_type_id, likes_count, comments_count) VALUES ('2020-06-16 16:31:26', 'Пост - 31', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14),
+                                                                                                ('2020-06-16 16:31:26', 'Пост - 31', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14),
+                                                                                                ('2020-06-16 16:31:26', 'Пост - 32', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14),
+                                                                                                ('2020-06-16 16:31:26', 'Пост - 33', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14),
+                                                                                                ('2020-06-16 16:31:26', 'Пост - 34', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14),
+                                                                                                ('2020-06-16 16:31:26', 'Пост - 35', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14),
+                                                                                                ('2020-06-16 16:31:26', 'Пост - 36', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14),
+                                                                                                ('2020-06-16 16:31:26', 'Пост - 37', 'https://www.htmlacademy.ru', 'www.htmlacademy.ru', 2, 1, 5, 15, 14);
+
+
+                                                                                                
