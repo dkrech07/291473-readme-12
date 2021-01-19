@@ -39,26 +39,24 @@ if ($sorting_type == 'popular') {
     $sorting_order = 'ORDER BY p.views ' . $sorting_direction;
 }
 
-// Получает список постов (в зависимости от выбранного типа контента);
-//$posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
-
 $page_limit = 9;
 $posts_count = select_query($con, "SELECT COUNT(*) FROM posts", 'row');
+$current_page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
+
+if (empty($current_page)) {
+    $current_page = 1;
+}
 
 if ($posts_count > 9) {
     $pages_count = ceil($posts_count/$page_limit);
-
-    $page = filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT);
-    if (isset($page)) {
-        $page_offset = $page * $page_limit;
-        $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order . ' LIMIT ' . $page_limit . ' OFFSET ' . $page_offset);
-    } else {
-        $page_offset = 0;
-        $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order . ' LIMIT ' . $page_limit . ' OFFSET ' . $page_offset);
-    }
+    $page_offset = ($current_page - 1) * $page_limit;
+    $page_prev = $current_page;
+    $page_next = $current_page;
+    --$page_prev;
+    ++$page_next;
+    $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order . ' LIMIT ' . $page_limit . ' OFFSET ' . $page_offset);
 } else {
-    $page = 0;
-    $pages_count = 1;
+    $pages_count = 0;
     $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
 }
 
@@ -75,7 +73,9 @@ $page_content = include_template('main.php', [
     'post_type' => $post_type,
     'sorting_type' => $sorting_type,
     'sorting_direction' => $sorting_direction,
-    'page' => $page,
+    'page_prev' => $page_prev,
+    'page_next' => $page_next,
+    'current_page' => $current_page,
     'pages_count' => $pages_count,
 ]);
 

@@ -157,11 +157,11 @@
     </div>
     <?php if($pages_count > 1): ?>
     <div class="popular__page-links">
-        <?php if($page >= 1): ?>
-            <a class="popular__page-link popular__page-link--prev button button--gray" href="/popular.php?page=<?= --$page ?>">Предыдущая страница</a>
+        <?php if($current_page > 1): ?>
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="/popular.php?page=<?= $page_prev ?>">Предыдущая страница</a>
         <?php endif; ?>
-        <?php if($page < ($pages_count - 1)): ?>
-            <a class="popular__page-link popular__page-link--next button button--gray" href="/popular.php?page=<?= ++$page ?>">Следующая страница</a>
+        <?php if($current_page < $pages_count): ?>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="/popular.php?page=<?= $page_next ?>">Следующая страница</a>
         <?php endif; ?>
     </div>
     <?php endif; ?>
