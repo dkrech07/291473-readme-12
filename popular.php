@@ -9,6 +9,8 @@ check_authentication();
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 
+get_like($con);
+
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;
@@ -54,17 +56,18 @@ if ($posts_count > 9) {
     $page_next = $current_page;
     --$page_prev;
     ++$page_next;
-    $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order . ' LIMIT ' . $page_limit . ' OFFSET ' . $page_offset);
+    $posts = select_query($con, 'SELECT *, p.id as post_id, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order . ' LIMIT ' . $page_limit . ' OFFSET ' . $page_offset);
 } else {
     $pages_count = 0;
-    $posts = select_query($con, 'SELECT p.*, u.login, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
+    $posts = select_query($con, 'SELECT p.*, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
 }
+
+// $posts2 = select_query($con, "SELECT *, p.id as post_id FROM posts p INNER JOIN users u ON u.id = p.post_author_id");
+// print_r($posts2);
 
 if (!$posts) {
     open_404_page($user_name, $avatar);
 }
-
-get_like($con);
 
 // Передает данные из БД в шаблоны;
 $page_content = include_template('main.php', [

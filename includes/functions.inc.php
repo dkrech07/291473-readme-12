@@ -473,21 +473,18 @@ function check_authentication()
 
 function get_like($con) {
     $post_id = filter_input(INPUT_GET, 'post-id', FILTER_VALIDATE_INT);
+    print($post_id);
     if (!empty($post_id)) {
         $user_id = $_SESSION['user']['id'];
         $check_like = select_query($con, "SELECT * FROM likes WHERE like_author_id = '$user_id' AND post_id = '$post_id'");
         $likes_count = select_query($con, "SELECT posts.likes_count FROM posts WHERE id = " . $post_id, 'row');
 
         if (!empty($check_like)) {
-            --$likes_count;
             mysqli_query($con, "DELETE FROM likes WHERE like_author_id = '$user_id' AND post_id = '$post_id'");
-            mysqli_query($con, "INSERT INTO posts (likes_count) VALUES ('$likes_count')");
-            // mysqli_query($con, "UPDATE posts SET likes_count = likes_count - 1 WHERE id = " . $post_id);
+            mysqli_query($con, "UPDATE posts SET likes_count = likes_count - 1 WHERE id = " . $post_id);
         } else {
-            ++$likes_count;
             mysqli_query($con, "INSERT INTO likes (like_author_id, post_id) VALUES ('$user_id', '$post_id')");
-            mysqli_query($con, "INSERT INTO posts (likes_count) VALUES ('$likes_count')");
-            // mysqli_query($con, "UPDATE posts SET likes_count = " . ++$likes_count . " WHERE id = " . $post_id);
+            mysqli_query($con, "UPDATE posts SET likes_count = " . ++$likes_count . " WHERE id = " . $post_id);
         }
     }
 }

@@ -64,7 +64,7 @@
         <article class="popular__post post post-<?= $post['class_name'] ?>">
             <header class="post__header">
                 <h2>
-                    <a href="post.php?id=<?=$post['id']?>"><?= $post['title'] ?></a>
+                    <a href="post.php?id=<?=$post['post_id']?>"><?= $post['title'] ?></a>
                 </h2>
 
             </header>
@@ -120,7 +120,7 @@
             </div>
             <footer class="post__footer">
                 <div class="post__author">
-                    <a class="post__author-link" href="profile.php?user=<?=$post['id']?>" title="Автор">
+                    <a class="post__author-link" href="profile.php?user=<?=$post['post_id']?>" title="Автор">
                         <div class="post__avatar-wrapper">
                             <img class="post__author-avatar" src="<?= $post['avatar'] ?>" alt="Аватар пользователя">
                         </div>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="post__indicators">
                     <div class="post__buttons">
-                        <a class="post__indicator post__indicator--likes button" href="?post-id=<?= $post['id'] ?>" title="Лайк">
+                        <a class="post__indicator post__indicator--likes button" href="?post-id=<?= $post['post_id'] ?>" title="Лайк">
                             <svg class="post__indicator-icon" width="20" height="17">
                                 <use xlink:href="#icon-heart"></use>
                             </svg>
