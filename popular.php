@@ -8,7 +8,6 @@ session_start();
 check_authentication();
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
-
 get_like($con);
 
 // Получает спиок типов контента для дальнейшего вывода на странице;

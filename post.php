@@ -44,7 +44,7 @@ $post_content = include_template('post-' . $post['class_name'] .'.php', ['post' 
 
 $comment = trim($_POST['comment'], ' ');
 
-if (isset($_POST['comment'])) {
+if (isset($_POST['comment']) && $_POST['post-id'] == $post['id']) {
     $post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     $post_id_validity = select_query($con, "SELECT * FROM posts WHERE id = '$post_id'");
 
@@ -59,6 +59,7 @@ if (isset($_POST['comment'])) {
         mysqli_stmt_execute($stmt);
     }
 }
+
 
 $page_content = include_template('post.php', [
     'post' => $post,
