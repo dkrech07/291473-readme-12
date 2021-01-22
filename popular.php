@@ -61,9 +61,6 @@ if ($posts_count > 9) {
     $posts = select_query($con, 'SELECT p.*, u.*, ct.type_name, ct.class_name FROM posts p INNER JOIN users u ON u.id = p.post_author_id INNER JOIN content_types ct ON ct.id = p.content_type_id ' . $post_type_query . ' ' . $sorting_order);
 }
 
-// $posts2 = select_query($con, "SELECT *, p.id as post_id FROM posts p INNER JOIN users u ON u.id = p.post_author_id");
-// print_r($posts2);
-
 if (!$posts) {
     open_404_page($user_name, $avatar);
 }

@@ -26,9 +26,11 @@ if (!$post) {
 $hashtags_id = select_query($con, 'SELECT hashtag_id FROM post_hashtags WHERE post_id = ' . $post['id']);
 $post_hashtags = array();
 
-$post_hashtags_line = get_hashtag_name($con, $hashtags_id);
-foreach ($post_hashtags_line as $post_hashtag_number => $post_hashtag) {
-    $post_hashtags[$post_hashtag_number] = $post_hashtag;
+if (!empty($hashtags_id)) {
+    $post_hashtags_line = get_hashtag_name($con, $hashtags_id);
+    foreach ($post_hashtags_line as $post_hashtag_number => $post_hashtag) {
+        $post_hashtags[$post_hashtag_number] = $post_hashtag;
+    }
 }
 
 // Получает время регистрации пользователя;
@@ -42,24 +44,25 @@ $subscribers_count = select_query($con, 'SELECT COUNT(*) FROM subscriptions WHER
 // Передает данные из БД в шаблоны;
 $post_content = include_template('post-' . $post['class_name'] .'.php', ['post' => $post, 'registration_time' => $registration_time,]);
 
-$comment = trim($_POST['comment'], ' ');
+$comment = $_POST['comment'] ?? '';
+$post_id = $_POST['post-id'] ?? '';
 
-if (isset($_POST['comment']) && $_POST['post-id'] == $post['id']) {
-    $post_id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if (isset($comment) && $post_id == $post['id']) {
+
     $post_id_validity = select_query($con, "SELECT * FROM posts WHERE id = '$post_id'");
 
     if (isset($post_id_validity) && mb_strlen($comment) > 4) {
         date_default_timezone_set('Asia/Yekaterinburg');
         $date = date("Y-m-d H:i:s");
         $user_id = $_SESSION['user']['id'];
+        $comment_trim = trim($comment, ' ');
 
         $comment_query = "INSERT INTO comments (date_add, content, comment_author_id, post_id) VALUES (?, ?, ?, ?)";
         $stmt = mysqli_prepare($con, $comment_query);
-        mysqli_stmt_bind_param($stmt, 'ssii', $date, $comment, $user_id, $post_id);
+        mysqli_stmt_bind_param($stmt, 'ssii', $date, $comment_trim, $user_id, $post_id);
         mysqli_stmt_execute($stmt);
     }
 }
-
 
 $page_content = include_template('post.php', [
     'post' => $post,

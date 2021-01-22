@@ -473,7 +473,6 @@ function check_authentication()
 
 function get_like($con) {
     $post_id = filter_input(INPUT_GET, 'post-id', FILTER_VALIDATE_INT);
-    print($post_id);
     if (!empty($post_id)) {
         $user_id = $_SESSION['user']['id'];
         $check_like = select_query($con, "SELECT * FROM likes WHERE like_author_id = '$user_id' AND post_id = '$post_id'");
