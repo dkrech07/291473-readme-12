@@ -52,7 +52,6 @@ if (isset($comment) && $post_id == $post['id']) {
     $post_id_validity = select_query($con, "SELECT * FROM posts WHERE id = '$post_id'");
 
     if (isset($post_id_validity) && mb_strlen($comment) > 4) {
-        date_default_timezone_set('Asia/Yekaterinburg');
         $date = date("Y-m-d H:i:s");
         $user_id = $_SESSION['user']['id'];
         $comment_trim = trim($comment, ' ');

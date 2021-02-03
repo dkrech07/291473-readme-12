@@ -10,7 +10,7 @@ $avatar = $_SESSION['user']['avatar'];
 
 $user_id = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
 if (empty($user_id)) {
-  $user_id = $user_id = $_SESSION['user']['id'];
+  $user_id = $_SESSION['user']['id'];
 }
 $user = select_query($con, "SELECT * FROM users WHERE id = ". $user_id, 'assoc');
 $user_posts = select_query($con, "SELECT p.*, ct.type_name, ct.class_name FROM posts p INNER JOIN content_types ct ON ct.id = p.content_type_id WHERE p.post_author_id = ". $user_id);
@@ -31,7 +31,7 @@ $subscribe_user_id = filter_input(INPUT_GET, 'subscribe_user', FILTER_VALIDATE_I
 
 if (isset($subscribe_user_id)) {
   header('Location: /profile.php?user=' . $subscribe_user_id);
-
+  exit();
 }
 
 $user_id = $_SESSION['user']['id'];
@@ -53,6 +53,7 @@ if (!empty($get_subscribe)) {
     mysqli_query($con, "INSERT INTO subscriptions (subscriber_id, author_id) VALUES ('$user_id', '$subscribe_user_id')");
   }
   header("Location: /profile.php?user=$subscribe_user_id");
+  exit();
 }
 
 if (!empty($get_unsubscribe)) {
@@ -61,6 +62,7 @@ if (!empty($get_unsubscribe)) {
     mysqli_query($con, "DELETE FROM subscriptions WHERE subscriber_id = '$user_id' AND author_id = '$subscribe_user_id'");
   }
   header("Location: /profile.php?user=$subscribe_user_id");
+  exit();
 }
 
 $page_content = include_template('profile.php', [

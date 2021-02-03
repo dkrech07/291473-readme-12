@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Yekaterinburg');
+
 function select_query($con, $sql, $type = 'all')
 {
     mysqli_set_charset($con, "utf8");
@@ -201,7 +203,6 @@ function check_validity($con, $current_content_type_id, $fields_map)
         return null;
     }
 
-    date_default_timezone_set('Asia/Yekaterinburg');
     $date = date("Y-m-d H:i:s");
 
     if ($current_content_type_id == 1) {
@@ -344,6 +345,7 @@ function check_validity($con, $current_content_type_id, $fields_map)
     $post_id = $con->insert_id;
     get_hashtags($tags_line, $post_id, $con);
     header('Location: /post.php?id=' . $post_id);
+    exit();
     return null;
 }
 
@@ -353,7 +355,6 @@ function check_registration_validity($con, $fields_map)
         return null;
     }
 
-    date_default_timezone_set('Asia/Yekaterinburg');
     $date = date("Y-m-d H:i:s");
     $required_fields = ['email', 'login', 'password', 'password-repeat'];
     $errors = check_empty_field($required_fields, $fields_map);
@@ -412,6 +413,7 @@ function check_registration_validity($con, $fields_map)
     mysqli_stmt_bind_param($stmt, 'sssss', $date, $email, $login, $password_hash, $avatar);
     mysqli_stmt_execute($stmt);
     header('Location: /main.html');
+    exit();
     return null;
 }
 
