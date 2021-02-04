@@ -46,16 +46,18 @@
             <div class="comments__my-avatar">
               <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
             </div>
-            <div class="form__input-section form__input-section--error">
-              <textarea class="comments__textarea form__textarea form__input" placeholder="Ваш комментарий"></textarea>
+            <div class="form__input-section <?= isset($_POST['sent']) && empty($comment) ? 'form__input-section--error' : ''?>">
+              <textarea class="comments__textarea form__textarea form__input" name="comment" placeholder="Ваш комментарий"></textarea>
               <label class="visually-hidden">Ваш комментарий</label>
               <button class="form__error-button button" type="button">!</button>
-              <div class="form__error-text">
-                <h3 class="form__error-title">Ошибка валидации</h3>
-                <p class="form__error-desc">Это поле обязательно к заполнению</p>
-              </div>
+                <div class="form__error-text">
+                  <h3 class="form__error-title">Ошибка валидации</h3>
+                  <p class="form__error-desc">Это поле обязательно к заполнению</p>
+                </div>
             </div>
             <button class="comments__submit button button--green" type="submit">Отправить</button>
+            <input type="hidden" name="post-id" value="<?= $post['id'] ?>" placeholder="id формы">
+            <input type="hidden" name="sent" value="1">
           </form>
           <div class="comments__list-wrapper">
             <ul class="comments__list">

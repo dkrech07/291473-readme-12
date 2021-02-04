@@ -7,6 +7,7 @@ session_start();
 check_authentication();
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
+get_like($con);
 
 // Получает список подписок авторизованного пользователя;
 $subscriber_id = $_SESSION['user']['id'];

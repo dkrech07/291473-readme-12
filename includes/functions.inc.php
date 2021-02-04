@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Asia/Yekaterinburg');
+
 function select_query($con, $sql, $type = 'all')
 {
     mysqli_set_charset($con, "utf8");
@@ -201,7 +203,6 @@ function check_validity($con, $current_content_type_id, $fields_map)
         return null;
     }
 
-    date_default_timezone_set('Asia/Yekaterinburg');
     $date = date("Y-m-d H:i:s");
 
     if ($current_content_type_id == 1) {
@@ -344,6 +345,7 @@ function check_validity($con, $current_content_type_id, $fields_map)
     $post_id = $con->insert_id;
     get_hashtags($tags_line, $post_id, $con);
     header('Location: /post.php?id=' . $post_id);
+    exit();
     return null;
 }
 
@@ -353,7 +355,6 @@ function check_registration_validity($con, $fields_map)
         return null;
     }
 
-    date_default_timezone_set('Asia/Yekaterinburg');
     $date = date("Y-m-d H:i:s");
     $required_fields = ['email', 'login', 'password', 'password-repeat'];
     $errors = check_empty_field($required_fields, $fields_map);
@@ -412,6 +413,7 @@ function check_registration_validity($con, $fields_map)
     mysqli_stmt_bind_param($stmt, 'sssss', $date, $email, $login, $password_hash, $avatar);
     mysqli_stmt_execute($stmt);
     header('Location: /main.html');
+    exit();
     return null;
 }
 
@@ -468,5 +470,22 @@ function check_authentication()
     if (!isset($_SESSION['user'])) {
         header("Location: /index.php");
         exit();
+    }
+}
+
+function get_like($con) {
+    $post_id = filter_input(INPUT_GET, 'post-id', FILTER_VALIDATE_INT);
+    if (!empty($post_id)) {
+        $user_id = $_SESSION['user']['id'];
+        $check_like = select_query($con, "SELECT * FROM likes WHERE like_author_id = '$user_id' AND post_id = '$post_id'");
+        $likes_count = select_query($con, "SELECT posts.likes_count FROM posts WHERE id = " . $post_id, 'row');
+
+        if (!empty($check_like)) {
+            mysqli_query($con, "DELETE FROM likes WHERE like_author_id = '$user_id' AND post_id = '$post_id'");
+            mysqli_query($con, "UPDATE posts SET likes_count = likes_count - 1 WHERE id = " . $post_id);
+        } else {
+            mysqli_query($con, "INSERT INTO likes (like_author_id, post_id) VALUES ('$user_id', '$post_id')");
+            mysqli_query($con, "UPDATE posts SET likes_count = " . ++$likes_count . " WHERE id = " . $post_id);
+        }
     }
 }

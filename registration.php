@@ -1,5 +1,4 @@
 <?php
-date_default_timezone_set('Asia/Yekaterinburg');
 require_once('helpers.php');
 require_once('includes/functions.inc.php');
 require_once('includes/db_connect.inc.php');

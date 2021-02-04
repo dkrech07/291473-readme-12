@@ -36,7 +36,7 @@
             <b class="popular__filters-caption filters__caption">Тип контента:</b>
             <ul class="popular__filters-list filters__list">
                 <li class="popular__filters-item popular__filters-item--all filters__item filters__item--all">
-                    <a class="filters__button filters__button--ellipse filters__button--all <?= !$post_type ? 'filters__button--active' : '' ?>" href="index.php">
+                    <a class="filters__button filters__button--ellipse filters__button--all <?= !$post_type ? 'filters__button--active' : '' ?>" href="popular.php">
                         <span>Все</span>
                     </a>
                 </li>
@@ -64,7 +64,7 @@
         <article class="popular__post post post-<?= $post['class_name'] ?>">
             <header class="post__header">
                 <h2>
-                    <a href="post.php?id=<?=$post['id']?>"><?= $post['title'] ?></a>
+                    <a href="post.php?id=<?=$post['post_id']?>"><?= $post['title'] ?></a>
                 </h2>
 
             </header>
@@ -120,7 +120,7 @@
             </div>
             <footer class="post__footer">
                 <div class="post__author">
-                    <a class="post__author-link" href="#" title="Автор">
+                    <a class="post__author-link" href="profile.php?user=<?=$post['post_author_id']?>" title="Автор">
                         <div class="post__avatar-wrapper">
                             <img class="post__author-avatar" src="<?= $post['avatar'] ?>" alt="Аватар пользователя">
                         </div>
@@ -132,14 +132,14 @@
                 </div>
                 <div class="post__indicators">
                     <div class="post__buttons">
-                        <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
+                        <a class="post__indicator post__indicator--likes button" href="?post-id=<?= $post['post_id'] ?>" title="Лайк">
                             <svg class="post__indicator-icon" width="20" height="17">
                                 <use xlink:href="#icon-heart"></use>
                             </svg>
                             <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                 <use xlink:href="#icon-heart-active"></use>
                             </svg>
-                            <span>0</span>
+                            <span><?= $post['likes_count'] ?></span>
                             <span class="visually-hidden">количество лайков</span>
                         </a>
                         <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
@@ -155,6 +155,16 @@
         </article>
         <?php endforeach; ?>
     </div>
+    <?php if($pages_count > 1): ?>
+    <div class="popular__page-links">
+        <?php if($current_page > 1): ?>
+            <a class="popular__page-link popular__page-link--prev button button--gray" href="/popular.php?page=<?= $page_prev ?>">Предыдущая страница</a>
+        <?php endif; ?>
+        <?php if($current_page < $pages_count): ?>
+            <a class="popular__page-link popular__page-link--next button button--gray" href="/popular.php?page=<?= $page_next ?>">Следующая страница</a>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
 </div>
 <script src="js/custom.js"></script>
 <script src="js/custom-sort.js"></script>
