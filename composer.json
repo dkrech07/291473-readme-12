@@ -1,0 +1,15 @@
+{
+    "name": "dkrech/readme",
+    "description": "Microblogging service",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Дмитрий Кречетников",
+            "email": "dkrech07@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
