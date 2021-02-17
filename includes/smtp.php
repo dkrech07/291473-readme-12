@@ -3,13 +3,16 @@
 require('vendor/autoload.php');
 
 // Конфигурация траспорта
-$transport = new Swift_SmtpTransport('smtp.example.org', 25);
+$transport = (new Swift_SmtpTransport('phpdemo.ru', 25))
+    ->setUsername('keks@phpdemo.ru')
+    ->setPassword('htmlacademy')
+;
 
 // Формирование сообщения
 $message = new Swift_Message("Просмотры вашей гифки");
-$message->setTo(["keks@htmlacademy.ru" => "Кекс"]);
+$message->setFrom("keks@phpdemo.ru", "GifTube");
+$message->setTo(["dkrech07@gmail.com" => "Кекс"]);
 $message->setBody("Вашу гифку «Кот и пылесос» посмотрело больше 1 млн!");
-$message->setFrom("mail@giftube.academy", "GifTube");
 
 // Отправка сообщения
 $mailer = new Swift_Mailer($transport);
