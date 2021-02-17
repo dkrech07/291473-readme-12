@@ -9,10 +9,6 @@ $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 get_like($con);
 
-// Тестирование отправки email-сообщения;
-require_once('includes/smtp.php');
-print('Отправка сообщения');
-
 // Получает спиок типов контента для дальнейшего вывода на странице;
 $content_types = select_query($con, 'SELECT * FROM content_types');
 // Проверяет наличие параметра запроса: если параметр есть, фильтрует по нему данные из БД;

@@ -9,10 +9,10 @@ $transport = (new Swift_SmtpTransport('phpdemo.ru', 25))
 ;
 
 // Формирование сообщения
-$message = new Swift_Message("Просмотры вашей гифки");
-$message->setFrom("keks@phpdemo.ru", "GifTube");
-$message->setTo(["dkrech07@gmail.com" => "Кекс"]);
-$message->setBody("Вашу гифку «Кот и пылесос» посмотрело больше 1 млн!");
+$message = new Swift_Message("У вас новый подписчик");
+$message->setFrom("keks@phpdemo.ru", "keks@phpdemo.ru");
+$message->setTo([$email => $login]);
+$message->setBody($email_message);
 
 // Отправка сообщения
 $mailer = new Swift_Mailer($transport);
