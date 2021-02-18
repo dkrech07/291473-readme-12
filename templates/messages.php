@@ -23,7 +23,7 @@
                 </div>
               </a>
             </li>
-            <li class="messages__contacts-item messages__contacts-item--new">
+            <!-- <li class="messages__contacts-item messages__contacts-item--new">
               <a class="messages__contacts-tab tabs__item" href="#">
                 <div class="messages__avatar-wrapper">
                   <img class="messages__avatar" src="img/userpic-petro.jpg" alt="Аватар пользователя">
@@ -43,8 +43,8 @@
                   </div>
                 </div>
               </a>
-            </li>
-            <li class="messages__contacts-item">
+            </li> -->
+            <!-- <li class="messages__contacts-item">
               <a class="messages__contacts-tab tabs__item" href="#">
                 <div class="messages__avatar-wrapper">
                   <img class="messages__avatar" src="img/userpic-mark.jpg" alt="Аватар пользователя">
@@ -63,8 +63,8 @@
                   </div>
                 </div>
               </a>
-            </li>
-            <li class="messages__contacts-item">
+            </li> -->
+            <!-- <li class="messages__contacts-item">
               <a class="messages__contacts-tab tabs__item" href="#">
                 <div class="messages__avatar-wrapper">
                   <img class="messages__avatar" src="img/userpic-tanya.jpg" alt="Аватар пользователя">
@@ -83,13 +83,13 @@
                   </div>
                 </div>
               </a>
-            </li>
+            </li> -->
           </ul>
         </div>
         <div class="messages__chat">
           <div class="messages__chat-wrapper">
             <ul class="messages__list tabs__content tabs__content--active">
-              <li class="messages__item">
+              <!-- <li class="messages__item">
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
                     <a class="messages__author-link" href="#">
@@ -108,8 +108,8 @@
                 <p class="messages__text">
                   Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
                 </p>
-              </li>
-              <li class="messages__item messages__item--my">
+              </li> -->
+              <!-- <li class="messages__item messages__item--my">
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
                     <a class="messages__author-link" href="#">
@@ -128,8 +128,8 @@
                 <p class="messages__text">
                   Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
                 </p>
-              </li>
-              <li class="messages__item">
+              </li> -->
+              <!-- <li class="messages__item">
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
                     <a class="messages__author-link" href="#">
@@ -148,202 +148,13 @@
                 <p class="messages__text">
                   Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
                 </p>
-              </li>
-            </ul>
-
-            <ul class="messages__list tabs__content">
-              <li class="messages__item">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Лариса Роговая
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:40">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-              <li class="messages__item messages__item--my">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-medium.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Антон Глуханько
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-              <li class="messages__item">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Лариса Роговая
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-            </ul>
-
-            <ul class="messages__list tabs__content">
-              <li class="messages__item">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Лариса Роговая
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:40">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-              <li class="messages__item messages__item--my">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-medium.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Антон Глуханько
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-              <li class="messages__item">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Лариса Роговая
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-            </ul>
-
-            <ul class="messages__list tabs__content">
-              <li class="messages__item">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Лариса Роговая
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:40">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-              <li class="messages__item messages__item--my">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-medium.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Антон Глуханько
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
-              <li class="messages__item">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Лариса Роговая
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li>
+              </li> -->
             </ul>
           </div>
           <div class="comments">
             <form class="comments__form form" action="#" method="post">
               <div class="comments__my-avatar">
-                <img class="comments__picture" src="img/userpic-medium.jpg" alt="Аватар пользователя">
+                <img class="comments__picture" src="<?=$avatar?>" alt="Аватар пользователя">
               </div>
               <div class="form__input-section form__input-section--error">
                 <textarea class="comments__textarea form__textarea form__input"
