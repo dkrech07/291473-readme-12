@@ -94,11 +94,12 @@ function send_subscribers_messages($con, $user_id, $user_name, $title)
     $user_subscribers = select_query($con, "SELECT email, login FROM users WHERE (id) IN ($user_subscribers_ids_list)");
 
     foreach ($user_subscribers as $user_subscriber_number => $user_subscriber) {
-        $email_title = 'Новая публикация от пользователя ' . $login;
+        
         $email = $user_subscriber['email'];
         $login = $user_subscriber['login'];
+        $email_title = 'Новая публикация от пользователя ' . $user_name;
         $email_message = 'Здравствуйте, ' . $login . '. Пользователь ' . $user_name . ' только что опубликовал новую запись "' . $title . '".  Посмотрите её на странице пользователя: http://readme/profile.php?user=' . $user_id . '.';
-        require_once('smtp.php');
+        require('smtp.php');
     }
 }
 
