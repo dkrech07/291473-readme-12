@@ -31,7 +31,7 @@
             <?php if (!empty($subscribe)): ?>
               <a class="profile__user-button user__button user__button--subscription button button--main" href="profile.php?user=<?=$user['id']?>&unsubscribe=<?=$user['id']?>"">Отписаться</a>  
             <?php endif; ?>
-              <a class="profile__user-button user__button user__button--writing button button--green" href="#">Сообщение</a>
+              <a class="profile__user-button user__button user__button--writing button button--green" href="messages.php?user=<?=$user['id']?>">Сообщение</a>
             </div>
           </div>
         </div>
