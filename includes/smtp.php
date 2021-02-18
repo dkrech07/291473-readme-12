@@ -9,7 +9,7 @@ $transport = (new Swift_SmtpTransport('phpdemo.ru', 25))
 ;
 
 // Формирование сообщения
-$message = new Swift_Message("У вас новый подписчик");
+$message = new Swift_Message($email_title);
 $message->setFrom("keks@phpdemo.ru", "keks@phpdemo.ru");
 $message->setTo([$email => $login]);
 $message->setBody($email_message);

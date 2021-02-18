@@ -82,6 +82,26 @@ function open_404_page($user_name, $avatar)
     exit();
 }
 
+    // Оповещает подписчиков о публикации нового поста;
+function send_subscribers_messages($con, $user_id, $user_name, $title) 
+{   
+    $user_subscribers_list = select_query($con, "SELECT * FROM subscriptions WHERE author_id = " . $user_id);
+    // Получает список подписчиков пользователя;
+    foreach ($user_subscribers_list as $user_subscriber_number => $user_subscriber) {
+        $user_subscribers_ids[] = $user_subscriber['subscriber_id'];
+    }
+    $user_subscribers_ids_list = "'" . implode("', '", $user_subscribers_ids) . "'";
+    $user_subscribers = select_query($con, "SELECT email, login FROM users WHERE (id) IN ($user_subscribers_ids_list)");
+
+    foreach ($user_subscribers as $user_subscriber_number => $user_subscriber) {
+        $email_title = 'Новая публикация от пользователя ' . $login;
+        $email = $user_subscriber['email'];
+        $login = $user_subscriber['login'];
+        $email_message = 'Здравствуйте, ' . $login . '. Пользователь ' . $user_name . ' только что опубликовал новую запись "' . $title . '".  Посмотрите её на странице пользователя: http://readme/profile.php?user=' . $user_id . '.';
+        require_once('smtp.php');
+    }
+}
+
 function get_filter_active($current_content_type_id, $content_type)
 {
     if ($current_content_type_id == $content_type['id']) {
@@ -197,7 +217,7 @@ function check_empty_field($required_fields, $fields_map)
     return $errors;
 }
 
-function check_validity($con, $current_content_type_id, $fields_map)
+function check_validity($con, $current_content_type_id, $fields_map, $user_id, $user_name)
 {
     if (empty($_POST)) {
         return null;
@@ -344,6 +364,10 @@ function check_validity($con, $current_content_type_id, $fields_map)
     // Записывает хештеги в таблицу хештегов / переходит на страницу поста;
     $post_id = $con->insert_id;
     get_hashtags($tags_line, $post_id, $con);
+
+    // Оповещает подписчиков о публикации нового поста;
+    send_subscribers_messages($con, $user_id, $user_name, $title);
+
     header('Location: /post.php?id=' . $post_id);
     exit();
     return null;

@@ -6,6 +6,7 @@ require_once('includes/db_connect.inc.php');
 session_start();
 check_authentication();
 $user_name = $_SESSION['user']['login'];
+$user_id = $_SESSION['user']['id'];
 $avatar = $_SESSION['user']['avatar'];
 
 // Получает спиок типов контента для дальнейшего вывода на странице;
@@ -40,7 +41,7 @@ $fields_map = [
 ];
 
 // Получает список ошибок для вывода в шаблоне формы;
-$errors = check_validity($con, $current_content_type_id, $fields_map);
+$errors = check_validity($con, $current_content_type_id, $fields_map, $user_id, $user_name);
 
 // Получает выбранный тип конента ;
 $content_type = select_query($con, 'SELECT * FROM content_types WHERE id = ' . $current_content_type_id, 'assoc');

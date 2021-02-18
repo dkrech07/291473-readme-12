@@ -58,9 +58,10 @@ if (!empty($get_subscribe)) {
   if (isset($subscribe_user)) {
     mysqli_query($con, "INSERT INTO subscriptions (subscriber_id, author_id) VALUES ('$user_id', '$subscribe_user_id')");
 
+    $email_title = 'У вас новый подписчик';
     $email = $subscribe_user[0]['email'];
     $login = $subscribe_user[0]['login'];
-    $email_message = 'Здравствуйте, ' . $subscribe_login . '. На вас подписался новый пользователь ' . $user_name . '. Вот ссылка на его профиль: http://readme/profile.php?user=' . $user_id;
+    $email_message = 'Здравствуйте, ' . $login . '. На вас подписался новый пользователь ' . $user_name . '. Вот ссылка на его профиль: http://readme/profile.php?user=' . $user_id;
     require_once('includes/smtp.php');
   }
   header("Location: /profile.php?user=$subscribe_user_id");
