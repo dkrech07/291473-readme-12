@@ -1,5 +1,6 @@
 <?php
 //rint($chat_user_login);
+print_r($chat_messages);
 ?>
 
 <h1 class="visually-hidden">Личные сообщения</h1>
@@ -27,6 +28,8 @@
                 </div>
               </a>
             </li>
+            <?php foreach($chat_messages as $chat_message_number => $chat_message): ?>
+              <?= print_r($chat_message['id']) ?>
             <!-- <li class="messages__contacts-item messages__contacts-item--new">
               <a class="messages__contacts-tab tabs__item" href="#">
                 <div class="messages__avatar-wrapper">
@@ -48,6 +51,7 @@
                 </div>
               </a>
             </li> -->
+            <?php endforeach; ?>
             <!-- <li class="messages__contacts-item">
               <a class="messages__contacts-tab tabs__item" href="#">
                 <div class="messages__avatar-wrapper">
@@ -93,7 +97,8 @@
         <div class="messages__chat">
           <div class="messages__chat-wrapper">
             <ul class="messages__list tabs__content tabs__content--active">
-              <!-- <li class="messages__item">
+            <?php foreach($chat_messages as $chat_message_number => $chat_message): ?>
+              <li class="messages__item">
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
                     <a class="messages__author-link" href="#">
@@ -102,7 +107,7 @@
                   </div>
                   <div class="messages__item-info">
                     <a class="messages__author" href="#">
-                      Лариса Роговая
+                      <?= $chat_message['content'] ?>
                     </a>
                     <time class="messages__time" datetime="2019-05-01T14:40">
                       1 ч назад
@@ -110,9 +115,10 @@
                   </div>
                 </div>
                 <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
+                  <?= $chat_message['content'] ?>
                 </p>
-              </li> -->
+              </li>
+            <?php endforeach; ?>
               <!-- <li class="messages__item messages__item--my">
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
@@ -156,7 +162,7 @@
             </ul>
           </div>
           <div class="comments">
-            <form class="comments__form form" action="messages.php<?= $chat_user_id ? '?user=' . $chat_user_id  : '' ?>" method="post">
+            <form class="comments__form form" action="messages.php<?= $recipient_id ? '?user=' . $recipient_id  : '' ?>" method="post">
               <div class="comments__my-avatar">
                 <img class="comments__picture" src="<?=$avatar?>" alt="Аватар пользователя">
               </div>
