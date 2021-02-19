@@ -1,3 +1,7 @@
+<?php
+//rint($chat_user_login);
+?>
+
 <h1 class="visually-hidden">Личные сообщения</h1>
       <section class="messages tabs">
         <h2 class="visually-hidden">Сообщения</h2>
@@ -6,11 +10,11 @@
             <li class="messages__contacts-item">
               <a class="messages__contacts-tab messages__contacts-tab--active tabs__item tabs__item--active" href="#">
                 <div class="messages__avatar-wrapper">
-                  <img class="messages__avatar" src="img/userpic-larisa.jpg" alt="Аватар пользователя">
+                  <img class="messages__avatar" src="<?= $chat_user_avatar ?>" alt="Аватар пользователя">
                 </div>
                 <div class="messages__info">
                   <span class="messages__contact-name">
-                    Лариса Роговая
+                    <?= $chat_user_login ?>
                   </span>
                   <div class="messages__preview">
                     <p class="messages__preview-text">
@@ -152,13 +156,13 @@
             </ul>
           </div>
           <div class="comments">
-            <form class="comments__form form" action="#" method="post">
+            <form class="comments__form form" action="messages.php<?= $chat_user_id ? '?user=' . $chat_user_id  : '' ?>" method="post">
               <div class="comments__my-avatar">
                 <img class="comments__picture" src="<?=$avatar?>" alt="Аватар пользователя">
               </div>
               <div class="form__input-section form__input-section--error">
                 <textarea class="comments__textarea form__textarea form__input"
-                          placeholder="Ваше сообщение"></textarea>
+                id="chat-message" name="chat-message" placeholder="Ваше сообщение"></textarea>
                 <label class="visually-hidden">Ваше сообщение</label>
                 <button class="form__error-button button" type="button">!</button>
                 <div class="form__error-text">
