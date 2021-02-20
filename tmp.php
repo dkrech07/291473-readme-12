@@ -13,41 +13,41 @@ $date = date("Y-m-d H:i:s");
 // Получаю данные собеседника из базы;
 $recipient_id = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
 $recipient = select_query($con, "SELECT * FROM users WHERE id = " . $recipient_id);
-$recipient_email = $recipient[0]['email'];
-$recepient_name = $recipient[0]['login'];
-$recipient_avatar = $recipient[0]['avatar'];
+//$chat_user_login = $recipient[0]['login'];
+//$chat_user_avatar = $recipient[0]['avatar'];
 
-// Получает сообщения из базы;
-$recipient = select_query($con, "SELECT * FROM users WHERE id = " . $recipient_id);
-$chat_messages = select_query($con, "SELECT * FROM messages m INNER JOIN users u ON u.id = m.sender_id WHERE sender_id = '$user_id' AND recipient_id = '$recipient_id' OR sender_id = '$recipient_id' AND recipient_id = '$user_id'");
-
-foreach($chat_messages as $chat_message_number => $chat_message) {
-  $sender_names[] = $chat_message['login'];
-  $sender_avatars[] = $chat_message['avatar'];
-}
-
-// Записывает сообщения в базу;
 $chat_message = $_POST['chat-message'];
+
 if (!empty($chat_message)) {
   $chat_message_query = "INSERT INTO messages (date_add, content, sender_id, recipient_id) VALUES (?, ?, ?, ?)";
   $stmt = mysqli_prepare($con, $chat_message_query);
   mysqli_stmt_bind_param($stmt, 'ssii', $date, $chat_message, $user_id, $recipient_id);
   mysqli_stmt_execute($stmt);
-  header('Location: /messages.php?user=' . $recipient_id);
-  exit();
-} else {
-  header('refresh: 5');
 }
+
+// Получаю сообщения из базы;
+$recipient = select_query($con, "SELECT * FROM users WHERE id = " . $recipient_id);
+$chat_messages = select_query($con, "SELECT * FROM messages WHERE sender_id = '$user_id' AND recipient_id = '$recipient_id'");
+
+// Получаю данные отправителя и получателя;
+
+// Отправка сообщения;
+// Запись сообщения в базу данных - в таблицу messages;
+//print_r($chat_messages);
+//print_r($_POST['chat-message']);
+//print('<br>');
+print_r($recipient_id);
+
+
+//print_r($chat_user[0]['login']);
 
 // Передает данные из БД в шаблоны;
 $page_content = include_template('messages.php', [
   'avatar' => $avatar,
-  'recipient_id' => $recipient_id,
-  'recipient_email' => $recipient_email,
-  'recepient_name' => $recepient_name,
-  'recipient_avatar' => $recipient_avatar,
+  //'chat_user_avatar' => $chat_user_avatar,
+  //'chat_user_login' => $chat_user_login,
+  'chat_user_id' => $recipient_id,
   'chat_messages' => $chat_messages,
-  'sender_avatars' => $sender_avatars,
 ]);
 
 $layout_content = include_template('layout.php', [
@@ -58,3 +58,13 @@ $layout_content = include_template('layout.php', [
 ]);
 
 echo($layout_content);
+
+<script>
+const form = document.querySelector(`form`);
+form.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  form.reset();
+  window.location = window.location.href
+  console.log(form);
+ });
+</script>

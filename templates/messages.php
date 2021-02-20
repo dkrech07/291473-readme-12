@@ -11,11 +11,11 @@ print_r($chat_messages);
             <li class="messages__contacts-item">
               <a class="messages__contacts-tab messages__contacts-tab--active tabs__item tabs__item--active" href="#">
                 <div class="messages__avatar-wrapper">
-                  <img class="messages__avatar" src="<?= $chat_user_avatar ?>" alt="Аватар пользователя">
+                  <img class="messages__avatar" src="<?= $recipient_avatar ?>" alt="Аватар пользователя">
                 </div>
                 <div class="messages__info">
                   <span class="messages__contact-name">
-                    <?= $chat_user_login ?>
+                    <?= $recepient_name ?>
                   </span>
                   <div class="messages__preview">
                     <p class="messages__preview-text">
@@ -29,7 +29,7 @@ print_r($chat_messages);
               </a>
             </li>
             <?php foreach($chat_messages as $chat_message_number => $chat_message): ?>
-              <?= print_r($chat_message['id']) ?>
+            
             <!-- <li class="messages__contacts-item messages__contacts-item--new">
               <a class="messages__contacts-tab tabs__item" href="#">
                 <div class="messages__avatar-wrapper">
@@ -102,12 +102,12 @@ print_r($chat_messages);
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
                     <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
+                      <img class="messages__avatar" src="<?= $sender_avatars[$chat_message_number] ?>" alt="Аватар пользователя">
                     </a>
                   </div>
                   <div class="messages__item-info">
                     <a class="messages__author" href="#">
-                      <?= $chat_message['content'] ?>
+                      <?= $chat_message['login'] ?>
                     </a>
                     <time class="messages__time" datetime="2019-05-01T14:40">
                       1 ч назад

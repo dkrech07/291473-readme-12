@@ -58,7 +58,7 @@
                         </a>
                     </li>
                     <li class="header__my-page header__my-page--messages">
-                        <a class="header__page-link" href="messages.html" title="Личные сообщения">
+                        <a class="header__page-link" href="messages.php" title="Личные сообщения">
                             <span class="visually-hidden">Личные сообщения</span>
                         </a>
                     </li>
@@ -118,7 +118,7 @@
                 <?php if ($current_url == $registration_url): ?>
                 <ul class="header__user-nav">
                     <li class="header__authorization">
-                        <a class="header__user-button header__authorization-button button" href="http://readme/main.html">Вход</a>
+                        <a class="header__user-button header__authorization-button button" href="/index.php">Вход</a>
                     </li>
                     <li>
                         <a class="header__user-button header__user-button--active header__register-button button">Регистрация</a>
@@ -167,13 +167,13 @@
             <div class="footer__my-info">
                 <ul class="footer__my-pages">
                     <li class="footer__my-page footer__my-page--feed">
-                        <a class="footer__page-link" href="feed.html">Моя лента</a>
+                        <a class="footer__page-link" href="feed.php">Моя лента</a>
                     </li>
                     <li class="footer__my-page footer__my-page--popular">
-                        <a class="footer__page-link" href="popular.html">Популярный контент</a>
+                        <a class="footer__page-link" href="popular.php">Популярный контент</a>
                     </li>
                     <li class="footer__my-page footer__my-page--messages">
-                        <a class="footer__page-link" href="messages.html">Личные сообщения</a>
+                        <a class="footer__page-link" href="messages.php">Личные сообщения</a>
                     </li>
                 </ul>
                 <div class="footer__copyright">
