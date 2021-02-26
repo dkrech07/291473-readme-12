@@ -8,7 +8,6 @@ check_authentication();
 $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 $user_id = $_SESSION['user']['id'];
-$date = date("Y-m-d H:i:s");
 
 // Получаю данные собеседника из базы;
 $recipient_id = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
@@ -29,15 +28,19 @@ foreach($chat_messages as $chat_message_number => $chat_message) {
 // Записывает сообщения в базу;
 $chat_message = $_POST['chat-message'];
 if (!empty($chat_message)) {
+  date_default_timezone_set('Asia/Yekaterinburg');
+  $date = date("Y-m-d H:i:s");
+
   $chat_message_query = "INSERT INTO messages (date_add, content, sender_id, recipient_id) VALUES (?, ?, ?, ?)";
   $stmt = mysqli_prepare($con, $chat_message_query);
   mysqli_stmt_bind_param($stmt, 'ssii', $date, $chat_message, $user_id, $recipient_id);
   mysqli_stmt_execute($stmt);
   header('Location: /messages.php?user=' . $recipient_id);
   exit();
-} else {
-  header('refresh: 5');
-}
+} 
+//else {
+//  header('refresh: 5');
+//}
 
 // Передает данные из БД в шаблоны;
 $page_content = include_template('messages.php', [

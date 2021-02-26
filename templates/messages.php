@@ -98,6 +98,7 @@ print_r($chat_messages);
           <div class="messages__chat-wrapper">
             <ul class="messages__list tabs__content tabs__content--active">
             <?php foreach($chat_messages as $chat_message_number => $chat_message): ?>
+            <?= print($chat_message['date_add']); ?>
               <li class="messages__item">
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
@@ -110,7 +111,7 @@ print_r($chat_messages);
                       <?= $chat_message['login'] ?>
                     </a>
                     <time class="messages__time" datetime="2019-05-01T14:40">
-                      1 ч назад
+                      <?= get_post_interval($chat_message['date_add'], 'назад') ?>
                     </time>
                   </div>
                 </div>
