@@ -86,3 +86,11 @@ CREATE TABLE post_hashtags (
   FOREIGN KEY (hashtag_id) REFERENCES hashtags(id),
   FOREIGN KEY (post_id) REFERENCES posts(id)
 );
+
+CREATE TABLE chats (
+  id  INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  chat_sender_id INT UNSIGNED NOT NULL,
+  chat_recipient_id INT UNSIGNED NOT NULL,
+  FOREIGN KEY (chat_sender_id) REFERENCES users(id),
+  FOREIGN KEY (chat_recipient_id) REFERENCES users(id)
+);

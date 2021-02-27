@@ -28,6 +28,7 @@ foreach($chat_messages as $chat_message_number => $chat_message) {
 // Записывает сообщения в базу;
 $chat_message = $_POST['chat-message'];
 if (!empty($chat_message)) {
+  // Сохраняет сообщение в таблицу messages;
   date_default_timezone_set('Asia/Yekaterinburg');
   $date = date("Y-m-d H:i:s");
 
@@ -35,12 +36,21 @@ if (!empty($chat_message)) {
   $stmt = mysqli_prepare($con, $chat_message_query);
   mysqli_stmt_bind_param($stmt, 'ssii', $date, $chat_message, $user_id, $recipient_id);
   mysqli_stmt_execute($stmt);
+
   header('Location: /messages.php?user=' . $recipient_id);
   exit();
 } 
-//else {
-//  header('refresh: 5');
-//}
+
+// Проверяет есть ли в таблице chats получатель, если нет - записывает id отправителя и получателя;
+$current_chat = select_query($con, "SELECT chat_recipient_id FROM chats ch INNER JOIN users u ON u.id = ch.chat_sender_id WHERE chat_sender_id = '$user_id' AND chat_recipient_id ='$recipient_id'");
+if (empty($current_chat)) {
+  // Сохраняет чат с пользователем в таблицу chats;
+  $chats_query = "INSERT INTO chats (chat_sender_id, chat_recipient_id) VALUES (?, ?)";
+  $stmt = mysqli_prepare($con, $chats_query);
+  mysqli_stmt_bind_param($stmt, 'ii', $user_id, $recipient_id);
+  mysqli_stmt_execute($stmt);
+}
+$chats = select_query($con, "SELECT * FROM chats ch INNER JOIN users u ON u.id = ch.chat_recipient_id WHERE chat_sender_id = '$user_id'");
 
 // Передает данные из БД в шаблоны;
 $page_content = include_template('messages.php', [
@@ -51,6 +61,7 @@ $page_content = include_template('messages.php', [
   'recipient_avatar' => $recipient_avatar,
   'chat_messages' => $chat_messages,
   'sender_avatars' => $sender_avatars,
+  'chats' => $chats,
 ]);
 
 $layout_content = include_template('layout.php', [

@@ -1,44 +1,18 @@
-<?php
-//rint($chat_user_login);
-print_r($chat_messages);
-?>
-
 <h1 class="visually-hidden">Личные сообщения</h1>
       <section class="messages tabs">
         <h2 class="visually-hidden">Сообщения</h2>
         <div class="messages__contacts">
           <ul class="messages__contacts-list tabs__list">
-            <li class="messages__contacts-item">
-              <a class="messages__contacts-tab messages__contacts-tab--active tabs__item tabs__item--active" href="#">
+            <?php foreach($chats as $chat_number => $chat): ?>
+            <li class="messages__contacts-item messages__contacts-item--new">
+              <a class="messages__contacts-tab tabs__item <?= $recipient_id == $chat['chat_recipient_id'] ? 'messages__contacts-tab--active tabs__item--active' : ''?>" href="#">
                 <div class="messages__avatar-wrapper">
-                  <img class="messages__avatar" src="<?= $recipient_avatar ?>" alt="Аватар пользователя">
-                </div>
-                <div class="messages__info">
-                  <span class="messages__contact-name">
-                    <?= $recepient_name ?>
-                  </span>
-                  <div class="messages__preview">
-                    <p class="messages__preview-text">
-                      Озеро Байкал – огромное
-                    </p>
-                    <time class="messages__preview-time" datetime="2019-05-01T14:40">
-                      14:40
-                    </time>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <?php foreach($chat_messages as $chat_message_number => $chat_message): ?>
-            
-            <!-- <li class="messages__contacts-item messages__contacts-item--new">
-              <a class="messages__contacts-tab tabs__item" href="#">
-                <div class="messages__avatar-wrapper">
-                  <img class="messages__avatar" src="img/userpic-petro.jpg" alt="Аватар пользователя">
+                  <img class="messages__avatar" src="<?= $chat['avatar'] ?>" alt="Аватар пользователя">
                   <i class="messages__indicator">2</i>
                 </div>
                 <div class="messages__info">
                   <span class="messages__contact-name">
-                    Петр Демин
+                    <?= $chat['login'] ?>
                   </span>
                   <div class="messages__preview">
                     <p class="messages__preview-text">
@@ -50,55 +24,14 @@ print_r($chat_messages);
                   </div>
                 </div>
               </a>
-            </li> -->
+            </li>
             <?php endforeach; ?>
-            <!-- <li class="messages__contacts-item">
-              <a class="messages__contacts-tab tabs__item" href="#">
-                <div class="messages__avatar-wrapper">
-                  <img class="messages__avatar" src="img/userpic-mark.jpg" alt="Аватар пользователя">
-                </div>
-                <div class="messages__info">
-                  <span class="messages__contact-name">
-                    Марк Смолов
-                  </span>
-                  <div class="messages__preview">
-                    <p class="messages__preview-text">
-                      Вы: Марк, ждем тебя
-                    </p>
-                    <time class="messages__preview-time" datetime="2019-01-02T14:40">
-                      2 янв
-                    </time>
-                  </div>
-                </div>
-              </a>
-            </li> -->
-            <!-- <li class="messages__contacts-item">
-              <a class="messages__contacts-tab tabs__item" href="#">
-                <div class="messages__avatar-wrapper">
-                  <img class="messages__avatar" src="img/userpic-tanya.jpg" alt="Аватар пользователя">
-                </div>
-                <div class="messages__info">
-                  <span class="messages__contact-name">
-                    Таня Фирсова
-                  </span>
-                  <div class="messages__preview">
-                    <p class="messages__preview-text">
-                      Вы: Девушка не
-                    </p>
-                    <time class="messages__preview-time" datetime="2018-09-30T14:40">
-                      31 сент
-                    </time>
-                  </div>
-                </div>
-              </a>
-            </li> -->
           </ul>
         </div>
         <div class="messages__chat">
           <div class="messages__chat-wrapper">
             <ul class="messages__list tabs__content tabs__content--active">
             <?php foreach($chat_messages as $chat_message_number => $chat_message): ?>
-            <?= print($chat_message['date_add']); ?>
               <li class="messages__item">
                 <div class="messages__info-wrapper">
                   <div class="messages__item-avatar">
@@ -120,46 +53,6 @@ print_r($chat_messages);
                 </p>
               </li>
             <?php endforeach; ?>
-              <!-- <li class="messages__item messages__item--my">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-medium.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Антон Глуханько
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li> -->
-              <!-- <li class="messages__item">
-                <div class="messages__info-wrapper">
-                  <div class="messages__item-avatar">
-                    <a class="messages__author-link" href="#">
-                      <img class="messages__avatar" src="img/userpic-larisa-small.jpg" alt="Аватар пользователя">
-                    </a>
-                  </div>
-                  <div class="messages__item-info">
-                    <a class="messages__author" href="#">
-                      Лариса Роговая
-                    </a>
-                    <time class="messages__time" datetime="2019-05-01T14:39">
-                      1 ч назад
-                    </time>
-                  </div>
-                </div>
-                <p class="messages__text">
-                  Озеро Байкал – огромное древнее озеро в горах Сибири к северу от монгольской границы. Байкал считается самым глубоким озером в мире. Он окружен сетью пешеходных маршрутов, называемых Большой байкальской тропой. Деревня Листвянка, расположенная на западном берегу озера, – популярная отправная точка для летних экскурсий. Зимой здесь можно кататься на коньках и собачьих упряжках.
-                </p>
-              </li> -->
             </ul>
           </div>
           <div class="comments">
