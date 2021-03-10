@@ -9,6 +9,10 @@ $user_name = $_SESSION['user']['login'];
 $avatar = $_SESSION['user']['avatar'];
 $user_id = $_SESSION['user']['id'];
 
+date_default_timezone_set('Asia/Yekaterinburg');
+$date = date("Y-m-d H:i:s");
+
+
 // Получаю данные собеседника из базы;
 $recipient_id = filter_input(INPUT_GET, 'user', FILTER_VALIDATE_INT);
 $recipient = select_query($con, "SELECT * FROM users WHERE id = " . $recipient_id);
@@ -20,6 +24,9 @@ $recipient_avatar = $recipient[0]['avatar'];
 $recipient = select_query($con, "SELECT * FROM users WHERE id = " . $recipient_id);
 $chat_messages = select_query($con, "SELECT * FROM messages m INNER JOIN users u ON u.id = m.sender_id WHERE sender_id = '$user_id' AND recipient_id = '$recipient_id' OR sender_id = '$recipient_id' AND recipient_id = '$user_id'");
 
+$all_chats_messages = select_query($con, "SELECT * FROM messages m INNER JOIN users u ON u.id = m.sender_id WHERE sender_id = '$user_id' AND recipient_id = '$recipient_id' OR sender_id = '$recipient_id' AND recipient_id = '$user_id'");
+
+
 foreach($chat_messages as $chat_message_number => $chat_message) {
   $sender_names[] = $chat_message['login'];
   $sender_avatars[] = $chat_message['avatar'];
@@ -29,8 +36,6 @@ foreach($chat_messages as $chat_message_number => $chat_message) {
 $chat_message = $_POST['chat-message'];
 if (!empty($chat_message)) {
   // Сохраняет сообщение в таблицу messages;
-  date_default_timezone_set('Asia/Yekaterinburg');
-  $date = date("Y-m-d H:i:s");
 
   $chat_message_query = "INSERT INTO messages (date_add, content, sender_id, recipient_id) VALUES (?, ?, ?, ?)";
   $stmt = mysqli_prepare($con, $chat_message_query);
@@ -52,6 +57,21 @@ if (empty($current_chat)) {
 }
 $chats = select_query($con, "SELECT * FROM chats ch INNER JOIN users u ON u.id = ch.chat_recipient_id WHERE chat_sender_id = '$user_id'");
 
+// Здесь нужно получить список всех послединх сообщений (для всем чатов пользователя);
+print_r($chats);
+foreach ($chats as $chat_number => $chat) {
+  $chats_users_ids[] = $chat['chat_recipient_id'];
+}
+$all_chats = 
+$all_chat_messages = select_query($con, "SELECT * FROM messages m INNER JOIN users u ON u.id = m.sender_id WHERE sender_id = '$user_id' AND recipient_id = '$recipient_id' OR sender_id = '$recipient_id' AND recipient_id = '$user_id'");
+
+$last_message = $chat_messages[count($chat_messages) - 1]['content'];
+if (mb_strlen($last_message) < 16) {
+  $message_preview = substr($last_message, 0, 16);
+} else {
+  $message_preview = $last_message . '...';
+}
+
 // Передает данные из БД в шаблоны;
 $page_content = include_template('messages.php', [
   'avatar' => $avatar,
@@ -62,6 +82,7 @@ $page_content = include_template('messages.php', [
   'chat_messages' => $chat_messages,
   'sender_avatars' => $sender_avatars,
   'chats' => $chats,
+  'message_preview' => $message_preview,
 ]);
 
 $layout_content = include_template('layout.php', [

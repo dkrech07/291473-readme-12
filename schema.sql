@@ -70,6 +70,7 @@ CREATE TABLE messages (
   content TEXT NOT NULL,
   sender_id  INT UNSIGNED NOT NULL,
   recipient_id INT UNSIGNED NOT NULL,
+  unread_messages_count INT UNSIGNED NOT NULL DEFAULT 0,
   FOREIGN KEY (sender_id) REFERENCES users(id),
   FOREIGN KEY (recipient_id) REFERENCES users(id)
 );

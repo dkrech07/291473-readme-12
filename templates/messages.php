@@ -1,3 +1,7 @@
+<?php
+  // print_r($chat_messages);
+  // print($message_preview);
+?>
 <h1 class="visually-hidden">Личные сообщения</h1>
       <section class="messages tabs">
         <h2 class="visually-hidden">Сообщения</h2>
@@ -16,7 +20,7 @@
                   </span>
                   <div class="messages__preview">
                     <p class="messages__preview-text">
-                      Ок, бро! По рукам
+                      <?= $message_preview ?>
                     </p>
                     <time class="messages__preview-time" datetime="2019-05-01T00:15">
                       00:15
